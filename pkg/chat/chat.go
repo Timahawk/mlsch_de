@@ -21,7 +21,7 @@ func init() {
 func PostCreateNewHub(c *gin.Context) {
 	hub := newHub()
 	Hubs[hub.HubID] = hub
-	c.Redirect(303, fmt.Sprintf("/%s/chat", hub.HubID))
+	c.Redirect(303, fmt.Sprintf("%s/%s/chat", c.Request.URL.Path, hub.HubID))
 }
 
 // r.GET(":room")
@@ -32,7 +32,7 @@ func GetChatRoom(c *gin.Context) {
 		c.String(404, "Room not found")
 		return
 	}
-	c.HTML(200, "chat.html", nil)
+	c.HTML(200, "chats/chat.html", nil)
 }
 
 // r.GET(":room/ws"

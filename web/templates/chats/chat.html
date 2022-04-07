@@ -36,11 +36,18 @@ window.onload = function () {
     };
 
     if (window["WebSocket"]) {
-        // Das hier ist super spagethhi Code...
-        path = window.location.pathname;
-        path = path.replace("/chat", "")
         
-        conn = new WebSocket("ws://" + document.location.host + path + "/ws" + "?user=" + user);
+        path = document.location.pathname;
+        path = path.replace(new RegExp("/chat$"), "")
+        console.log(path, document.location.pathname)
+        // Das hier weils wichtig ist ob https oder nicht.
+		// Browser erlauben KEIN downgrad also https zu ws!
+        if (location.protocol === 'https:'){
+			conn = new WebSocket("wss://" + document.location.host + path + "/ws" + "?user=" + user)
+		} else {
+		    conn = new WebSocket("ws://" + document.location.host + path + "/ws" + "?user=" + user)
+		};
+
         conn.onclose = function (evt) {
             var item = document.createElement("div");
             item.innerHTML = "<b>Connection closed.</b>";

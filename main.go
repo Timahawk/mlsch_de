@@ -14,24 +14,9 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 )
 
-// //go:embed web/templates/chats/*.html
-// var embededTemplates embed.FS
-
-// func run() error {
-// 	return fs.WalkDir(embededTemplates, ".", func(path string, d fs.DirEntry, err error) error {
-// 		if err != nil {
-// 			return err
-// 		}
-// 		fmt.Printf("path=%q, isDir=%v\n", path, d.IsDir())
-// 		return nil
-// 	})
-// }
-
 func main() {
 	development := flag.Bool("dev", true, "Run local")
 	flag.Parse()
-
-	// run()
 
 	// This must be set before router is created.
 	if !*development {
@@ -41,8 +26,7 @@ func main() {
 	r := gin.Default()
 	r.StaticFile("/favicon.ico", "web/static/favicon.ico")
 
-	// html := template.Must(template.ParseFS(embededTemplates))
-	// r.SetHTMLTemplate(html)
+	r.LoadHTMLGlob("web/templates/**/*.html")
 
 	watcher := r.Group("/watcher")
 	go_watcher.Start(time.Second)

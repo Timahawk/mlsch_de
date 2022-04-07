@@ -9,6 +9,7 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.UBUNTU_1_KEY }}
+        host: ${{ secrets.UBUNTU_1_IP }}
         key: ${{ secrets.UBUNTU_1_KEY }}
+        port: ${{ secrets.UBUNTU_1_PORT }}
         script: whoami

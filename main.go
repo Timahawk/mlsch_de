@@ -8,14 +8,30 @@ import (
 	"time"
 
 	"github.com/Timahawk/go_watcher"
+	"github.com/Timahawk/mlsch_de/pkg/chat"
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/acme/autocert"
 )
 
+// //go:embed web/templates/chats/*.html
+// var embededTemplates embed.FS
+
+// func run() error {
+// 	return fs.WalkDir(embededTemplates, ".", func(path string, d fs.DirEntry, err error) error {
+// 		if err != nil {
+// 			return err
+// 		}
+// 		fmt.Printf("path=%q, isDir=%v\n", path, d.IsDir())
+// 		return nil
+// 	})
+// }
+
 func main() {
 	development := flag.Bool("dev", true, "Run local")
 	flag.Parse()
+
+	// run()
 
 	// This must be set before router is created.
 	if !*development {
@@ -23,6 +39,10 @@ func main() {
 	}
 
 	r := gin.Default()
+	r.StaticFile("/favicon.ico", "web/static/favicon.ico")
+
+	// html := template.Must(template.ParseFS(embededTemplates))
+	// r.SetHTMLTemplate(html)
 
 	watcher := r.Group("/watcher")
 	go_watcher.Start(time.Second)
@@ -33,6 +53,17 @@ func main() {
 		watcher.GET("/", func(c *gin.Context) {
 			go_watcher.SendTemplate(c.Writer, c.Request)
 		})
+	}
+
+	chats := r.Group("/chat")
+	{
+
+		chats.GET("/", func(c *gin.Context) {
+			c.HTML(200, "chats/start.html", nil)
+		})
+		chats.GET(":room/chat", chat.GetChatRoom)
+		chats.GET(":room/ws", chat.GetRoomWebsocket)
+		chats.POST("/", chat.PostCreateNewHub)
 	}
 
 	r.GET("/", func(c *gin.Context) {

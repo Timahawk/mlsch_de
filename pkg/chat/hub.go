@@ -35,6 +35,7 @@ type Hub struct {
 	unregister chan *Client
 }
 
+// newHub creates and runs a new Hub.
 func newHub() *Hub {
 	hub := &Hub{
 		HubID:      RandString(6), // TODO muss was bessers her.
@@ -47,6 +48,7 @@ func newHub() *Hub {
 	return hub
 }
 
+// run manages incoming messages and and distributes them to the client.
 func (h *Hub) run() {
 	for {
 		select {
@@ -72,6 +74,8 @@ func (h *Hub) run() {
 	}
 }
 
+// CloseClientless checks at closeTime each hub, if it has any clients.
+// If not the hub is closed.
 func CloseClientlessHubs(closeTime time.Duration) {
 	ticker := time.NewTicker(closeTime)
 	defer func() {

@@ -1,9 +1,10 @@
 {{ define "chats/chat.html" }}
 
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+{{ template "globals/style_head.html" }}
 <title>Chat Example</title>
 <script type="text/javascript">
 window.onload = function () {
@@ -13,7 +14,7 @@ window.onload = function () {
 
     var user;
 
-    user = prompt("Please enter your name:", "Harry Potter");
+    user = prompt("Please enter your name:", {{ .name }});
 
     function appendLog(item) {
         var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
@@ -87,7 +88,7 @@ body {
     margin: 0;
     padding: 0.5em 0.5em 0.5em 0.5em;
     position: absolute;
-    top: 0.5em;
+    top: 4em;
     left: 0.5em;
     right: 0.5em;
     bottom: 3em;
@@ -106,7 +107,13 @@ body {
 
 </style>
 </head>
+
+
+
 <body>
+
+    {{ template "globals/style_body.html" }}
+
 <div id="log"></div>
 <form id="form">
     <input type="submit" value="Send" />

@@ -24,7 +24,10 @@ func main() {
 	}
 
 	r := gin.Default()
+	// TODO this does not work!
 	r.StaticFile("/favicon.ico", "web/static/favicon.ico")
+
+	r.Static("/static", "web/static")
 
 	r.LoadHTMLGlob("web/templates/**/*.html")
 
@@ -39,11 +42,11 @@ func main() {
 		})
 	}
 
-	chats := r.Group("/chat")
+	chats := r.Group("/chats")
 	{
 
 		chats.GET("/", func(c *gin.Context) {
-			c.HTML(200, "chats/start.html", nil)
+			c.HTML(200, "chats/start.html", gin.H{"title": "Chats"})
 		})
 		chats.GET(":room/chat", chat.GetChatRoom)
 		chats.GET(":room/ws", chat.GetRoomWebsocket)
@@ -51,7 +54,7 @@ func main() {
 	}
 
 	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"Status": "Worked"})
+		c.HTML(http.StatusOK, "globals/index.html", nil)
 	})
 
 	certManager := autocert.Manager{

@@ -3,7 +3,7 @@ module github.com/Timahawk/mlsch_de
 go 1.18
 
 require (
-	github.com/Timahawk/go_watcher v0.0.0-20220407144534-a94336e9559c
+	github.com/Timahawk/go_watcher v0.0.0-20220408122751-04225c025979
 	github.com/gin-gonic/autotls v0.0.3
 	github.com/gin-gonic/gin v1.7.7
 	github.com/gorilla/websocket v1.5.0

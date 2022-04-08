@@ -1,0 +1,169 @@
+{{ define "locators/game.html" }}
+
+<head>
+
+    {{ template "globals/style_head.html" }}
+
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css">
+
+    <style>
+        .map {
+          width: 100%;
+          height: 80%;
+        }
+        .map {
+          background: #f8f4f0 ;
+        }
+      </style>
+</head>
+
+<body>   
+    {{ template "globals/style_body.html" }}
+
+    <button id="clickMe" type="button">Submit Guess!</button> 
+    <button id="clickNewGuess" type="button">Next Round!</button> 
+    <div>
+        <h1 style="text-align:left;float:left;" id="city">{{ .city }}</h1>
+        <h2 style="text-align:left;float:left;" id="Distanz"> </h2>
+        <h3 style="text-align:left;float:left;" id="Land"> </h3>
+        <!-- <h3 style="text-align:right;float:right;" id="reload"> </h3> -->
+        <!-- <progress value="0" max="10" id="progressBar"></progress> -->
+    </div>
+    <div id="map" class="map"></div>
+    <script>
+
+        var host = document.location.host;
+        var path = document.location.pathname;
+        // console.log(host, path, host + path)
+
+        var city ="{{ .city }}"
+        var token = 'pk.eyJ1IjoidGltd2VuZGVsIiwiYSI6ImNraDBoeG9ubTFkd20zMXJydDA5YjR0OXEifQ.uuncQPQVAT2rDxfj81AILw';
+
+        const mb = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=' +
+                token
+            }),
+        });
+
+        const fill = new ol.style.Fill({
+            color: "#FF0000",
+            });
+        const stroke = new ol.style.Stroke({
+            color: "#FF0000",
+            width: 1.25,
+            });
+        const styles = [
+            new ol.style.Style({
+                image: new ol.style.Circle({
+                fill: fill,
+                stroke: stroke,
+                radius: 5,
+                }),
+                fill: fill,
+                stroke: stroke,
+            }),
+        ];
+
+        point = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.transform([0,0], 'EPSG:4326', 'EPSG:3857'))
+        });
+
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: [point]
+            })
+        });
+        
+        var solution_layer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: []
+                }),
+                style: styles[0]
+            });
+
+        const select = new ol.interaction.Select({
+            layers : [layer],
+        });
+
+        const translate = new ol.interaction.Translate({
+            features: select.getFeatures(),
+        });
+        
+        const map = new ol.Map({
+            interactions: ol.interaction.defaults().extend([select, translate]),
+            layers: [mb],
+            target: 'map',
+            view: new ol.View({
+                center: [0,0],
+                zoom: 1,
+                maxZoom: 7,
+            }),
+        });
+        
+        map.on('click', function(evt){
+            // console.log(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
+            point.setGeometry(new ol.geom.Point(evt.coordinate))
+        });
+
+        map.addLayer(layer);
+        map.addLayer(solution_layer);
+
+        //- Using a function pointer:
+        document.getElementById("clickNewGuess").onclick = async function(){
+            const response = await postData(url = path + "newGuess", "")
+            
+            document.getElementById("city").innerHTML = response["city"]
+            document.getElementById("Distanz").innerHTML = ""
+            city = response["city"]
+            solution_layer.getSource().clear()
+        };
+
+        //- Using a function pointer:
+        document.getElementById("clickMe").onclick = function(){
+            submitGuess();
+        };
+        
+        async function submitGuess(){
+            coords = point.getGeometry().getCoordinates()
+            coords4326 = ol.proj.transform(coords, 'EPSG:3857', 'EPSG:4326')
+            // console.log({"lat":coords4326[0], "long": coords4326[1]})
+
+            x = {"lat":coords4326[1], "long": coords4326[0], "city":city}
+            
+            res = await postData(url=path + "submit", data=x);
+
+            solution = new ol.Feature({
+                geometry: new ol.geom.Point(ol.proj.transform([res.long, res.lat], 'EPSG:4326', 'EPSG:3857'))
+                });
+
+            solution_layer.getSource().addFeature(solution)
+
+            document.getElementById("Distanz").innerHTML = "   "+ res.distance + "km Entfernt vom Ziel."
+            // document.getElementById("Land").innerHTML = "  Haputstadt von " + res.CountryName
+
+        };
+
+        // Example POST method implementation:
+        async function postData(url = '/', data = {}) {
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+        }
+
+    </script>
+</body> 
+{{ end }}

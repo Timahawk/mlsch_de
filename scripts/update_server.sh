@@ -25,3 +25,4 @@ echo "LISTEN Ports after  Restart"
 sudo lsof -i -P -n | grep LISTEN
 echo "Tail of Logfile"
 tail ./log.txt
+echo "Finished the Script."

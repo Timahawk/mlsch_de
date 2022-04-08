@@ -33,7 +33,6 @@ jobs:
 
         -   name: Run my little shell script
             run: ssh staging './update_server.sh; echo Bash Finisehd; exit'
-            run: exit 0
 
         -   name: Print content of current working directory
             run: ssh staging 'ls -l'

@@ -3,43 +3,43 @@ on: [push]
 # Stolen from:
 # https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
 jobs:
-  # test:
-  #   ...
-  deploy:
-    name: "Deploy to staging"
-    runs-on: ubuntu-latest
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    # needs: test
-    steps:
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/staging.key
-          chmod 600 ~/.ssh/staging.key
-          cat >>~/.ssh/config <<END
-          Host staging
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/staging.key
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_USER: ${{ secrets.UBUNTU_1_USER }}
-          SSH_KEY: ${{ secrets.UBUNTU_1_KEY }}
-          SSH_HOST: ${{ secrets.UBUNTU_1_IP }}
+    # test:
+    #   ...
+    deploy:
+        name: "Deploy to staging"
+        runs-on: ubuntu-latest
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        # needs: test
+        steps:
+            -   name: Configure SSH
+                run: |
+                    mkdir -p ~/.ssh/
+                    echo "$SSH_KEY" > ~/.ssh/staging.key
+                    chmod 600 ~/.ssh/staging.key
+                    cat >>~/.ssh/config <<END
+                    Host staging
+                        HostName $SSH_HOST
+                        User $SSH_USER
+                        IdentityFile ~/.ssh/staging.key
+                        StrictHostKeyChecking no
+                    END
+                env:
+                    SSH_USER: ${{ secrets.UBUNTU_1_USER }}
+                    SSH_KEY: ${{ secrets.UBUNTU_1_KEY }}
+                    SSH_HOST: ${{ secrets.UBUNTU_1_IP }}
 
-        - name: Print current working directory
-          run: ssh staging 'pwd'
+                -   name: Print current working directory
+                    run: ssh staging 'pwd'
 
-        - name: Run my little shell script
-          run: ssh staging './update_server.sh'
+                -   name: Run my little shell script
+                    run: ssh staging './update_server.sh'
 
-      # - name: Stop the server
-      #   run: ssh staging 'sudo systemctl stop my-application'
+                # - name: Stop the server
+                #   run: ssh staging 'sudo systemctl stop my-application'
 
-      # - name: Check out the source
-      #   run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
+                # - name: Check out the source
+                #   run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
 
-      # - name: Start the server
-      #   if: ${{ always() }}
-      #   run: ssh staging 'sudo systemctl start my-application'
+                # - name: Start the server
+                #   if: ${{ always() }}
+                #   run: ssh staging 'sudo systemctl start my-application'

@@ -14,7 +14,8 @@ sudo pkill mlsch_de
 echo "LISTEN Ports after pkill"
 sudo lsof -i -P -n | grep LISTEN
 
-# cd mlsch_de
+
+cd ..
 git pull
 go build .
 

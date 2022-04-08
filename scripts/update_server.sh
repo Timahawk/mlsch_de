@@ -27,4 +27,4 @@ echo "Tail of Logfile"
 tail ./log.txt
 echo "Finished the Script."
 
-exit N
+exit 0

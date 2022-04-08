@@ -32,7 +32,7 @@ jobs:
             run: ssh staging 'pwd'
 
         -   name: Run my little shell script
-            run: ssh staging './update_server.sh'
+            run: ssh staging './update_server.sh; echo Bash Finisehd; exit'
 
             # - name: Stop the server
             #   run: ssh staging 'sudo systemctl stop my-application'

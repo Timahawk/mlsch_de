@@ -11,6 +11,7 @@ jobs:
         # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         # needs: test
         steps:
+        # - uses: actions/checkout@v3
         -   name: Configure SSH
             run: |
                 mkdir -p ~/.ssh/
@@ -31,11 +32,13 @@ jobs:
         -   name: Print current working directory
             run: ssh staging 'pwd'
 
-        -   name: Run my little shell script
-            run: ssh staging './update_server.sh; echo Bash Finisehd; exit'
-
         -   name: Print content of current working directory
             run: ssh staging 'ls -l'
+
+        -   name: Run my little shell script
+            run: ssh staging 'bash -s' < ./mlsch_go/scripts/update_server.sh
+
+
 
             # - name: Stop the server
             #   run: ssh staging 'sudo systemctl stop my-application'

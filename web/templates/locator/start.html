@@ -1,0 +1,14 @@
+{{ define "locators/start.html" }}
+
+<title>{{ .title }}</title>
+
+{{ template "globals/style_head.html" }}
+{{ template "globals/style_body.html" }}
+
+
+<input id="inp" type="button" class="btn btn-primary mx-auto" style="width: 20%; margin:10px;" value="Play all cities, worldwide" onclick="location.href= document.location.pathname + 'world';" />
+<input id="inp" type="button" class="btn btn-primary mx-auto" style="width: 20%; margin:10px;" value="Play large cities, worldwide" onclick="location.href= document.location.pathname + 'large';" />
+<input id="inp" type="button" class="btn btn-primary mx-auto" style="width: 20%; margin:10px;" value="Play capital cities" onclick="location.href= document.location.pathname + 'cities';" />
+<input id="inp" type="button" class="btn btn-primary mx-auto" style="width: 20%; margin:10px;" value="Play German cities" onclick="location.href= document.location.pathname + 'germany';" />
+
+{{ end }}

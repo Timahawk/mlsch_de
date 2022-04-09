@@ -2,8 +2,8 @@ package locator
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"math"
 	"math/rand"
 	"net/http"
@@ -11,90 +11,88 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Capital struct {
-	CountryName   string
-	Name          string  `json:"CapitalName"`
-	Lat           float64 `json:"CapitalLatitude,string"`
-	Lng           float64 `json:"CapitalLongitude,string"`
-	CountryCode   string
-	ContinentName string
+var Games []Game
+
+type Game struct {
+	name    string
+	center  []float64
+	zoom    int
+	maxZoom int
+	minZoom int
+	extent  []float64
+	Cities  []City
 }
 
-type Worldcity struct {
+func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, extent []float64) error {
+	cities, err := LoadCities(pfad)
+	if err != nil {
+		return err
+	}
+	Games = append(Games, Game{name, center, zoom, maxZoom, minZoom, extent, cities})
+	return nil
+}
+
+type City struct {
 	// json_featuretype string
-	Name_w  string `json:"city"`
-	Name    string `json:"city_ascii"`
-	Lat     float64
-	Lng     float64
-	Country string
-	Iso2    string
-	Iso3    string
+	Name       string `json:"city"`
+	Name_ascii string `json:"city_ascii"`
+	Lat        float64
+	Lng        float64
+	Country    string
+	Iso2       string
+	Iso3       string
 	// admin_name       string
 	Capital    string
 	Population int
 	Id         int
 }
 
-var Capitals []Capital
-var Worldcities []Worldcity
+func LoadCities(file string) ([]City, error) {
+	cities := make([]City, 0)
 
-// Hier wird der Datensatz ausgewählt.
-//  Muss dann auch in "main" geändert werden.
-var Gameset []Worldcity
-
-// func main() {
-// 	r := setupRouter()
-// 	loadCapitals("./data/country-capitals.json")
-// 	loadCities("./data/worldcities.json")
-
-// 	Gameset = Worldcities
-// 	rand.Seed(time.Now().UnixNano())
-// 	r.Run("localhost:8080")
-// }
-
-// func setupRouter() *gin.Engine {
-// 	router := gin.Default()
-
-// 	router.LoadHTMLGlob("public/*")
-
-// 	router.GET("/", HandleGame)
-// 	router.POST("/submit", HandleGameSubmit)
-// 	router.POST("/newGuess", HandleNewGuess)
-
-// 	return router
-// }
-
-func LoadCapitals(file string) {
-	// read file
 	content, err := ioutil.ReadFile(file)
 	if err != nil {
-		log.Fatal("Error when opening file: ", err)
+		return nil, fmt.Errorf("%s, %v ", file, err)
 	}
-	err = json.Unmarshal(content, &Capitals)
+	err = json.Unmarshal(content, &cities)
 	if err != nil {
-		log.Fatal("Error during Unmarshal(): ", err)
+		return nil, fmt.Errorf("%s, %v ", file, err)
 	}
+	return cities, nil
 }
-func LoadCities(file string) {
-	// read file
-	content, err := ioutil.ReadFile(file)
-	if err != nil {
-		log.Fatal("Error when opening file: ", err)
+
+func getGame(name string) (Game, error) {
+	for _, game := range Games {
+		if game.name == name {
+			return game, nil
+		}
 	}
-	err = json.Unmarshal(content, &Worldcities)
-	if err != nil {
-		log.Fatal("Error during Unmarshal(): ", err)
-	}
+	return Game{}, fmt.Errorf("Game not found")
 }
 
 func HandleGame(c *gin.Context) {
-	length := len(Gameset)
-	capital := Gameset[rand.Intn(length)]
+	name := c.Param("country")
+
+	game, err := getGame(name)
+	if err != nil {
+		c.String(404, "Game not found!")
+		return
+	}
+
+	length := len(game.Cities)
+	city := game.Cities[rand.Intn(length)]
 
 	c.HTML(200,
 		"locators/game.html",
 		gin.H{
-			"city": capital.Name})
+			"title":   fmt.Sprintf("Locator " + game.name),
+			"city":    city.Name,
+			"center":  game.center,
+			"zoom":    game.zoom,
+			"maxZoom": game.maxZoom,
+			"minZoom": game.minZoom,
+			"extent":  game.extent,
+		})
 }
 
 type Submit_guess struct {
@@ -104,39 +102,54 @@ type Submit_guess struct {
 }
 
 func HandleGameSubmit(c *gin.Context) {
+	name := c.Param("country")
+	game, err := getGame(name)
+	if err != nil {
+		c.String(404, "Game not found!")
+		return
+	}
+
 	var submit Submit_guess
 	if err := c.ShouldBindJSON(&submit); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// var capital_name string
-	var capital_lat float64
-	var capital_lng float64
-	for _, capi := range Gameset {
-		if capi.Name == submit.City {
-			capital_lat = capi.Lat
-			capital_lng = capi.Lng
+
+	var city_lat float64
+	var city_lng float64
+	for _, city := range game.Cities {
+		if city.Name == submit.City {
+			city_lat = city.Lat
+			city_lng = city.Lng
 			// capital_name = capi.Name
 			break
 		}
 	}
 
 	distance := Distance(
-		capital_lat,
-		capital_lng,
+		city_lat,
+		city_lng,
 		submit.Latitude,
 		submit.Longitude)
 
 	c.JSON(200, gin.H{
 		"city":     submit.City,
-		"lat":      capital_lat,
-		"long":     capital_lng,
+		"lat":      city_lat,
+		"long":     city_lng,
 		"distance": math.Round(distance / 1000)})
 }
 
 func HandleNewGuess(c *gin.Context) {
-	length := len(Gameset)
-	capital := Gameset[rand.Intn(length)]
+	name := c.Param("country")
+
+	game, err := getGame(name)
+	if err != nil {
+		c.String(404, "Game not found!")
+		return
+	}
+
+	length := len(game.Cities)
+	capital := game.Cities[rand.Intn(length)]
 
 	c.JSON(200, gin.H{"city": capital.Name})
 }

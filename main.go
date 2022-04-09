@@ -104,15 +104,22 @@ func SetupRouter() *gin.Engine {
 	// *************************************************************** //
 
 	locators := r.Group("/locators")
-	locator.LoadCapitals("pkg/locator/country-capitals.json")
-	locator.LoadCities("pkg/locator/worldcities.json")
-	// TODO this needs a rewrite...
-	locator.Gameset = locator.Worldcities
+
+	// World wide games
+	locator.NewGame("world", "pkg/locator/worldcities.json", []float64{0, 0}, 1, 10, 1, []float64{180.0, -90, -180, 90})
+	locator.NewGame("large", "pkg/locator/capital_cities.json", []float64{0, 0}, 1, 7, 1, []float64{180.0, -90, -180, 90})
+	locator.NewGame("capitals", "pkg/locator/large_cities.json", []float64{0, 0}, 1, 10, 1, []float64{180.0, -90, -180, 90})
+
+	// Country specific games
+	locator.NewGame("germany", "pkg/locator/german_cities.json", []float64{10.019531, 50.792047}, 1, 10, 1, []float64{-2.55, 42.18, 22.58, 58.86})
 
 	{
-		locators.GET("/", locator.HandleGame)
-		locators.POST("/submit", locator.HandleGameSubmit)
-		locators.POST("/newGuess", locator.HandleNewGuess)
+		locators.GET("/", func(c *gin.Context) {
+			c.HTML(200, "locators/start.html", gin.H{"title": "Locator"})
+		})
+		locators.GET("/:country", locator.HandleGame)
+		locators.POST("/:country/submit", locator.HandleGameSubmit)
+		locators.POST("/:country/newGuess", locator.HandleNewGuess)
 	}
 	return r
 }

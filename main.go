@@ -32,8 +32,8 @@ func main() {
 
 	certManager := autocert.Manager{
 		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist("mlsch.de"), //Your domain here
-		Cache:      autocert.DirCache("certs"),         //Folder for storing certificates
+		HostPolicy: autocert.HostWhitelist("mlsch.de", "3.69.208.226"), //Your domain here
+		Cache:      autocert.DirCache("certs"),                         //Folder for storing certificates
 	}
 
 	// Check if development (default) or Prod.

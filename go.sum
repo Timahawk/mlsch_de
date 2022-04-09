@@ -1,5 +1,3 @@
-github.com/Timahawk/go_watcher v0.0.0-20220407144534-a94336e9559c h1:rIO66KGDawi6J1a690fT4LwuUMHGzWSqh7Mzqe57b+Q=
-github.com/Timahawk/go_watcher v0.0.0-20220407144534-a94336e9559c/go.mod h1:ie4XoiTseL2Z+m9otkzucjjWOs64sLRO4GbXqdJOTk0=
 github.com/Timahawk/go_watcher v0.0.0-20220408122751-04225c025979 h1:dlHFsuBJk8z3FB+qghIU5grjtCeQqwlafPGOh9QsS04=
 github.com/Timahawk/go_watcher v0.0.0-20220408122751-04225c025979/go.mod h1:ie4XoiTseL2Z+m9otkzucjjWOs64sLRO4GbXqdJOTk0=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=

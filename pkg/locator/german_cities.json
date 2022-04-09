@@ -1387,7 +1387,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Weißenthurm",
+		"city" : "WeiÃŸenthurm",
 		"city_ascii" : "Weissenthurm",
 		"lat" : 50.414398193359375,
 		"lng" : 7.4606,
@@ -1401,7 +1401,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Neulußheim",
+		"city" : "NeuluÃŸheim",
 		"city_ascii" : "Neulussheim",
 		"lat" : 49.29330062866211,
 		"lng" : 8.5219,
@@ -1541,7 +1541,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Gießen",
+		"city" : "GieÃŸen",
 		"city_ascii" : "Giessen",
 		"lat" : 50.58330154418945,
 		"lng" : 8.6667,
@@ -1667,7 +1667,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Dessau-Roßlau",
+		"city" : "Dessau-RoÃŸlau",
 		"city_ascii" : "Dessau-Rosslau",
 		"lat" : 51.83330154418945,
 		"lng" : 12.2333,
@@ -2241,7 +2241,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Schwäbisch Gmünd",
+		"city" : "SchwÃ¤bisch Gmünd",
 		"city_ascii" : "Schwabisch Gmund",
 		"lat" : 48.79999923706055,
 		"lng" : 9.8,
@@ -3935,7 +3935,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Schwäbisch Hall",
+		"city" : "SchwÃ¤bisch Hall",
 		"city_ascii" : "Schwabisch Hall",
 		"lat" : 49.11220169067383,
 		"lng" : 9.7375,
@@ -3949,7 +3949,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Weißenfels",
+		"city" : "WeiÃŸenfels",
 		"city_ascii" : "Weissenfels",
 		"lat" : 51.20000076293945,
 		"lng" : 11.9667,
@@ -5475,7 +5475,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Unterschleißheim",
+		"city" : "UnterschleiÃŸheim",
 		"city_ascii" : "Unterschleissheim",
 		"lat" : 48.28329849243164,
 		"lng" : 11.5667,
@@ -5993,7 +5993,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Meißen",
+		"city" : "MeiÃŸen",
 		"city_ascii" : "Meissen",
 		"lat" : 51.16360092163086,
 		"lng" : 13.4775,
@@ -6385,7 +6385,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Schloß Holte-Stukenbrock",
+		"city" : "SchloÃŸ Holte-Stukenbrock",
 		"city_ascii" : "Schloss Holte-Stukenbrock",
 		"lat" : 51.88330078125,
 		"lng" : 8.6167,
@@ -6399,7 +6399,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Wangen im Allgäu",
+		"city" : "Wangen im AllgÃ¤u",
 		"city_ascii" : "Wangen im Allgau",
 		"lat" : 47.68579864501953,
 		"lng" : 9.8342,
@@ -6875,7 +6875,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Groß-Gerau",
+		"city" : "GroÃŸ-Gerau",
 		"city_ascii" : "Gross-Gerau",
 		"lat" : 49.9213981628418,
 		"lng" : 8.4818,
@@ -7015,7 +7015,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Staßfurt",
+		"city" : "StaÃŸfurt",
 		"city_ascii" : "Stassfurt",
 		"lat" : 51.86669921875,
 		"lng" : 11.5667,
@@ -7953,7 +7953,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Neusäß",
+		"city" : "NeusÃ¤ÃŸ",
 		"city_ascii" : "Neusass",
 		"lat" : 48.400001525878906,
 		"lng" : 10.8333,
@@ -7967,7 +7967,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Leutkirch im Allgäu",
+		"city" : "Leutkirch im AllgÃ¤u",
 		"city_ascii" : "Leutkirch im Allgau",
 		"lat" : 47.825599670410156,
 		"lng" : 10.0222,
@@ -8737,7 +8737,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Waghäusel",
+		"city" : "WaghÃ¤usel",
 		"city_ascii" : "Waghausel",
 		"lat" : 49.25,
 		"lng" : 8.5169,
@@ -8765,7 +8765,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Groß-Umstadt",
+		"city" : "GroÃŸ-Umstadt",
 		"city_ascii" : "Gross-Umstadt",
 		"lat" : 49.86830139160156,
 		"lng" : 8.929,
@@ -9059,7 +9059,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Haßloch",
+		"city" : "HaÃŸloch",
 		"city_ascii" : "Hassloch",
 		"lat" : 49.349998474121094,
 		"lng" : 8.25,
@@ -10557,7 +10557,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Weißenburg",
+		"city" : "WeiÃŸenburg",
 		"city_ascii" : "Weissenburg",
 		"lat" : 49.030601501464844,
 		"lng" : 10.9719,
@@ -10655,7 +10655,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großenhain",
+		"city" : "GroÃŸenhain",
 		"city_ascii" : "Grossenhain",
 		"lat" : 51.28329849243164,
 		"lng" : 13.55,
@@ -11047,7 +11047,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Bad Säckingen",
+		"city" : "Bad SÃ¤ckingen",
 		"city_ascii" : "Bad Sackingen",
 		"lat" : 47.55329895019531,
 		"lng" : 7.9472000000000005,
@@ -11831,7 +11831,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großostheim",
+		"city" : "GroÃŸostheim",
 		"city_ascii" : "Grossostheim",
 		"lat" : 49.91669845581055,
 		"lng" : 9.0833,
@@ -12027,7 +12027,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Weißwasser/Oberlausitz",
+		"city" : "WeiÃŸwasser/Oberlausitz",
 		"city_ascii" : "Weisswasser/Oberlausitz",
 		"lat" : 51.5,
 		"lng" : 14.6331,
@@ -12489,7 +12489,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Markranstädt",
+		"city" : "MarkranstÃ¤dt",
 		"city_ascii" : "Markranstadt",
 		"lat" : 51.301700592041016,
 		"lng" : 12.2211,
@@ -12559,7 +12559,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großenkneten",
+		"city" : "GroÃŸenkneten",
 		"city_ascii" : "Grossenkneten",
 		"lat" : 52.95000076293945,
 		"lng" : 8.2667,
@@ -12965,7 +12965,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Gräfelfing",
+		"city" : "GrÃ¤felfing",
 		"city_ascii" : "Grafelfing",
 		"lat" : 48.118900299072266,
 		"lng" : 11.4289,
@@ -13175,7 +13175,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Groß-Zimmern",
+		"city" : "GroÃŸ-Zimmern",
 		"city_ascii" : "Gross-Zimmern",
 		"lat" : 49.87260055541992,
 		"lng" : 8.8343,
@@ -13903,7 +13903,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Immenstadt im Allgäu",
+		"city" : "Immenstadt im AllgÃ¤u",
 		"city_ascii" : "Immenstadt im Allgau",
 		"lat" : 47.56669998168945,
 		"lng" : 10.2167,
@@ -14211,7 +14211,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Isny im Allgäu",
+		"city" : "Isny im AllgÃ¤u",
 		"city_ascii" : "Isny im Allgau",
 		"lat" : 47.691898345947266,
 		"lng" : 10.0394,
@@ -14477,7 +14477,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Mittegroßefehn",
+		"city" : "MittegroÃŸefehn",
 		"city_ascii" : "Mittegrossefehn",
 		"lat" : 53.38330078125,
 		"lng" : 7.5833,
@@ -14533,7 +14533,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Aßlar",
+		"city" : "AÃŸlar",
 		"city_ascii" : "Asslar",
 		"lat" : 50.58330154418945,
 		"lng" : 8.4667,
@@ -14603,7 +14603,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Haßfurt",
+		"city" : "HaÃŸfurt",
 		"city_ascii" : "Hassfurt",
 		"lat" : 50.035301208496094,
 		"lng" : 10.5123,
@@ -14631,7 +14631,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Eichstätt",
+		"city" : "EichstÃ¤tt",
 		"city_ascii" : "Eichstatt",
 		"lat" : 48.89189910888672,
 		"lng" : 11.1839,
@@ -14855,7 +14855,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Weißenhorn",
+		"city" : "WeiÃŸenhorn",
 		"city_ascii" : "Weissenhorn",
 		"lat" : 48.30440139770508,
 		"lng" : 10.1593,
@@ -15597,7 +15597,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Roßdorf",
+		"city" : "RoÃŸdorf",
 		"city_ascii" : "Rossdorf",
 		"lat" : 49.858299255371094,
 		"lng" : 8.7556,
@@ -15709,7 +15709,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Scheeßel",
+		"city" : "ScheeÃŸel",
 		"city_ascii" : "Scheessel",
 		"lat" : 53.17060089111328,
 		"lng" : 9.4831,
@@ -15723,7 +15723,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Barßel",
+		"city" : "BarÃŸel",
 		"city_ascii" : "Barssel",
 		"lat" : 53.1702995300293,
 		"lng" : 7.7467,
@@ -15835,7 +15835,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Gärtringen",
+		"city" : "GÃ¤rtringen",
 		"city_ascii" : "Gartringen",
 		"lat" : 48.64080047607422,
 		"lng" : 8.9006,
@@ -15891,7 +15891,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Peißenberg",
+		"city" : "PeiÃŸenberg",
 		"city_ascii" : "Peissenberg",
 		"lat" : 47.79499816894531,
 		"lng" : 11.0603,
@@ -16101,7 +16101,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Wächtersbach",
+		"city" : "WÃ¤chtersbach",
 		"city_ascii" : "Wachtersbach",
 		"lat" : 50.266700744628906,
 		"lng" : 9.3,
@@ -16563,7 +16563,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Lindenberg im Allgäu",
+		"city" : "Lindenberg im AllgÃ¤u",
 		"city_ascii" : "Lindenberg im Allgau",
 		"lat" : 47.60309982299805,
 		"lng" : 9.8861,
@@ -16675,7 +16675,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Preußisch Oldendorf",
+		"city" : "PreuÃŸisch Oldendorf",
 		"city_ascii" : "Preussisch Oldendorf",
 		"lat" : 52.28329849243164,
 		"lng" : 8.5,
@@ -16731,7 +16731,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Pößneck",
+		"city" : "PöÃŸneck",
 		"city_ascii" : "Possneck",
 		"lat" : 50.70000076293945,
 		"lng" : 11.6,
@@ -17109,7 +17109,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Oberschleißheim",
+		"city" : "OberschleiÃŸheim",
 		"city_ascii" : "Oberschleissheim",
 		"lat" : 48.25,
 		"lng" : 11.5667,
@@ -17221,7 +17221,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Nußloch",
+		"city" : "NuÃŸloch",
 		"city_ascii" : "Nussloch",
 		"lat" : 49.32360076904297,
 		"lng" : 8.6939,
@@ -17683,7 +17683,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Mülheim-Kärlich",
+		"city" : "Mülheim-KÃ¤rlich",
 		"city_ascii" : "Mulheim-Karlich",
 		"lat" : 50.38690185546875,
 		"lng" : 7.4953,
@@ -17851,7 +17851,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Gräfenhainichen",
+		"city" : "GrÃ¤fenhainichen",
 		"city_ascii" : "Grafenhainichen",
 		"lat" : 51.72919845581055,
 		"lng" : 12.4556,
@@ -18915,7 +18915,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Burgstädt",
+		"city" : "BurgstÃ¤dt",
 		"city_ascii" : "Burgstadt",
 		"lat" : 50.91669845581055,
 		"lng" : 12.8167,
@@ -18999,7 +18999,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Süßen",
+		"city" : "SüÃŸen",
 		"city_ascii" : "Sussen",
 		"lat" : 48.6796989440918,
 		"lng" : 9.7575,
@@ -19363,7 +19363,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Meßstetten",
+		"city" : "MeÃŸstetten",
 		"city_ascii" : "Messstetten",
 		"lat" : 48.180599212646484,
 		"lng" : 8.9625,
@@ -19503,7 +19503,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Dießen am Ammersee",
+		"city" : "DieÃŸen am Ammersee",
 		"city_ascii" : "Diessen am Ammersee",
 		"lat" : 47.95000076293945,
 		"lng" : 11.1,
@@ -19811,7 +19811,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Wilkau-Haßlau",
+		"city" : "Wilkau-HaÃŸlau",
 		"city_ascii" : "Wilkau-Hasslau",
 		"lat" : 50.66669845581055,
 		"lng" : 12.5167,
@@ -20049,7 +20049,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großburgwedel",
+		"city" : "GroÃŸburgwedel",
 		"city_ascii" : "Grossburgwedel",
 		"lat" : 52.492000579833984,
 		"lng" : 9.8567,
@@ -20161,7 +20161,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Steinau an der Straße",
+		"city" : "Steinau an der StraÃŸe",
 		"city_ascii" : "Steinau an der Strasse",
 		"lat" : 50.31669998168945,
 		"lng" : 9.4667,
@@ -20721,7 +20721,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Willstätt",
+		"city" : "WillstÃ¤tt",
 		"city_ascii" : "Willstatt",
 		"lat" : 48.54169845581055,
 		"lng" : 7.8964,
@@ -20791,7 +20791,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großhansdorf",
+		"city" : "GroÃŸhansdorf",
 		"city_ascii" : "Grosshansdorf",
 		"lat" : 53.66669845581055,
 		"lng" : 10.2667,
@@ -20917,7 +20917,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Roßtal",
+		"city" : "RoÃŸtal",
 		"city_ascii" : "Rosstal",
 		"lat" : 49.400001525878906,
 		"lng" : 10.8833,
@@ -21211,7 +21211,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großröhrsdorf",
+		"city" : "GroÃŸröhrsdorf",
 		"city_ascii" : "Grossrohrsdorf",
 		"lat" : 51.14189910888672,
 		"lng" : 14.0139,
@@ -21533,7 +21533,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Alsbach-Hähnlein",
+		"city" : "Alsbach-HÃ¤hnlein",
 		"city_ascii" : "Alsbach-Hahnlein",
 		"lat" : 49.74129867553711,
 		"lng" : 8.6225,
@@ -22065,7 +22065,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Saßnitz",
+		"city" : "SaÃŸnitz",
 		"city_ascii" : "Sassnitz",
 		"lat" : 54.51639938354492,
 		"lng" : 13.6411,
@@ -22149,7 +22149,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Vettweiß",
+		"city" : "VettweiÃŸ",
 		"city_ascii" : "Vettweiss",
 		"lat" : 50.73889923095703,
 		"lng" : 6.5972,
@@ -22933,7 +22933,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Kißlegg",
+		"city" : "KiÃŸlegg",
 		"city_ascii" : "Kisslegg",
 		"lat" : 47.790000915527344,
 		"lng" : 9.8842,
@@ -23507,7 +23507,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Bad Lauchstädt",
+		"city" : "Bad LauchstÃ¤dt",
 		"city_ascii" : "Bad Lauchstadt",
 		"lat" : 51.38650131225586,
 		"lng" : 11.8696,
@@ -23647,7 +23647,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großbottwar",
+		"city" : "GroÃŸbottwar",
 		"city_ascii" : "Grossbottwar",
 		"lat" : 49.001399993896484,
 		"lng" : 9.2931,
@@ -24207,7 +24207,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großräschen",
+		"city" : "GroÃŸrÃ¤schen",
 		"city_ascii" : "Grossraschen",
 		"lat" : 51.583099365234375,
 		"lng" : 14,
@@ -24277,7 +24277,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Groß Kreutz",
+		"city" : "GroÃŸ Kreutz",
 		"city_ascii" : "Gross Kreutz",
 		"lat" : 52.39970016479492,
 		"lng" : 12.7831,
@@ -24333,7 +24333,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großenlüder",
+		"city" : "GroÃŸenlüder",
 		"city_ascii" : "Grossenluder",
 		"lat" : 50.592498779296875,
 		"lng" : 9.542300000000001,
@@ -24613,7 +24613,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großkrotzenburg",
+		"city" : "GroÃŸkrotzenburg",
 		"city_ascii" : "Grosskrotzenburg",
 		"lat" : 50.08330154418945,
 		"lng" : 8.9833,
@@ -24683,7 +24683,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großbeeren",
+		"city" : "GroÃŸbeeren",
 		"city_ascii" : "Grossbeeren",
 		"lat" : 52.354400634765625,
 		"lng" : 13.3061,
@@ -24697,7 +24697,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Lößnitz",
+		"city" : "LöÃŸnitz",
 		"city_ascii" : "Lossnitz",
 		"lat" : 50.62139892578125,
 		"lng" : 12.7317,
@@ -24725,7 +24725,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Meßkirch",
+		"city" : "MeÃŸkirch",
 		"city_ascii" : "Messkirch",
 		"lat" : 47.992801666259766,
 		"lng" : 9.1125,
@@ -25523,7 +25523,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großrosseln",
+		"city" : "GroÃŸrosseln",
 		"city_ascii" : "Grossrosseln",
 		"lat" : 49.202999114990234,
 		"lng" : 6.8415,
@@ -26909,7 +26909,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Roßwein",
+		"city" : "RoÃŸwein",
 		"city_ascii" : "Rosswein",
 		"lat" : 51.06669998168945,
 		"lng" : 13.1833,
@@ -27217,7 +27217,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großkarolinenfeld",
+		"city" : "GroÃŸkarolinenfeld",
 		"city_ascii" : "Grosskarolinenfeld",
 		"lat" : 47.89080047607422,
 		"lng" : 12.0797,
@@ -27343,7 +27343,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Loßburg",
+		"city" : "LoÃŸburg",
 		"city_ascii" : "Lossburg",
 		"lat" : 48.41109848022461,
 		"lng" : 8.4514,
@@ -27483,7 +27483,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Vohenstrauß",
+		"city" : "VohenstrauÃŸ",
 		"city_ascii" : "Vohenstrauss",
 		"lat" : 49.61669921875,
 		"lng" : 12.3333,
@@ -27525,7 +27525,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großmehring",
+		"city" : "GroÃŸmehring",
 		"city_ascii" : "Grossmehring",
 		"lat" : 48.766700744628906,
 		"lng" : 11.5331,
@@ -28099,7 +28099,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Scheßlitz",
+		"city" : "ScheÃŸlitz",
 		"city_ascii" : "Schesslitz",
 		"lat" : 49.97669982910156,
 		"lng" : 11.0339,
@@ -28323,7 +28323,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Wißmar",
+		"city" : "WiÃŸmar",
 		"city_ascii" : "Wissmar",
 		"lat" : 50.75,
 		"lng" : 8.7,
@@ -28449,7 +28449,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Dingelstädt",
+		"city" : "DingelstÃ¤dt",
 		"city_ascii" : "Dingelstadt",
 		"lat" : 51.31560134887695,
 		"lng" : 10.3194,
@@ -28925,7 +28925,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Buttstädt",
+		"city" : "ButtstÃ¤dt",
 		"city_ascii" : "Buttstadt",
 		"lat" : 51.11669921875,
 		"lng" : 11.4167,
@@ -29359,7 +29359,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Höchstädt an der Donau",
+		"city" : "HöchstÃ¤dt an der Donau",
 		"city_ascii" : "Hochstadt an der Donau",
 		"lat" : 48.61119842529297,
 		"lng" : 10.568200000000001,
@@ -30213,7 +30213,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Dußlingen",
+		"city" : "DuÃŸlingen",
 		"city_ascii" : "Dusslingen",
 		"lat" : 48.450599670410156,
 		"lng" : 9.0606,
@@ -30675,7 +30675,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großalmerode",
+		"city" : "GroÃŸalmerode",
 		"city_ascii" : "Grossalmerode",
 		"lat" : 51.25749969482422,
 		"lng" : 9.7844,
@@ -30857,7 +30857,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Altlußheim",
+		"city" : "AltluÃŸheim",
 		"city_ascii" : "Altlussheim",
 		"lat" : 49.29970169067383,
 		"lng" : 8.5,
@@ -31389,7 +31389,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großbreitenbach",
+		"city" : "GroÃŸbreitenbach",
 		"city_ascii" : "Grossbreitenbach",
 		"lat" : 50.58330154418945,
 		"lng" : 11.012,
@@ -31753,7 +31753,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Deißlingen",
+		"city" : "DeiÃŸlingen",
 		"city_ascii" : "Deisslingen",
 		"lat" : 48.11330032348633,
 		"lng" : 8.6061,
@@ -32145,7 +32145,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Schäftlarn",
+		"city" : "SchÃ¤ftlarn",
 		"city_ascii" : "Schaftlarn",
 		"lat" : 47.98500061035156,
 		"lng" : 11.4567,
@@ -32187,7 +32187,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Faßberg",
+		"city" : "FaÃŸberg",
 		"city_ascii" : "Fassberg",
 		"lat" : 52.88330078125,
 		"lng" : 10.1667,
@@ -32915,7 +32915,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Karstädt",
+		"city" : "KarstÃ¤dt",
 		"city_ascii" : "Karstadt",
 		"lat" : 53.14970016479492,
 		"lng" : 11.75,
@@ -33111,7 +33111,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Bräunlingen",
+		"city" : "BrÃ¤unlingen",
 		"city_ascii" : "Braunlingen",
 		"lat" : 47.9296989440918,
 		"lng" : 8.4481,
@@ -33797,7 +33797,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großschirma",
+		"city" : "GroÃŸschirma",
 		"city_ascii" : "Grossschirma",
 		"lat" : 50.966400146484375,
 		"lng" : 13.2781,
@@ -34007,7 +34007,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Weßling",
+		"city" : "WeÃŸling",
 		"city_ascii" : "Wessling",
 		"lat" : 48.07809829711914,
 		"lng" : 11.2525,
@@ -34105,7 +34105,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großschönau",
+		"city" : "GroÃŸschönau",
 		"city_ascii" : "Grossschonau",
 		"lat" : 50.896400451660156,
 		"lng" : 14.6622,
@@ -35113,7 +35113,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Grävenwiesbach",
+		"city" : "GrÃ¤venwiesbach",
 		"city_ascii" : "Gravenwiesbach",
 		"lat" : 50.38570022583008,
 		"lng" : 8.457,
@@ -35393,7 +35393,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großpösna",
+		"city" : "GroÃŸpösna",
 		"city_ascii" : "Grossposna",
 		"lat" : 51.266700744628906,
 		"lng" : 12.5,
@@ -35841,7 +35841,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großheubach",
+		"city" : "GroÃŸheubach",
 		"city_ascii" : "Grossheubach",
 		"lat" : 49.733299255371094,
 		"lng" : 9.2333,
@@ -36065,7 +36065,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Thalmässing",
+		"city" : "ThalmÃ¤ssing",
 		"city_ascii" : "Thalmassing",
 		"lat" : 49.08330154418945,
 		"lng" : 11.2167,
@@ -36079,7 +36079,7 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Großaitingen",
+		"city" : "GroÃŸaitingen",
 		"city_ascii" : "Grossaitingen",
 		"lat" : 48.22829818725586,
 		"lng" : 10.7814,

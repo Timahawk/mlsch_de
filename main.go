@@ -106,12 +106,12 @@ func SetupRouter() *gin.Engine {
 	locators := r.Group("/locators")
 
 	// World wide games
-	locator.NewGame("world", "pkg/locator/worldcities.json", []float64{0, 0}, 1, 17, 1, []float64{180.0, -90, -180, 90})
-	locator.NewGame("large", "pkg/locator/capital_cities.json", []float64{0, 0}, 1, 17, 1, []float64{180.0, -90, -180, 90})
-	locator.NewGame("capitals", "pkg/locator/large_cities.json", []float64{0, 0}, 1, 17, 1, []float64{180.0, -90, -180, 90})
+	locator.NewGame("world", "pkg/locator/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	locator.NewGame("large", "pkg/locator/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	locator.NewGame("capitals", "pkg/locator/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
 
 	// Country specific games
-	locator.NewGame("germany", "pkg/locator/german_cities.json", []float64{10.019531, 50.792047}, 1, 17, 1, []float64{-2.55, 42.18, 22.58, 58.86})
+	locator.NewGame("germany", "pkg/locator/german_cities.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86})
 
 	{
 		locators.GET("/", func(c *gin.Context) {

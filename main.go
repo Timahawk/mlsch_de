@@ -10,6 +10,7 @@ import (
 	"github.com/Timahawk/go_watcher"
 	"github.com/Timahawk/mlsch_de/pkg/chat"
 	"github.com/Timahawk/mlsch_de/pkg/locator"
+	"github.com/Timahawk/mlsch_de/pkg/locator_io"
 
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
@@ -127,9 +128,13 @@ func SetupRouter() *gin.Engine {
 	// 							LOCATOR-IO							   //
 	// *************************************************************** //
 
-	locator_io := r.Group("/locatorio")
+	locator_ioGroup := r.Group("/l")
+	locator_io.Lobbies["A"] = locator_io.NewLobby(time.Second, &locator_io.Game{})
+
 	{
-		locator_io.GET("/", games.CreateLobby)
+		locator_ioGroup.GET("/", locator_io.CreateLobby)
+		locator_ioGroup.GET("/:lobby", locator_io.JoinLobby)
+		locator_ioGroup.GET("/:lobby/ws", locator_io.ServeLobby)
 	}
 
 	return r

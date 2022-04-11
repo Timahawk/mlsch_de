@@ -10,6 +10,7 @@ import (
 	"github.com/Timahawk/go_watcher"
 	"github.com/Timahawk/mlsch_de/pkg/chat"
 	"github.com/Timahawk/mlsch_de/pkg/locator"
+
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/acme/autocert"
@@ -114,5 +115,15 @@ func SetupRouter() *gin.Engine {
 		locators.POST("/:country/submit", locator.HandleGameSubmit)
 		locators.POST("/:country/newGuess", locator.HandleNewGuess)
 	}
+
+	// *************************************************************** //
+	// 							LOCATOR-IO							   //
+	// *************************************************************** //
+
+	locator_io := r.Group("/locatorio")
+	{
+		locator_io.GET("/", games.CreateLobby)
+	}
+
 	return r
 }

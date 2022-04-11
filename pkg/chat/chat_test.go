@@ -22,7 +22,7 @@ func init() {
 }
 func Test_getHub(t *testing.T) {
 
-	t_string := "ABCDEF"
+	t_string := "LOCATOR_IO"
 	// Empty hubs
 	res, err := getHub(t_string)
 	if err == nil {

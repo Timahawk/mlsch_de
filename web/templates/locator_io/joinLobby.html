@@ -1,0 +1,32 @@
+{{ define "locator_io/joinLobby.html" }}
+
+<title>{{ .title }}</title>
+
+{{ template "globals/style_head.html" }}
+{{ template "globals/style_body.html" }}
+
+    <script>
+
+        var conn;
+
+        path = document.location.pathname;
+        path = path.replace(new RegExp("/chat$"), "")
+        console.log(path, document.location.pathname)
+
+        // Das hier weils wichtig ist ob https oder nicht.
+        // Browser erlauben KEIN downgrad also https zu ws!
+        if (location.protocol === 'https:'){
+            conn = new WebSocket("wss://" + document.location.host + path + "/ws")
+        } else {
+            conn = new WebSocket("ws://" + document.location.host + path + "/ws")
+        };
+
+        conn.onclose = function (evt) {
+            console.log("Closed", evt.data)
+        };
+        conn.onmessage = function (evt) {
+            console.log("Message:", evt.data)
+        };
+
+</script>
+{{ end }}

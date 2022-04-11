@@ -1,13 +1,12 @@
-package games
+package locator_io
 
 import (
+	"fmt"
+	"log"
 	"time"
-
-	"github.com/Timahawk/mlsch_de/pkg/util"
-	"github.com/gin-gonic/gin"
 )
 
-const reviewTime = time.Second * 5
+const reviewTime = time.Second * 2
 
 // Lobby maintains the set of active Player and broadcasts messages to the
 // clients.
@@ -64,9 +63,19 @@ type City struct {
 }
 
 func NewLobby(time time.Duration, game *Game) *Lobby {
-	id := util.RandString(8)
+	//id := util.RandString(8)
+	id := "A"
 
-	lobby := Lobby{id, time, nil, nil, nil, nil, 5, game}
+	lobby := Lobby{
+		id,
+		time,
+		make(map[string]*Player),
+		make(chan []byte),
+		make(chan *Player),
+		make(chan *Player),
+		5,
+		game}
+	go lobby.run()
 
 	return &lobby
 }
@@ -86,12 +95,14 @@ func (l *Lobby) run() {
 
 		// Neue Location Zeit:
 		case <-newLocation.C:
+			fmt.Println("New Location Time")
+
 			// loop through all players and send them the new Location.
 			for _, player := range l.player {
 				err := player.sendNewLocation()
 				if err != nil {
-					// DoSomething
-					break
+					fmt.Println(err)
+					player.cleanBrokenConn()
 				}
 			}
 			// finally start the roundReview ticker:
@@ -101,12 +112,13 @@ func (l *Lobby) run() {
 
 		// Runden Review Zeit.
 		case <-roundReview.C:
+			fmt.Println("Round Review Time", l.player, l.roundCounter)
 			// loop through all players and send them the RoundReview.
 			for _, player := range l.player {
 				err := player.sendRoundReview()
 				if err != nil {
-					// DoSomething
-					break
+					fmt.Println(err)
+					player.cleanBrokenConn()
 				}
 			}
 			// Sends different stuff when last round.
@@ -115,10 +127,12 @@ func (l *Lobby) run() {
 				for _, player := range l.player {
 					err := player.sendFinalReview()
 					if err != nil {
-						// DoSomething
-						break
+						fmt.Println(err)
+						player.cleanBrokenConn()
 					}
 				}
+				roundReview.Stop()
+				break
 			}
 			// loop through all players and send them Round Review.
 
@@ -132,10 +146,15 @@ func (l *Lobby) run() {
 
 		// Spieler wird hinzugefügt.
 		case newPlayer := <-l.register:
+			log.Println("New Player registered.")
 			l.player[newPlayer.User] = newPlayer
+			log.Println("Check on Connection started.")
+			go newPlayer.checkOnConnection()
 
 		// Spieler wurde entfernt.
 		case removePlayer := <-l.unregister:
+			log.Println("Player removed.")
+
 			delete(l.player, removePlayer.User)
 
 			// This checks if the Lobby is empty.
@@ -144,10 +163,4 @@ func (l *Lobby) run() {
 			}
 		}
 	}
-}
-
-func CreateLobby(c *gin.Context) {
-	lobby := NewLobby(10*time.Second, &Game{})
-	lobby.run()
-	c.JSON(200, gin.H{"status": "Lobby started!"})
 }

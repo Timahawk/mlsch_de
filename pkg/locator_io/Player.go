@@ -42,15 +42,11 @@ type Player struct {
 	cancel context.CancelFunc
 }
 
-type Submit_guess struct {
-	Latitude  float64 `json:"lat"`
-	Longitude float64 `json:"long"`
-}
-
 func (p *Player) String() string {
 	return fmt.Sprintf("LobbyID: %s; UserID %s", p.lobby.LobbyID, p.User)
 }
 
+// SendMessage runs indefinitly and sends everything the hub assigns it.
 func (p *Player) SendMessages() {
 
 	defer func() {
@@ -74,6 +70,7 @@ func (p *Player) SendMessages() {
 	}
 }
 
+// ReceiveMessages runs, parses and handles incoming messages.
 func (p *Player) ReceiveMessages() {
 	defer func() {
 		log.Println("Receive Messages for", p, "stopped.")
@@ -121,6 +118,13 @@ func (p *Player) ReceiveMessages() {
 	}
 }
 
+// Struct which is the incoming new Guess.
+type Submit_guess struct {
+	Latitude  float64 `json:"lat"`
+	Longitude float64 `json:"long"`
+}
+
+// processSubmit calculates the distance and stuff.
 func (p *Player) processSubmit(message []byte) (float64, error) {
 	var submit Submit_guess
 	err := json.Unmarshal(message, &submit)

@@ -1,0 +1,201 @@
+{{ define "locator_io/game.html" }}
+
+<head>
+    <title>{{ .title }}</title>
+    {{ template "globals/style_head.html" }}
+
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css">
+
+    <style>
+        .map {
+          width: 100%;
+          height: 80%;
+        }
+        .map {
+          background: #f8f4f0 ;
+        }
+      </style>
+</head>
+
+<body>   
+    {{ template "globals/style_body.html" }}
+
+    <button id="clickMe" type="button">Submit Guess!</button> 
+    <button id="clickNewGuess" type="button">Next Round!</button> 
+    <div>
+        <h1 style="text-align:left;float:left;" id="city">None</h1>
+        <h2 style="text-align:left;float:left;" id="Distanz"></h2>
+        <h3 style="text-align:left;float:left;" id="Land"></h3>
+        <!-- <h3 style="text-align:right;float:right;" id="reload"> </h3> -->
+        <!-- <progress value="0" max="10" id="progressBar"></progress> -->
+    </div>
+    <div id="map" class="map"></div>
+    <script>
+
+        function flyTo(location, done) {
+            const duration = 2000;
+            const zoom = map.getView().getZoom();
+            let parts = 2;
+            let called = false;
+            function callback(complete) {
+              --parts;
+              if (called) {
+                return;
+              }
+              if (parts === 0 || !complete) {
+                called = true;
+                done(complete);
+              }
+            }
+            map.getView().animate(
+              {
+                center: location,
+                duration: duration,
+              },
+              callback
+            );
+            map.getView().animate(
+              {
+                zoom: zoom - 1,
+                duration: duration / 2,
+              },
+              {
+                zoom: zoom,
+                duration: duration / 2,
+              },
+              callback
+            );
+          };
+          
+        var conn;
+
+        var host = document.location.host;
+        var path = document.location.pathname;
+        console.log(path, document.location.pathname)
+
+        // Das hier weils wichtig ist ob https oder nicht.
+        // Browser erlauben KEIN downgrad also https zu ws!
+        if (location.protocol === 'https:'){
+            conn = new WebSocket("wss://" + document.location.host + path + "/ws")
+        } else {
+            conn = new WebSocket("ws://" + document.location.host + path + "/ws")
+        };
+
+        conn.onclose = function (evt) {
+            console.log("Closed", evt.data)
+        };
+        conn.onmessage = function (evt) {
+            console.log("Message:", evt.data)
+            document.getElementById("city").innerHTML = evt.data
+        };
+
+        var city
+        var token = 'pk.eyJ1IjoidGltd2VuZGVsIiwiYSI6ImNraDBoeG9ubTFkd20zMXJydDA5YjR0OXEifQ.uuncQPQVAT2rDxfj81AILw';
+
+        const mb = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=' +
+                token
+            }),
+        });
+
+        const fill = new ol.style.Fill({
+            color: "#FF0000",
+            });
+        const stroke = new ol.style.Stroke({
+            color: "#FF0000",
+            width: 1.25,
+            });
+        const styles = [
+            new ol.style.Style({
+                image: new ol.style.Circle({
+                fill: fill,
+                stroke: stroke,
+                radius: 5,
+                }),
+                fill: fill,
+                stroke: stroke,
+            }),
+        ];
+
+        point = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.transform([0,0], 'EPSG:4326', 'EPSG:3857'))
+        });
+
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: [point]
+            })
+        });
+        
+        var solution_layer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: []
+                }),
+                style: styles[0]
+            });
+
+        const select = new ol.interaction.Select({
+            layers : [layer],
+        });
+
+        const translate = new ol.interaction.Translate({
+            features: select.getFeatures(),
+        });
+        
+        const map = new ol.Map({
+            interactions: ol.interaction.defaults().extend([select, translate]),
+            layers: [mb],
+            target: 'map',
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 1,
+                }),
+        });
+        
+        // {
+                // center: ol.proj.transform({{ .center }}, 'EPSG:4326', 'EPSG:3857'),
+                // zoom: {{ .zoom }},
+                // maxZoom: {{ .maxZoom }},
+                // minZoom: {{ .minZoom }},
+                // extent: ol.proj.transformExtent({{ .extent }}, 'EPSG:4326', 'EPSG:3857'),
+            /// }),
+
+        map.on('click', function(evt){
+            // console.log(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
+            point.setGeometry(new ol.geom.Point(evt.coordinate))
+        });
+
+        map.addLayer(layer);
+        map.addLayer(solution_layer);
+        /*
+        //- Using a function pointer:
+        document.getElementById("clickNewGuess").onclick = async function(){
+            const response = await postData(url = path + "/newGuess", "")
+            
+            document.getElementById("city").innerHTML = response["city"]
+            document.getElementById("Distanz").innerHTML = ""
+            city = response["city"]
+            solution_layer.getSource().clear()
+        };
+        */
+        //- Using a function pointer:
+        document.getElementById("clickMe").onclick = function(){
+            submitGuess();
+        };
+        
+        function submitGuess(){
+            coords = point.getGeometry().getCoordinates()
+            coords4326 = ol.proj.transform(coords, 'EPSG:3857', 'EPSG:4326')
+            // console.log({"lat":coords4326[0], "long": coords4326[1]})
+
+            x = {"lat":coords4326[1], "long": coords4326[0], "city":city}
+            
+            conn.send(x);
+            // flyTo(ol.proj.fromLonLat([res.long, res.lat]), function (){});
+        };
+
+    </script>
+</body> 
+{{ end }}

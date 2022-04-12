@@ -28,5 +28,10 @@
             console.log("Message:", evt.data)
         };
 
+        var intervalId = setInterval(function() {
+            conn.send("Hello")
+            console.log("This should send!")
+        }, 1000);
+
 </script>
 {{ end }}

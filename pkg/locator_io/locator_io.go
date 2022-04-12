@@ -9,6 +9,7 @@ import (
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
 )
 
 var Lobbies = map[string]*Lobby{}
@@ -25,8 +26,9 @@ func JoinLobby(c *gin.Context) {
 	_, err := getLobby(lobbyID)
 	if err != nil {
 		c.JSON(200, gin.H{"status": "Lobby not found!"})
+		return
 	}
-	c.HTML(200, "locator_io/joinLobby.html", gin.H{})
+	c.HTML(200, "locator_io/game.html", gin.H{})
 }
 
 func ServeLobby(c *gin.Context) {
@@ -35,6 +37,7 @@ func ServeLobby(c *gin.Context) {
 	lobby, err := getLobby(lobbyID)
 	if err != nil {
 		c.JSON(200, gin.H{"status": "Lobby not found!"})
+		return
 	}
 	user := util.RandString(7)
 	createWS(lobby, user, c.Writer, c.Request)
@@ -46,8 +49,11 @@ func createWS(lobby *Lobby, user string, w http.ResponseWriter, r *http.Request)
 		log.Fatalln(err)
 		return
 	}
-	player := Player{lobby, user, conn, make(chan []byte)}
-	log.Println("New Player registered", player)
+
+	ctx, _ := context.WithCancel(context.Background())
+
+	player := Player{ctx, lobby, user, conn, make(chan []byte)}
+	// log.Println("New Player registered", player)
 	player.lobby.register <- &player
 }
 

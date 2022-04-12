@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"time"
 
+	_ "net/http/pprof"
+
 	"github.com/Timahawk/go_watcher"
 	"github.com/Timahawk/mlsch_de/pkg/chat"
 	"github.com/Timahawk/mlsch_de/pkg/locator"
@@ -37,6 +39,10 @@ func main() {
 		HostPolicy: autocert.HostWhitelist("mlsch.de"), //Your domain here
 		Cache:      autocert.DirCache("certs"),         //Folder for storing certificates
 	}
+
+	go func() {
+		log.Println(http.ListenAndServe("localhost:6060", nil))
+	}()
 
 	// Check if development (default) or Prod.
 	if *development {
@@ -108,12 +114,12 @@ func SetupRouter() *gin.Engine {
 	locators := r.Group("/locators")
 
 	// World wide games
-	locator.NewGame("world", "pkg/locator/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator.NewGame("large", "pkg/locator/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator.NewGame("capitals", "pkg/locator/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	locator.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	locator.NewGame("large", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	locator.NewGame("capitals", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
 
 	// Country specific games
-	locator.NewGame("germany", "pkg/locator/german_cities.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86})
+	locator.NewGame("germany", "data/cities/german_cities.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86})
 
 	{
 		locators.GET("/", func(c *gin.Context) {
@@ -129,7 +135,7 @@ func SetupRouter() *gin.Engine {
 	// *************************************************************** //
 
 	locator_ioGroup := r.Group("/l")
-	locator_io.Lobbies["A"] = locator_io.NewLobby(time.Second, &locator_io.Game{})
+	locator_io.Lobbies["A"] = locator_io.NewLobby(time.Second*30, &locator_io.Game{CurrentLocation: "", Cities: make(map[string]*locator_io.City)})
 
 	{
 		locator_ioGroup.GET("/", locator_io.CreateLobby)

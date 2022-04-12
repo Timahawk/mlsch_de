@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 
+	"github.com/Timahawk/mlsch_de/pkg/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -126,7 +127,7 @@ func HandleGameSubmit(c *gin.Context) {
 		}
 	}
 
-	distance := Distance(
+	distance := util.Distance(
 		city_lat,
 		city_lng,
 		submit.Latitude,

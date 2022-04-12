@@ -22,11 +22,12 @@
     {{ template "globals/style_body.html" }}
 
     <button id="clickMe" type="button">Submit Guess!</button> 
-    <button id="clickNewGuess" type="button">Next Round!</button> 
+    <!--<button id="clickNewGuess" type="button">Next Round!</button> -->
     <div>
-        <h1 style="text-align:left;float:left;" id="city">None</h1>
+        <h1 style="text-align:left;float:left;" id="city">Ready?</h1>
         <h2 style="text-align:left;float:left;" id="Distanz"></h2>
-        <h3 style="text-align:left;float:left;" id="Land"></h3>
+        <h3 style="text-align:left;float:left;" id="points"></h3>
+        <h1 style="text-align:left;float:left;" id="state"></h1>
         <!-- <h3 style="text-align:right;float:right;" id="reload"> </h3> -->
         <!-- <progress value="0" max="10" id="progressBar"></progress> -->
     </div>
@@ -86,8 +87,19 @@
             console.log("Closed", evt.data)
         };
         conn.onmessage = function (evt) {
-            console.log("Message:", evt.data)
-            document.getElementById("city").innerHTML = evt.data
+            //message = JSON.parse(JSON.stringify(evt.data))
+            message = JSON.parse(evt.data)
+            console.log(message)
+
+            // document.getElementById("state").innerHTML = message.state
+
+            if (message.status == "location") {
+                document.getElementById("city").innerHTML = message.Location
+                document.getElementById("points").innerHTML = ""
+            }
+            if (message.status == "review") {
+                document.getElementById("points").innerHTML = JSON.stringify(message.points)
+            }
         };
 
         var city
@@ -190,10 +202,9 @@
             coords4326 = ol.proj.transform(coords, 'EPSG:3857', 'EPSG:4326')
             // console.log({"lat":coords4326[0], "long": coords4326[1]})
 
-            x = {"lat":coords4326[1], "long": coords4326[0], "city":city}
-            
-            conn.send(x);
-            // flyTo(ol.proj.fromLonLat([res.long, res.lat]), function (){});
+            x = {"lat":coords4326[1], "long": coords4326[0]}
+            conn.send(JSON.stringify(x));
+
         };
 
     </script>

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"net/http"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
@@ -15,9 +14,11 @@ import (
 var Lobbies = map[string]*Lobby{}
 
 func CreateLobby(c *gin.Context) {
-	lobby := NewLobby(10*time.Second, &Game{})
-	go lobby.run()
-	c.JSON(200, gin.H{"status": "Lobby started!"})
+	lobby := NewLobby(30*time.Second, &Game{})
+	Lobbies[lobby.LobbyID] = lobby
+	// go lobby.run()
+	//c.JSON(200, gin.H{"status": "Lobby started!"})
+	c.HTML(200, "locator_io/createLobby.html", gin.H{})
 }
 
 func JoinLobby(c *gin.Context) {
@@ -39,20 +40,21 @@ func ServeLobby(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "Lobby not found!"})
 		return
 	}
-	user := util.RandString(7)
-	createWS(lobby, user, c.Writer, c.Request)
-}
 
-func createWS(lobby *Lobby, user string, w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil)
+	user := util.RandString(7)
+
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Fatalln(err)
 		return
 	}
 
-	ctx, _ := context.WithCancel(context.Background())
+	// I dont know if this is the best way to handle the Context,
+	// but so far it works.
+	ctx, fn := context.WithCancel(context.Background())
 
-	player := Player{ctx, lobby, user, conn, make(chan []byte)}
+	player := Player{ctx, lobby, user, conn, make(chan []byte), fn}
+
 	// log.Println("New Player registered", player)
 	player.lobby.register <- &player
 }

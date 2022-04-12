@@ -2,10 +2,13 @@ package locator_io
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 	"time"
 
+	"github.com/Timahawk/mlsch_de/pkg/util"
 	"github.com/gorilla/websocket"
 )
 
@@ -35,6 +38,13 @@ type Player struct {
 	conn *websocket.Conn
 
 	toSend chan []byte
+
+	cancel context.CancelFunc
+}
+
+type Submit_guess struct {
+	Latitude  float64 `json:"lat"`
+	Longitude float64 `json:"long"`
 }
 
 func (p *Player) String() string {
@@ -69,7 +79,7 @@ func (p *Player) ReceiveMessages() {
 		log.Println("Receive Messages for", p, "stopped.")
 		p.lobby.unregister <- p
 		p.conn.Close()
-		p.ctx.Done()
+		p.cancel()
 	}()
 
 	log.Println("ReceiveMessage started!")
@@ -95,13 +105,37 @@ func (p *Player) ReceiveMessages() {
 			return
 		}
 
-		log.Printf("%s %s", p.User, message)
+		log.Printf("%s %v", p.User, string(message))
 
+		dist, err := p.processSubmit(message)
+		if err != nil {
+			log.Println("Wrong message.")
+
+		}
 		// Handle Message and Calcualte Points:
-		p.lobby.points[p] = func() int {
-			return 17
-		}()
+		p.lobby.points[p.User] = p.lobby.points[p.User] + func(dist float64) int {
+			return int(dist)
+		}(dist)
 
 		p.lobby.submitReceived <- submit{p.User, true}
 	}
+}
+
+func (p *Player) processSubmit(message []byte) (float64, error) {
+	var submit Submit_guess
+	err := json.Unmarshal(message, &submit)
+	if err != nil {
+		return 0, err
+	}
+
+	city := p.lobby.game.Cities[p.lobby.game.CurrentLocation]
+
+	// log.Println("Submit:", submit)
+	distance := math.Round(
+		util.Distance(
+			submit.Latitude,
+			submit.Longitude,
+			city.Lat,
+			city.Lat) / 1000)
+	return distance, nil
 }

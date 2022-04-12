@@ -74,14 +74,7 @@ func SetupRouter() *gin.Engine {
 	watcher := r.Group("/watcher")
 	go_watcher.Start(time.Second)
 	{
-		// watcher.GET("/echo", func(c *gin.Context) {
-		// 	go_watcher.SendUpdates(c.Writer, c.Request)
-		// })
 		watcher.GET("/echo", gin.WrapF(go_watcher.SendUpdates))
-
-		// watcher.GET("/", func(c *gin.Context) {
-		// 	go_watcher.SendTemplate(c.Writer, c.Request)
-		// })
 		watcher.GET("/", gin.WrapF(go_watcher.SendTemplate))
 	}
 

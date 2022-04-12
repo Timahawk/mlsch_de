@@ -11,8 +11,10 @@ import (
 	"golang.org/x/net/context"
 )
 
+// All currently active Lobbies
 var Lobbies = map[string]*Lobby{}
 
+// CreateLobby creates a new Lobby.
 func CreateLobby(c *gin.Context) {
 	lobby := NewLobby(30*time.Second, &Game{})
 	Lobbies[lobby.LobbyID] = lobby
@@ -21,6 +23,7 @@ func CreateLobby(c *gin.Context) {
 	c.HTML(200, "locator_io/createLobby.html", gin.H{})
 }
 
+// Join Lobby is the function which sends the actual gamepage.
 func JoinLobby(c *gin.Context) {
 	lobbyID := c.Param("lobby")
 
@@ -32,6 +35,8 @@ func JoinLobby(c *gin.Context) {
 	c.HTML(200, "locator_io/game.html", gin.H{})
 }
 
+// ServeLobby creates the Websocket connection.
+// Also creates the new Player struct, and adds it to the game.
 func ServeLobby(c *gin.Context) {
 	lobbyID := c.Param("lobby")
 
@@ -59,6 +64,7 @@ func ServeLobby(c *gin.Context) {
 	player.lobby.register <- &player
 }
 
+// getLobby helper function to get the Lobby, if exists.
 func getLobby(room string) (*Lobby, error) {
 
 	if lobby, ok := Lobbies[room]; ok {

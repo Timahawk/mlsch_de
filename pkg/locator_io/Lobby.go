@@ -8,15 +8,16 @@ import (
 	"time"
 )
 
+// ReviewTime determines the duration of the review Screen.
 const ReviewTime = time.Second * 10
 
 // Lobby maintains the set of active Player and broadcasts messages to the
-// clients.
+// clients. It is the dreh & angelpunkt of the ganze Veranstaltung.
 type Lobby struct {
 	// Hub ID
 	LobbyID string
 
-	// this specifies when a new round comes
+	// Determines the duration of a guessing round.
 	RoundTime time.Duration
 
 	// Registered clients.
@@ -25,7 +26,7 @@ type Lobby struct {
 	// Points for each Player
 	points map[string]int
 
-	// Submitted
+	// Monitors if a player submitted a Guess
 	checkSubmits map[string]bool
 
 	// Inbound messages from the clients.
@@ -54,12 +55,13 @@ func (l *Lobby) String() string {
 	return fmt.Sprintf("LobbyID: %s, Game: %v", l.LobbyID, l.game)
 }
 
-// subm
+// Submit is the response struct send by the Client.
 type submit struct {
 	playerID  string
 	submitted bool
 }
 
+// Game is the actual game that is played within the Lobby.
 type Game struct {
 	CurrentLocation string
 	// name            string
@@ -71,6 +73,7 @@ type Game struct {
 	Cities map[string]*City
 }
 
+// The City as per the file.
 type City struct {
 	// json_featuretype string
 	Name       string `json:"city"`
@@ -86,6 +89,8 @@ type City struct {
 	Id         int
 }
 
+// NewLobby creates a new Lobby.
+// Todo: der Lobbyname muss noch angepasst werden.
 func NewLobby(time time.Duration, game *Game) *Lobby {
 	//id := util.RandString(8)
 	id := "A"
@@ -113,6 +118,16 @@ func NewLobby(time time.Duration, game *Game) *Lobby {
 	return &lobby
 }
 
+// run organized the complete Game Magic.
+// So far there are four major cases. Each notified via a chanel.
+//
+// 1) Add of a new Player
+// 2) Remove of a Player. If no Players left, close Lobby.
+// 3) All Player submitted a guess -> Start the review cycle
+// 4) The timer is zero. Two possibilites:
+// 	- Start a guess cycle.
+// 	- Start a review cycle
+// -> Reset counter.
 func (l *Lobby) run() {
 	log.Println("Lobby ", l, "started")
 	time.Sleep(time.Second * 5)
@@ -215,6 +230,7 @@ func (l *Lobby) run() {
 	}
 }
 
+// sendPointsToClient is a little helper function to send Message to the Player struct.
 func (l *Lobby) sendPointsToClient() {
 	points, _ := json.Marshal(l.points)
 
@@ -225,6 +241,7 @@ func (l *Lobby) sendPointsToClient() {
 	}
 }
 
+// LoadCities helper function to load Cities form file.
 func LoadCities(file string) ([]City, error) {
 	cities := make([]City, 0)
 
@@ -239,6 +256,7 @@ func LoadCities(file string) ([]City, error) {
 	return cities, nil
 }
 
+// getNewLocation helper function, gets a semi random new Location.
 func (l *Lobby) getNewLocation() string {
 	for key, _ := range l.game.Cities {
 		return key

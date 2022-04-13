@@ -3,9 +3,10 @@ package locator_io
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"time"
+
+	"github.com/Timahawk/mlsch_de/pkg/util"
 )
 
 // ReviewTime determines the duration of the review Screen.
@@ -49,6 +50,8 @@ type Lobby struct {
 	// 1 = Currently Guessing
 	// 2 = finished
 	state int
+
+	CurrentLocation string
 }
 
 func (l *Lobby) String() string {
@@ -61,44 +64,11 @@ type submit struct {
 	submitted bool
 }
 
-// Game is the actual game that is played within the Lobby.
-type Game struct {
-	CurrentLocation string
-	// name            string
-	// center  []float64
-	// zoom    int
-	// maxZoom int
-	// minZoom int
-	// extent  []float64
-	Cities map[string]*City
-}
-
-// The City as per the file.
-type City struct {
-	// json_featuretype string
-	Name       string `json:"city"`
-	Name_ascii string `json:"city_ascii"`
-	Lat        float64
-	Lng        float64
-	Country    string
-	Iso2       string
-	Iso3       string
-	// admin_name       string
-	Capital    string
-	Population int
-	Id         int
-}
-
 // NewLobby creates a new Lobby.
 // Todo: der Lobbyname muss noch angepasst werden.
 func NewLobby(time time.Duration, game *Game) *Lobby {
-	//id := util.RandString(8)
-	id := "A"
-
-	cities, _ := LoadCities("data/cities/large_cities.json")
-	for _, city := range cities {
-		game.Cities[city.Name_ascii] = &city
-	}
+	id := util.RandString(8)
+	//id := "A"
 
 	lobby := Lobby{
 		id,
@@ -111,7 +81,8 @@ func NewLobby(time time.Duration, game *Game) *Lobby {
 		make(chan *Player),
 		0,
 		game,
-		0}
+		0,
+		""}
 
 	go lobby.run()
 	Lobbies[id] = &lobby
@@ -127,11 +98,11 @@ func NewLobby(time time.Duration, game *Game) *Lobby {
 // 4) The timer is zero. Two possibilites:
 // 	- Start a guess cycle.
 // 	- Start a review cycle
-// -> Reset counter.
+// 	-> Reset counter.
 func (l *Lobby) run() {
 	log.Println("Lobby ", l, "started")
 	time.Sleep(time.Second * 5)
-	l.game.CurrentLocation = l.getNewLocation()
+	l.CurrentLocation = l.getNewLocation()
 	sendUpdate := time.NewTimer(time.Second * l.RoundTime)
 	l.state = 0
 
@@ -146,7 +117,7 @@ func (l *Lobby) run() {
 			go newPlayer.SendMessages()
 			go newPlayer.ReceiveMessages()
 
-			x := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v"}`, l.game.CurrentLocation, l.state)
+			x := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v"}`, l.CurrentLocation, l.state)
 			newPlayer.toSend <- []byte(x)
 
 		// Spieler wurde entfernt.
@@ -201,8 +172,8 @@ func (l *Lobby) run() {
 			if l.state == 0 {
 				// log.Println("Sending new Location")
 
-				l.game.CurrentLocation = l.getNewLocation()
-				str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v" }`, l.game.CurrentLocation, l.state)
+				l.CurrentLocation = l.getNewLocation()
+				str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v" }`, l.CurrentLocation, l.state)
 
 				for _, player := range l.player {
 					player.toSend <- []byte(str)
@@ -241,24 +212,10 @@ func (l *Lobby) sendPointsToClient() {
 	}
 }
 
-// LoadCities helper function to load Cities form file.
-func LoadCities(file string) ([]City, error) {
-	cities := make([]City, 0)
-
-	content, err := ioutil.ReadFile(file)
-	if err != nil {
-		return nil, fmt.Errorf("%s, %v ", file, err)
-	}
-	err = json.Unmarshal(content, &cities)
-	if err != nil {
-		return nil, fmt.Errorf("%s, %v ", file, err)
-	}
-	return cities, nil
-}
-
 // getNewLocation helper function, gets a semi random new Location.
 func (l *Lobby) getNewLocation() string {
-	for key, _ := range l.game.Cities {
+
+	for key := range l.game.Cities {
 		return key
 	}
 	return ""

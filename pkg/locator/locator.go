@@ -33,6 +33,20 @@ func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, ex
 	return nil
 }
 
+func LoadCities(file string) ([]City, error) {
+	cities := make([]City, 0)
+
+	content, err := ioutil.ReadFile(file)
+	if err != nil {
+		return nil, fmt.Errorf("%s, %v ", file, err)
+	}
+	err = json.Unmarshal(content, &cities)
+	if err != nil {
+		return nil, fmt.Errorf("%s, %v ", file, err)
+	}
+	return cities, nil
+}
+
 type City struct {
 	// json_featuretype string
 	Name       string `json:"city"`
@@ -46,20 +60,6 @@ type City struct {
 	Capital    string
 	Population int
 	Id         int
-}
-
-func LoadCities(file string) ([]City, error) {
-	cities := make([]City, 0)
-
-	content, err := ioutil.ReadFile(file)
-	if err != nil {
-		return nil, fmt.Errorf("%s, %v ", file, err)
-	}
-	err = json.Unmarshal(content, &cities)
-	if err != nil {
-		return nil, fmt.Errorf("%s, %v ", file, err)
-	}
-	return cities, nil
 }
 
 func getGame(name string) (Game, error) {

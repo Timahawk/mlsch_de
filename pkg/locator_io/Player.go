@@ -132,7 +132,7 @@ func (p *Player) processSubmit(message []byte) (float64, error) {
 		return 0, err
 	}
 
-	city := p.lobby.game.Cities[p.lobby.game.CurrentLocation]
+	city := p.lobby.game.Cities[p.lobby.CurrentLocation]
 
 	// log.Println("Submit:", submit)
 	distance := math.Round(

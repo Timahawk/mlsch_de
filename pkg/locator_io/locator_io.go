@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
@@ -13,14 +14,41 @@ import (
 
 // All currently active Lobbies
 var Lobbies = map[string]*Lobby{}
+var LoadedGames = map[string]*Game{}
 
-// CreateLobby creates a new Lobby.
-func CreateLobby(c *gin.Context) {
-	lobby := NewLobby(30*time.Second, &Game{})
-	Lobbies[lobby.LobbyID] = lobby
+// CreateLobby sends the Template for the Creation of new Lobbies.
+func CreateLobbyGET(c *gin.Context) {
 	// go lobby.run()
 	//c.JSON(200, gin.H{"status": "Lobby started!"})
 	c.HTML(200, "locator_io/createLobby.html", gin.H{})
+}
+
+func CreateLobbyPOST(c *gin.Context) {
+
+	ti := c.PostForm("roundTime")
+	g := c.PostForm("gameset")
+
+	if ti == "" || g == "" {
+		c.JSON(401, gin.H{"status": "Form not good"})
+		log.Println(ti, g)
+		return
+	}
+
+	timeINT, _ := strconv.Atoi(ti)
+
+	game, err := getGame(g)
+	if err != nil {
+		fmt.Println(LoadedGames)
+		c.JSON(200, gin.H{"status": "CREATE GAME -> Game not found."})
+		return
+	}
+
+	lobby := NewLobby(time.Second*time.Duration(timeINT), game)
+	log.Println("Created new Lobby", lobby.LobbyID, lobby.game.Name, timeINT)
+
+	Lobbies[lobby.LobbyID] = lobby
+
+	c.Redirect(302, fmt.Sprintf("%s/%s", c.Request.URL.Path, lobby.LobbyID))
 }
 
 // Join Lobby is the function which sends the actual gamepage.
@@ -68,6 +96,15 @@ func ServeLobby(c *gin.Context) {
 func getLobby(room string) (*Lobby, error) {
 
 	if lobby, ok := Lobbies[room]; ok {
+		return lobby, nil
+	}
+	return nil, errors.New(fmt.Sprintln("room not found for Room", room))
+}
+
+// getLobby helper function to get the Lobby, if exists.
+func getGame(room string) (*Game, error) {
+
+	if lobby, ok := LoadedGames[room]; ok {
 		return lobby, nil
 	}
 	return nil, errors.New(fmt.Sprintln("room not found for Room", room))

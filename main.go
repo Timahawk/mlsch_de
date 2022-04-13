@@ -128,13 +128,12 @@ func SetupRouter() *gin.Engine {
 	// *************************************************************** //
 
 	locator_io.LoadedGames["world"], _ = locator_io.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator_io.LoadedGames["large"], _ = locator_io.NewGame("large", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator_io.LoadedGames["capitals"], _ = locator_io.NewGame("capitals", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	locator_io.LoadedGames["large"], _ = locator_io.NewGame("capitals", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	locator_io.LoadedGames["capitals"], _ = locator_io.NewGame("large", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
 
 	log.Println(locator_io.LoadedGames)
 
 	locator_ioGroup := r.Group("/l")
-	// locator_io.Lobbies["A"], _ = locator_io.NewLobby(time.Second*30, "worl")
 
 	{
 		locator_ioGroup.GET("/", locator_io.CreateLobbyGET)

@@ -10,7 +10,7 @@ import (
 )
 
 // ReviewTime determines the duration of the review Screen.
-const ReviewTime = time.Second * 10
+const ReviewTime = time.Second * 3
 
 // Lobby maintains the set of active Player and broadcasts messages to the
 // clients. It is the dreh & angelpunkt of the ganze Veranstaltung.
@@ -19,7 +19,7 @@ type Lobby struct {
 	LobbyID string
 
 	// Determines the duration of a guessing round.
-	RoundTime time.Duration
+	RoundTime int
 
 	// Registered clients.
 	player map[string]*Player
@@ -49,6 +49,7 @@ type Lobby struct {
 	// 0 = Currently Reviewing
 	// 1 = Currently Guessing
 	// 2 = finished
+	// 3 = Startup Phase
 	state int
 
 	CurrentLocation string
@@ -66,13 +67,13 @@ type submit struct {
 
 // NewLobby creates a new Lobby.
 // Todo: der Lobbyname muss noch angepasst werden.
-func NewLobby(time time.Duration, game *Game) *Lobby {
+func NewLobby(zeit int, game *Game) *Lobby {
 	id := util.RandString(8)
 	//id := "A"
 
 	lobby := Lobby{
 		id,
-		time,
+		zeit,
 		make(map[string]*Player),
 		make(map[string]int),
 		make(map[string]bool),
@@ -81,8 +82,8 @@ func NewLobby(time time.Duration, game *Game) *Lobby {
 		make(chan *Player),
 		0,
 		game,
-		0,
-		""}
+		3,
+		"Wait for a sec."}
 
 	go lobby.run()
 	Lobbies[id] = &lobby
@@ -101,10 +102,10 @@ func NewLobby(time time.Duration, game *Game) *Lobby {
 // 	-> Reset counter.
 func (l *Lobby) run() {
 	log.Println("Lobby ", l, "started")
-	time.Sleep(time.Second * 5)
-	l.CurrentLocation = l.getNewLocation()
-	sendUpdate := time.NewTimer(time.Second * l.RoundTime)
-	l.state = 0
+	// time.Sleep(time.Second * 5)
+	// l.CurrentLocation = l.getNewLocation()
+	sendUpdate := time.NewTimer(time.Duration(l.RoundTime) * time.Second)
+	// l.state = 0
 
 	for {
 		select {
@@ -140,8 +141,8 @@ func (l *Lobby) run() {
 			log.Println("Submit Received", newSubmit)
 
 			// We are Currently in a review Round
-			if l.state == 0 {
-				log.Println("Game State was 1")
+			if l.state == 0 || l.state == 3 {
+				log.Println("Game State was ", l.state)
 				break
 			}
 
@@ -169,7 +170,7 @@ func (l *Lobby) run() {
 		case <-sendUpdate.C:
 
 			// Case 1 New Location
-			if l.state == 0 {
+			if l.state == 0 || l.state == 3 {
 				// log.Println("Sending new Location")
 
 				l.CurrentLocation = l.getNewLocation()
@@ -179,7 +180,7 @@ func (l *Lobby) run() {
 					player.toSend <- []byte(str)
 				}
 
-				sendUpdate = time.NewTimer(l.RoundTime)
+				sendUpdate = time.NewTimer(time.Duration(l.RoundTime) * time.Second)
 				l.roundCounter--
 				// Switch to review Mode.
 				l.state = 1

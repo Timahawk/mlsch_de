@@ -132,7 +132,11 @@ func (p *Player) processSubmit(message []byte) (float64, error) {
 		return 0, err
 	}
 
-	city := p.lobby.game.Cities[p.lobby.CurrentLocation]
+	city, StatusOK := p.lobby.game.Cities[p.lobby.CurrentLocation]
+	if !StatusOK {
+		log.Println("processFailed", StatusOK)
+		return 0, fmt.Errorf("ḱey does not exists")
+	}
 
 	// log.Println("Submit:", submit)
 	distance := math.Round(

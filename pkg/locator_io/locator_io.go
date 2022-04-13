@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"strconv"
-	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
 	"github.com/gin-gonic/gin"
@@ -43,8 +42,8 @@ func CreateLobbyPOST(c *gin.Context) {
 		return
 	}
 
-	lobby := NewLobby(time.Second*time.Duration(timeINT), game)
-	log.Println("Created new Lobby", lobby.LobbyID, lobby.game.Name, timeINT)
+	lobby := NewLobby(timeINT, game)
+	log.Println("Created new Lobby", lobby.LobbyID, lobby.game.Name, lobby.RoundTime)
 
 	Lobbies[lobby.LobbyID] = lobby
 

@@ -19,6 +19,7 @@ var LoadedGames = map[string]*Game{}
 func CreateLobbyGET(c *gin.Context) {
 	// go lobby.run()
 	//c.JSON(200, gin.H{"status": "Lobby started!"})
+	util.Sugar.Debugw("CreateLobbyGet")
 	c.HTML(200, "locator_io/createLobby.html", gin.H{})
 }
 
@@ -38,13 +39,16 @@ func CreateLobbyPOST(c *gin.Context) {
 
 	game, err := getGame(g)
 	if err != nil {
-		fmt.Println(LoadedGames)
+		// fmt.Println(LoadedGames)
 		c.JSON(200, gin.H{"status": "CREATE GAME -> Game not found."})
 		return
 	}
 
 	lobby := NewLobby(timeINT, game)
-	log.Println("Created new Lobby", lobby.LobbyID, lobby.game.Name, lobby.RoundTime)
+	util.Sugar.Infow("Created new Lobby",
+		"Lobby", lobby.LobbyID,
+		"Game", lobby.game.Name,
+		"Roundtimes", lobby.RoundTime)
 
 	Lobbies[lobby.LobbyID] = lobby
 
@@ -58,11 +62,16 @@ func JoinLobby(c *gin.Context) {
 	// gets the user and sends it as a template
 	user := c.Query("user")
 
-	_, err := getLobby(lobbyID)
+	lobby, err := getLobby(lobbyID)
 	if err != nil {
 		c.JSON(200, gin.H{"status": "Lobby not found!"})
 		return
 	}
+	util.Sugar.Infow("Created new Lobby",
+		"Lobby", lobby.LobbyID,
+		"Game", lobby.game.Name,
+		"Roundtimes", lobby.RoundTime,
+		"Player", user)
 	c.HTML(200, "locator_io/game.html", gin.H{"user": user})
 }
 
@@ -95,6 +104,12 @@ func ServeLobby(c *gin.Context) {
 	player := Player{ctx, lobby, user, conn, make(chan []byte), fn}
 
 	// log.Println("New Player registered", player)
+	util.Sugar.Infow("Serve Lobby Websockets",
+		"Lobby", lobbyID,
+		"Game", lobby.game.Name,
+		"Roundtimes", lobby.RoundTime,
+		"Player", player.User)
+
 	player.lobby.register <- &player
 }
 

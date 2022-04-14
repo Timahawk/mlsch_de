@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"math"
 	"time"
 
@@ -50,9 +49,14 @@ func (p *Player) String() string {
 func (p *Player) SendMessages() {
 
 	defer func() {
-		log.Println("Send Message stopped", p)
+		util.Sugar.Debugw("SendMessages stopped",
+			"player", p.User,
+			"lobby", p.lobby.LobbyID)
 	}()
 
+	util.Sugar.Debugw("SendMessages started",
+		"player", p.User,
+		"lobby", p.lobby.LobbyID)
 	for {
 		select {
 		case toSend := <-p.toSend:
@@ -73,13 +77,17 @@ func (p *Player) SendMessages() {
 // ReceiveMessages runs, parses and handles incoming messages.
 func (p *Player) ReceiveMessages() {
 	defer func() {
-		log.Println("Receive Messages for", p, "stopped.")
+		util.Sugar.Debugw("ReceiveMessages stopped",
+			"player", p.User,
+			"lobby", p.lobby.LobbyID)
 		p.lobby.unregister <- p
 		p.conn.Close()
 		p.cancel()
 	}()
 
-	log.Println("ReceiveMessage started!")
+	util.Sugar.Debugw("ReceiveMessages started",
+		"player", p.User,
+		"lobby", p.lobby.LobbyID)
 	p.conn.SetReadLimit(maxMessageSize)
 	p.conn.SetReadDeadline(time.Now().Add(pongWait))
 	p.conn.SetPongHandler(
@@ -102,14 +110,22 @@ func (p *Player) ReceiveMessages() {
 			return
 		}
 
-		log.Printf("%s %v", p.User, string(message))
+		util.Sugar.Debugw("Message received",
+			"player", p.User,
+			"lobby", p.lobby.LobbyID,
+			"message", string(message))
 
 		dist, err := p.processSubmit(message)
 		if err != nil {
-			log.Println("Wrong message.")
+			util.Sugar.Warnw("Process failed",
+				"player", p.User,
+				"lobby", p.lobby.LobbyID,
+				"message", string(message),
+				"distance", dist,
+				"error", err)
 		}
 
-		log.Println("Submit", p.lobby.CurrentLocation, p.User, string(message), "Dist", dist, p.lobby.game.Cities[p.lobby.CurrentLocation].Lat, p.lobby.game.Cities[p.lobby.CurrentLocation].Lng)
+		//log.Println("Submit", p.lobby.CurrentLocation, p.User, string(message), "Dist", dist, p.lobby.game.Cities[p.lobby.CurrentLocation].Lat, p.lobby.game.Cities[p.lobby.CurrentLocation].Lng)
 		// Handle Message and Calcualte Points:
 		p.lobby.points[p.User] = p.lobby.points[p.User] + int(dist)
 
@@ -126,14 +142,29 @@ type Submit_guess struct {
 // processSubmit calculates the distance and stuff.
 func (p *Player) processSubmit(message []byte) (float64, error) {
 	var submit Submit_guess
+
+	util.Sugar.Debugw("processing Message",
+		"player", p.User,
+		"lobby", p.lobby.LobbyID,
+		"message", string(message))
+
 	err := json.Unmarshal(message, &submit)
 	if err != nil {
+		util.Sugar.Warnw("Marshalling failed",
+			"player", p.User,
+			"lobby", p.lobby.LobbyID,
+			"message", string(message),
+			"error", err)
 		return 0, err
 	}
 
 	city, StatusOK := p.lobby.game.Cities[p.lobby.CurrentLocation]
 	if !StatusOK {
-		log.Println("processFailed", StatusOK)
+		util.Sugar.Warnw("City does not exist",
+			"player", p.User,
+			"lobby", p.lobby.LobbyID,
+			"message", string(message),
+			"error", err)
 		return 0, fmt.Errorf("ḱey does not exists")
 	}
 

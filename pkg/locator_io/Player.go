@@ -107,12 +107,11 @@ func (p *Player) ReceiveMessages() {
 		dist, err := p.processSubmit(message)
 		if err != nil {
 			log.Println("Wrong message.")
-
 		}
+
+		log.Println("Submit", p.lobby.CurrentLocation, p.User, string(message), "Dist", dist, p.lobby.game.Cities[p.lobby.CurrentLocation].Lat, p.lobby.game.Cities[p.lobby.CurrentLocation].Lng)
 		// Handle Message and Calcualte Points:
-		p.lobby.points[p.User] = p.lobby.points[p.User] + func(dist float64) int {
-			return int(dist)
-		}(dist)
+		p.lobby.points[p.User] = p.lobby.points[p.User] + int(dist)
 
 		p.lobby.submitReceived <- submit{p.User, true}
 	}
@@ -144,6 +143,6 @@ func (p *Player) processSubmit(message []byte) (float64, error) {
 			submit.Latitude,
 			submit.Longitude,
 			city.Lat,
-			city.Lat) / 1000)
+			city.Lng) / 1000)
 	return distance, nil
 }

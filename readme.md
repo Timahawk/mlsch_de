@@ -6,8 +6,8 @@
 
 # ToDo List
 ## Need to be done
- - [ ] Update Gamescore visualization system (chart.js?)
- - [ ] Add User Names 
+ - [x] Update Gamescore visualization system (chart.js?)
+ - [x] Add User Names 
  - [ ] Write more Tests
  - [ ] Add Game Counter functionallity.
 

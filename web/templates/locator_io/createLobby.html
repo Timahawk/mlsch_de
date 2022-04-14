@@ -10,12 +10,14 @@
     <input type="number" required min=1 max=60 id="roundTime" name="roundTime" value="30"><br>
 
     <label for="gameset">Choose a Gameset:</label>
-
     <select name="gameset" required id="gameset">
       <option value="world">all cities; worldwide</option>
       <option value="large">large cities; worldwide</option>
       <option value="capitals">capitals;worldwide</option>
-    </select> 
+    </select><br>
+
+    <label for="username">Choose your Name</label>
+    <input type="string" minlength=3 maxlength=10 id="username" name="username"><br>
 
     <br>
     <input type="submit" value="Submit">

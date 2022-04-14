@@ -26,6 +26,7 @@ func CreateLobbyPOST(c *gin.Context) {
 
 	ti := c.PostForm("roundTime")
 	g := c.PostForm("gameset")
+	username := c.PostForm("username")
 
 	if ti == "" || g == "" {
 		c.JSON(400, gin.H{"status": "Form not good"})
@@ -47,19 +48,22 @@ func CreateLobbyPOST(c *gin.Context) {
 
 	Lobbies[lobby.LobbyID] = lobby
 
-	c.Redirect(303, fmt.Sprintf("%s/%s", c.Request.URL.Path, lobby.LobbyID))
+	c.Redirect(303, fmt.Sprintf("%s/%s?user=%s", c.Request.URL.Path, lobby.LobbyID, username))
 }
 
 // Join Lobby is the function which sends the actual gamepage.
 func JoinLobby(c *gin.Context) {
 	lobbyID := c.Param("lobby")
 
+	// gets the user and sends it as a template
+	user := c.Query("user")
+
 	_, err := getLobby(lobbyID)
 	if err != nil {
 		c.JSON(200, gin.H{"status": "Lobby not found!"})
 		return
 	}
-	c.HTML(200, "locator_io/game.html", gin.H{})
+	c.HTML(200, "locator_io/game.html", gin.H{"user": user})
 }
 
 // ServeLobby creates the Websocket connection.
@@ -73,8 +77,11 @@ func ServeLobby(c *gin.Context) {
 		return
 	}
 
-	user := util.RandString(7)
-
+	var user string
+	user = c.Query("user")
+	if user == "" {
+		user = util.RandString(7)
+	}
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Fatalln(err)

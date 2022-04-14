@@ -28,7 +28,7 @@ func CreateLobbyPOST(c *gin.Context) {
 	g := c.PostForm("gameset")
 
 	if ti == "" || g == "" {
-		c.JSON(401, gin.H{"status": "Form not good"})
+		c.JSON(400, gin.H{"status": "Form not good"})
 		log.Println(ti, g)
 		return
 	}
@@ -47,7 +47,7 @@ func CreateLobbyPOST(c *gin.Context) {
 
 	Lobbies[lobby.LobbyID] = lobby
 
-	c.Redirect(302, fmt.Sprintf("%s/%s", c.Request.URL.Path, lobby.LobbyID))
+	c.Redirect(303, fmt.Sprintf("%s/%s", c.Request.URL.Path, lobby.LobbyID))
 }
 
 // Join Lobby is the function which sends the actual gamepage.

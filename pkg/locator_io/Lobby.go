@@ -106,7 +106,7 @@ func (l *Lobby) run() {
 	log.Println("Lobby ", l, "started")
 	// time.Sleep(time.Second * 5)
 	// l.CurrentLocation = l.getNewLocation()
-	sendUpdate := time.NewTimer(time.Duration(l.RoundTime) * time.Second)
+	sendUpdate := time.NewTimer(5 * time.Second)
 	// l.state = 0
 
 	for {
@@ -164,7 +164,7 @@ func (l *Lobby) run() {
 				l.sendPointsToClient()
 
 				// Decrease Counter
-				l.roundCounter++
+				// l.roundCounter++
 			} else {
 				log.Println("Not enough Player submitted!", len(l.checkSubmits), "of", len(l.player))
 			}

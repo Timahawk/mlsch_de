@@ -4,15 +4,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 )
 
 // The City as per the file.
 type City struct {
 	// json_featuretype string
-	Name       string `json:"city"`
-	Name_ascii string `json:"city_ascii"`
-	Lat        float64
-	Lng        float64
+	Name       string  `json:"city"`
+	Name_ascii string  `json:"city_ascii"`
+	Lat        float64 `json:"lat"`
+	Lng        float64 `json:"lng"`
 	Country    string
 	Iso2       string
 	Iso3       string
@@ -40,6 +41,7 @@ func (g *Game) String() string {
 
 func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, extent []float64) (*Game, error) {
 	cities, err := LoadCities(pfad)
+	log.Println(cities)
 	if err != nil {
 		return &Game{}, err
 	}
@@ -50,7 +52,7 @@ func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, ex
 
 func LoadCities(file string) (map[string]*City, error) {
 	cities := make([]City, 0)
-	cities_map := make(map[string]*City)
+
 	content, err := ioutil.ReadFile(file)
 	if err != nil {
 		return nil, fmt.Errorf("%s, %v ", file, err)
@@ -60,9 +62,20 @@ func LoadCities(file string) (map[string]*City, error) {
 		return nil, fmt.Errorf("%s, %v ", file, err)
 	}
 
-	for _, city := range cities {
-		cities_map[city.Name_ascii] = &city
+	log.Println(cities)
+
+	cities_map := make(map[string]*City)
+
+	//  what the fuck is the difference between those two?
+	// TODO figure this out.
+	for i := 0; i < len(cities); i++ {
+		cities_map[cities[i].Name_ascii] = &cities[i]
 	}
+
+	// This assigns each value the same pointer!
+	//for _, city := range cities {
+	//	cities_map[city.Name_ascii] = &city
+	//}
 
 	return cities_map, nil
 }

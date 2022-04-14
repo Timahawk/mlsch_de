@@ -38,6 +38,16 @@
         <div class="container">
             <div class="row"> 
                 <div class="col-sm">
+                    <h3 id="YourName" type="button">You are: </h3>
+                </div>
+                <div class="col-sm">
+                    <h3 style="text-align:left;float:left;" id="time"></h3>
+                </div>             
+            </div>
+
+        <div class="container">
+            <div class="row"> 
+                <div class="col-sm">
                     <button id="clickMe" type="button">Submit Guess!</button>
                 </div>
                 <div class="col-sm">
@@ -87,7 +97,7 @@
                 // },
                 title: {
                 display: true,
-                text: 'Chart.js Line Chart'
+                text: 'Points'
                 }
             }
             },
@@ -132,16 +142,25 @@
         var message
         var existingLabels = []
         var chartIndex = 0
+        var timecounter =setInterval(function(){},1000000)
         var host = document.location.host;
         var path = document.location.pathname;
         // console.log(path, document.location.pathname)
+        
+        user = {{ .user }}
+
+        if (user===""){
+            user = prompt("Please enter your name:", "");
+        }
+
+        document.getElementById("YourName").innerHTML = "You are " + user
 
         // Das hier weils wichtig ist ob https oder nicht.
         // Browser erlauben KEIN downgrad also https zu ws!
         if (location.protocol === 'https:'){
-            conn = new WebSocket("wss://" + document.location.host + path + "/ws")
+            conn = new WebSocket("wss://" + document.location.host + path + "/ws?user=" + user)
         } else {
-            conn = new WebSocket("ws://" + document.location.host + path + "/ws")
+            conn = new WebSocket("ws://" + document.location.host + path + "/ws?user=" + user)
         };
 
         conn.onclose = function (evt) {
@@ -153,12 +172,19 @@
             console.log(message)
 
             // document.getElementById("state").innerHTML = message.state
+            document.getElementById("time").innerHTML = message.time
+            //timecounter = doTimestuff(message.time)
+
+            clearInterval(timecounter)
+            timecounter = setInterval(function () {document.getElementById("time").innerHTML -= 1}, 1000); 
 
             if (message.status == "location") {
                 document.getElementById("city").innerHTML = message.Location
                 document.getElementById("points").innerHTML = ""
+                
             }
             if (message.status == "review") {
+
                 document.getElementById("points").innerHTML = JSON.stringify(message.points)
                 AddDataset()
                 AddData()
@@ -166,6 +192,17 @@
             }
         };
 
+        
+        function doTimestuff(time){
+            console.log("This is calling doTimeStuff")
+            clearInterval(timecounter)
+            return setInterval(function(){
+                document.getElementById("time").innerHTML = time
+                console.log("This is running", time)
+                time--
+            }/1000);
+        }
+        
         var city
         var token = 'pk.eyJ1IjoidGltd2VuZGVsIiwiYSI6ImNraDBoeG9ubTFkd20zMXJydDA5YjR0OXEifQ.uuncQPQVAT2rDxfj81AILw';
 

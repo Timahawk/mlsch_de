@@ -120,7 +120,7 @@ func (l *Lobby) run() {
 			go newPlayer.SendMessages()
 			go newPlayer.ReceiveMessages()
 
-			x := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v"}`, l.CurrentLocation, l.state)
+			x := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v", "name":"%s"}`, l.CurrentLocation, l.state, newPlayer.User)
 			newPlayer.toSend <- []byte(x)
 
 		// Spieler wurde entfernt.
@@ -177,7 +177,7 @@ func (l *Lobby) run() {
 				// log.Println("Sending new Location")
 
 				l.CurrentLocation = l.getNewLocation()
-				str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v" }`, l.CurrentLocation, l.state)
+				str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v", "time":"%v"}`, l.CurrentLocation, l.state, l.RoundTime)
 
 				for _, player := range l.player {
 					player.toSend <- []byte(str)
@@ -212,7 +212,7 @@ func (l *Lobby) run() {
 func (l *Lobby) sendPointsToClient() {
 	points, _ := json.Marshal(l.points)
 
-	str := fmt.Sprintf(`{"status":"review", "points":%s, "state": "%v", "Location":"%s", "Round":"%v"}`, points, l.state, l.CurrentLocation, l.roundCounter)
+	str := fmt.Sprintf(`{"status":"review", "points":%s, "state": "%v", "Location":"%s", "Round":"%v", "time":"%v"}`, points, l.state, l.CurrentLocation, l.roundCounter, ReviewTime.Seconds())
 
 	for _, player := range l.player {
 		player.toSend <- []byte(str)

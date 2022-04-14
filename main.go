@@ -13,6 +13,7 @@ import (
 	"github.com/Timahawk/mlsch_de/pkg/chat"
 	"github.com/Timahawk/mlsch_de/pkg/locator"
 	"github.com/Timahawk/mlsch_de/pkg/locator_io"
+	"github.com/Timahawk/mlsch_de/pkg/util"
 
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
@@ -20,6 +21,10 @@ import (
 )
 
 func main() {
+
+	util.InitLogger()
+	util.Sugar.Infof("Started mlsch_de application")
+
 	development := flag.Bool("dev", true, "Run local")
 	flag.Parse()
 
@@ -138,7 +143,8 @@ func SetupRouter() *gin.Engine {
 	locator_io.LoadedGames["large"], _ = locator_io.NewGame("large", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
 	locator_io.LoadedGames["capitals"], _ = locator_io.NewGame("capitals", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
 
-	log.Println(locator_io.LoadedGames)
+	// util.Sugar.Infow("Loaded Games",
+	//	"Games", locator_io.LoadedGames)
 
 	locator_ioGroup := r.Group("/l")
 

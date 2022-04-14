@@ -3,7 +3,6 @@ package locator_io
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
@@ -67,7 +66,6 @@ type submit struct {
 }
 
 // NewLobby creates a new Lobby.
-// Todo: der Lobbyname muss noch angepasst werden.
 func NewLobby(zeit int, game *Game) *Lobby {
 	id := util.RandString(8)
 	//id := "A"
@@ -89,6 +87,14 @@ func NewLobby(zeit int, game *Game) *Lobby {
 
 	go lobby.run()
 	Lobbies[id] = &lobby
+	util.Sugar.Debugw("New Lobby created.",
+		"id", id,
+		"time", zeit,
+		"state", 3,
+		"nextState", 0,
+		"roundCounter", 0,
+		"game", game.Name,
+	)
 	return &lobby
 }
 
@@ -103,7 +109,9 @@ func NewLobby(zeit int, game *Game) *Lobby {
 // 	- Start a review cycle
 // 	-> Reset counter.
 func (l *Lobby) run() {
-	log.Println("Lobby ", l, "started")
+	util.Sugar.Debugw("Lobby running",
+		"lobby", l.LobbyID,
+	)
 	// time.Sleep(time.Second * 5)
 	// l.CurrentLocation = l.getNewLocation()
 	sendUpdate := time.NewTimer(5 * time.Second)
@@ -116,7 +124,11 @@ func (l *Lobby) run() {
 		case newPlayer := <-l.register:
 
 			l.player[newPlayer.User] = newPlayer
-			log.Println("New Player added.", newPlayer)
+
+			util.Sugar.Debugw("New Player added",
+				"lobby", l.LobbyID,
+				"player", newPlayer.User,
+			)
 			go newPlayer.SendMessages()
 			go newPlayer.ReceiveMessages()
 
@@ -125,22 +137,31 @@ func (l *Lobby) run() {
 
 		// Spieler wurde entfernt.
 		case removePlayer := <-l.unregister:
-			log.Println("Player to be removed.", removePlayer)
+			util.Sugar.Debugw("Player removed",
+				"lobby", l.LobbyID,
+				"player", removePlayer.User,
+				"Lobbysize", len(l.player),
+			)
 
 			delete(l.player, removePlayer.User)
-			fmt.Println("Still ", len(l.player), "in the Lobby")
 
 			// This checks if the Lobby is empty.
 			if n := len(l.player); n == 0 {
-				log.Println("Lobby is empty and will be closed.")
 				delete(Lobbies, l.LobbyID)
+				util.Sugar.Debugw("Lobby closed.",
+					"lobby", l.LobbyID,
+				)
 				return
 			}
 
 		// A Player submitted his guess.
 		case newSubmit := <-l.submitReceived:
 
-			log.Println("Submit Received", newSubmit)
+			util.Sugar.Debugw("Guess submitted",
+				"lobby", l.LobbyID,
+				"player", newSubmit.playerID,
+				"submit", newSubmit.submitted,
+			)
 
 			// We are Currently in a review Round
 			if l.nextState == 0 || l.nextState == 3 {
@@ -150,7 +171,11 @@ func (l *Lobby) run() {
 
 			l.checkSubmits[newSubmit.playerID] = newSubmit.submitted
 			if len(l.checkSubmits) == len(l.player) {
-				log.Println("All Players submitted; Starting next round.")
+				// log.Println("All Players submitted; Starting next round.")
+
+				util.Sugar.Debugw("Sending new Round",
+					"lobby", l.LobbyID,
+				)
 
 				// Send them Round Review.
 				sendUpdate = time.NewTimer(ReviewTime)
@@ -160,15 +185,19 @@ func (l *Lobby) run() {
 				// Reset the array.
 				l.checkSubmits = make(map[string]bool)
 
+				util.Sugar.Debugw("Sending new Round",
+					"lobby", l.LobbyID,
+					"time", l.RoundTime,
+					"state", l.state,
+					"nextState", l.nextState,
+				)
+
 				// Sends an update
 				l.sendPointsToClient()
 
 				// Decrease Counter
 				// l.roundCounter++
-			} else {
-				log.Println("Not enough Player submitted!", len(l.checkSubmits), "of", len(l.player))
 			}
-
 		// Something needs to be send!
 		case <-sendUpdate.C:
 
@@ -189,6 +218,13 @@ func (l *Lobby) run() {
 				l.state = 0
 				l.nextState = 1
 
+				util.Sugar.Debugw("New Location",
+					"lobby", l.LobbyID,
+					"location", l.CurrentLocation,
+					"time", l.RoundTime,
+					"state", l.state,
+					"nextState", l.nextState,
+				)
 				break
 			}
 
@@ -201,6 +237,13 @@ func (l *Lobby) run() {
 				l.sendPointsToClient()
 				l.state = 1
 				l.nextState = 0
+
+				util.Sugar.Debugw("Sending new Round",
+					"lobby", l.LobbyID,
+					"time", l.RoundTime,
+					"state", l.state,
+					"nextState", l.nextState,
+				)
 
 			}
 
@@ -217,6 +260,11 @@ func (l *Lobby) sendPointsToClient() {
 	for _, player := range l.player {
 		player.toSend <- []byte(str)
 	}
+	util.Sugar.Debugw("SendingPointsToClient",
+		"lobby", l.LobbyID,
+		"Location", l.CurrentLocation,
+		"points", l.points,
+	)
 }
 
 // getNewLocation helper function, gets a semi random new Location.

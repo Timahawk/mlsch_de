@@ -74,7 +74,7 @@
             data:  {
                 datasets: [
                     {
-                    label: 'start',
+                    label: '',
                     data: 0,
                     }
                 ]
@@ -263,8 +263,19 @@
             for (let [key, value] of Object.entries(message.points)){
                 // data.label = `${key}`;
                
+                
                 // data.datasets[key].data[i] = `${value}`
-                data.datasets[i].data.push(`${value}`)
+                data.datasets.forEach(function (item, index) {
+                    if (item.label === `${key}`){
+                        x = index
+                        // console.log("Found", item, index, x);
+                    }
+                    
+                });
+
+                // x = data.datasets.indexOf(`${key}`)
+                // console.log("index of result is: ", x)
+                data.datasets[x].data.push(`${value}`)
                 i++;
             }
             myChart.update();
@@ -282,18 +293,44 @@
                 }
 
                 existingLabels.push(`${key}`)
-
+                color = getRandomColor()
+                // console.log("New Array", arr)
                 newDataset = {
                     label: `${key}`,
-                    // backgroundColor: Utils.transparentize(dsColor, 0.5),
-                    // borderColor: dsColor,
-                    data: Array(message.round).fill(0)
+                    backgroundColor: color,
+                    borderColor: color,
+                    data: []
                 };
+
+                biggest = 0
+                data.datasets.forEach(function (item, index) {
+                    if (item.data.length > biggest){
+                            biggest = item.data.length
+                        // console.log("Found", item, index, x);
+                    }
+                });
+
+                for (i = 0; i < biggest; i++) {
+                    newDataset.data.push(0)
+                    console.log("Should not run!")
+                };
+
+                console.log("Biggest", biggest)
+
                 myChart.data.datasets.push(newDataset);
                 // chart.update();
             };
             myChart.update();
         };
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i = 0; i < 6; i++ ) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
 
         function submitGuess(){
             coords = point.getGeometry().getCoordinates()

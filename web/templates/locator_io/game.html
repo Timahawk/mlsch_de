@@ -7,10 +7,12 @@
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
     <style>
         .map {
           width: 100%;
-          height: 80%;
+          height: 100%;
         }
         .map {
           background: #f8f4f0 ;
@@ -20,19 +22,76 @@
 
 <body>   
     {{ template "globals/style_body.html" }}
-
+    <!--
     <button id="clickMe" type="button">Submit Guess!</button> 
-    <!--<button id="clickNewGuess" type="button">Next Round!</button> -->
+    <button id="clickNewGuess" type="button">Next Round!</button>
     <div>
         <h1 style="text-align:left;float:left;" id="city">Ready?</h1>
         <h2 style="text-align:left;float:left;" id="Distanz"></h2>
         <h3 style="text-align:left;float:left;" id="points"></h3>
         <h1 style="text-align:left;float:left;" id="state"></h1>
-        <!-- <h3 style="text-align:right;float:right;" id="reload"> </h3> -->
-        <!-- <progress value="0" max="10" id="progressBar"></progress> -->
+        <h3 style="text-align:right;float:right;" id="reload"> </h3>
+        <progress value="0" max="10" id="progressBar"></progress>
     </div>
-    <div id="map" class="map"></div>
-    <script>
+        -->
+
+        <div class="container">
+            <div class="row"> 
+                <div class="col-sm">
+                    <button id="clickMe" type="button">Submit Guess!</button>
+                </div>
+                <div class="col-sm">
+                    <h1 style="text-align:left;float:left;" id="city">Ready?</h1>
+                </div>
+                <div class="col-sm">
+                    <h3 style="text-align:left;float:left;" id="points"></h3>
+                </div>             
+            </div>
+
+            <div class="row">
+                <div class="col-sm">
+                    <div id="map" class="map"></div>
+                </div>
+                <div class="col-sm">
+                    <canvas id="myChart" width="100%" height="100%"></canvas>
+                </div>
+            </div>
+        </div>
+
+    <!--
+    <div style="width: 50%;height: 80%;">
+        <div id="map" class="map"></div>
+    </div>
+    
+    <div style="width: 50%;height: 80%;">
+        <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+    -->
+<script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data:  {
+                datasets: [
+                    {
+                    label: 'start',
+                    data: 0,
+                    }
+                ]
+                },
+            options: {
+            responsive: true,
+            plugins: {
+                // legend: {
+                // position: 'top',
+                // },
+                title: {
+                display: true,
+                text: 'Chart.js Line Chart'
+                }
+            }
+            },
+        });
 
         function flyTo(location, done) {
             const duration = 2000;
@@ -70,10 +129,12 @@
           };
           
         var conn;
-
+        var message
+        var existingLabels = []
+        var chartIndex = 0
         var host = document.location.host;
         var path = document.location.pathname;
-        console.log(path, document.location.pathname)
+        // console.log(path, document.location.pathname)
 
         // Das hier weils wichtig ist ob https oder nicht.
         // Browser erlauben KEIN downgrad also https zu ws!
@@ -99,6 +160,9 @@
             }
             if (message.status == "review") {
                 document.getElementById("points").innerHTML = JSON.stringify(message.points)
+                AddDataset()
+                AddData()
+                chartIndex++;
             }
         };
 
@@ -181,22 +245,56 @@
 
         map.addLayer(layer);
         map.addLayer(solution_layer);
-        /*
-        //- Using a function pointer:
-        document.getElementById("clickNewGuess").onclick = async function(){
-            const response = await postData(url = path + "/newGuess", "")
-            
-            document.getElementById("city").innerHTML = response["city"]
-            document.getElementById("Distanz").innerHTML = ""
-            city = response["city"]
-            solution_layer.getSource().clear()
-        };
-        */
         //- Using a function pointer:
         document.getElementById("clickMe").onclick = function(){
             submitGuess();
         };
-        
+
+        function AddData(){
+            // console.log("Add Data called.")
+            data = myChart.data;
+            data.labels.push(message.Location);
+            
+            console.log(data.datasets)
+
+
+            //if (data.datasets.length > 0) {
+            var i = 0
+            for (let [key, value] of Object.entries(message.points)){
+                // data.label = `${key}`;
+               
+                // data.datasets[key].data[i] = `${value}`
+                data.datasets[i].data.push(`${value}`)
+                i++;
+            }
+            myChart.update();
+        }
+
+        function AddDataset() {
+        data = myChart.data;
+       // if (data.datasets.length > 0) {
+        //console.log(existingLabels)
+        // message.points.forEach(val => console.log("VAL:", val));
+        for (let [key, value] of Object.entries(message.points)) {
+            
+                if (existingLabels.includes(`${key}`)) {
+                    continue
+                }
+
+                existingLabels.push(`${key}`)
+
+                newDataset = {
+                    label: `${key}`,
+                    // backgroundColor: Utils.transparentize(dsColor, 0.5),
+                    // borderColor: dsColor,
+                    data: Array(message.round).fill(0)
+                };
+                myChart.data.datasets.push(newDataset);
+                // chart.update();
+            };
+            myChart.update();
+        };
+
         function submitGuess(){
             coords = point.getGeometry().getCoordinates()
             coords4326 = ol.proj.transform(coords, 'EPSG:3857', 'EPSG:4326')
@@ -204,7 +302,6 @@
 
             x = {"lat":coords4326[1], "long": coords4326[0]}
             conn.send(JSON.stringify(x));
-
         };
 
     </script>

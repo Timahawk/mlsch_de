@@ -50,7 +50,8 @@ type Lobby struct {
 	// 1 = Currently Guessing
 	// 2 = finished
 	// 3 = Startup Phase
-	state int
+	state     int
+	nextState int
 
 	CurrentLocation string
 }
@@ -83,6 +84,7 @@ func NewLobby(zeit int, game *Game) *Lobby {
 		0,
 		game,
 		3,
+		0,
 		"Wait for a sec."}
 
 	go lobby.run()
@@ -141,8 +143,8 @@ func (l *Lobby) run() {
 			log.Println("Submit Received", newSubmit)
 
 			// We are Currently in a review Round
-			if l.state == 0 || l.state == 3 {
-				log.Println("Game State was ", l.state)
+			if l.nextState == 0 || l.nextState == 3 {
+				// log.Println("Game State was ", l.state)
 				break
 			}
 
@@ -153,7 +155,8 @@ func (l *Lobby) run() {
 				// Send them Round Review.
 				sendUpdate = time.NewTimer(ReviewTime)
 				// Set to Location mode for next time the Timer ticks down.
-				l.state = 0
+				l.state = 1
+				l.nextState = 0
 				// Reset the array.
 				l.checkSubmits = make(map[string]bool)
 
@@ -161,7 +164,7 @@ func (l *Lobby) run() {
 				l.sendPointsToClient()
 
 				// Decrease Counter
-				l.roundCounter--
+				l.roundCounter++
 			} else {
 				log.Println("Not enough Player submitted!", len(l.checkSubmits), "of", len(l.player))
 			}
@@ -170,7 +173,7 @@ func (l *Lobby) run() {
 		case <-sendUpdate.C:
 
 			// Case 1 New Location
-			if l.state == 0 || l.state == 3 {
+			if l.nextState == 0 || l.nextState == 3 {
 				// log.Println("Sending new Location")
 
 				l.CurrentLocation = l.getNewLocation()
@@ -181,21 +184,24 @@ func (l *Lobby) run() {
 				}
 
 				sendUpdate = time.NewTimer(time.Duration(l.RoundTime) * time.Second)
-				l.roundCounter--
+				l.roundCounter++
 				// Switch to review Mode.
-				l.state = 1
+				l.state = 0
+				l.nextState = 1
 
 				break
 			}
 
 			// Case 2 Review
-			if l.state == 1 {
+			if l.nextState == 1 {
 				// log.Println("Sending Round review")
 
 				sendUpdate = time.NewTimer(ReviewTime)
 
 				l.sendPointsToClient()
-				l.state = 0
+				l.state = 1
+				l.nextState = 0
+
 			}
 
 		}
@@ -206,7 +212,7 @@ func (l *Lobby) run() {
 func (l *Lobby) sendPointsToClient() {
 	points, _ := json.Marshal(l.points)
 
-	str := fmt.Sprintf(`{"status":"review", "points":%s, "state": "%v"}`, points, l.state)
+	str := fmt.Sprintf(`{"status":"review", "points":%s, "state": "%v", "Location":"%s", "Round":"%v"}`, points, l.state, l.CurrentLocation, l.roundCounter)
 
 	for _, player := range l.player {
 		player.toSend <- []byte(str)

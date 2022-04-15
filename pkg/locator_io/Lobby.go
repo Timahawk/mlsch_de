@@ -211,6 +211,8 @@ func (l *Lobby) run() {
 
 				for _, player := range l.player {
 					player.toSend <- []byte(str)
+					player.distance = 9999
+					player.point = 0
 				}
 
 				sendUpdate = time.NewTimer(time.Duration(l.RoundTime) * time.Second)
@@ -254,20 +256,25 @@ func (l *Lobby) run() {
 
 // sendPointsToClient is a little helper function to send Message to the Player struct.
 func (l *Lobby) sendPointsToClient() {
-	points, _ := json.Marshal(l.points)
 
-	str := fmt.Sprintf(
-		`{"status":"review", "points":%s, "state": "%v", "Location":"%s", "Round":"%v", "time":"%v", "distance":"XXX", "lat":"%v","lng":"%v"}`,
-		points,
-		l.state,
-		l.CurrentLocation,
-		l.roundCounter,
-		ReviewTime.Seconds(),
-		l.game.Cities[l.CurrentLocation].Lat,
-		l.game.Cities[l.CurrentLocation].Lng)
+	for _, p := range l.player {
+		// toSend = []byte(strings.Replace(string(toSend), "XXX", strconv.Itoa(p.distance), 1))
+		p.lobby.points[p.User] = p.lobby.points[p.User] + p.point
+		points, _ := json.Marshal(l.points)
 
-	for _, player := range l.player {
-		player.toSend <- []byte(str)
+		str := fmt.Sprintf(
+			`{"status":"review", "points":%s, "state": "%v", "Location":"%s", "Round":"%v", "time":"%v", "distance":"%v", "lat":"%v","lng":"%v", "awarded":"%v"}`,
+			points,
+			l.state,
+			l.CurrentLocation,
+			l.roundCounter,
+			ReviewTime.Seconds(),
+			p.distance,
+			l.game.Cities[l.CurrentLocation].Lat,
+			l.game.Cities[l.CurrentLocation].Lng,
+			p.point)
+
+		p.toSend <- []byte(str)
 	}
 	util.Sugar.Debugw("SendingPointsToClient",
 		"lobby", l.LobbyID,

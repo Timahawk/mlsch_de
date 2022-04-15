@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
@@ -42,7 +40,10 @@ type Player struct {
 
 	cancel context.CancelFunc
 
+	// distance away to lobby.CurrentLocation
 	distance int
+	// Points awarded for distance
+	point int
 }
 
 func (p *Player) String() string {
@@ -67,9 +68,11 @@ func (p *Player) SendMessages() {
 			// This is to stop multiple writes to Dead Connection.
 			// Not really working.
 			p.conn.SetWriteDeadline(time.Now().Add(writeWait))
-			if p.lobby.state == 1 {
-				toSend = []byte(strings.Replace(string(toSend), "XXX", strconv.Itoa(p.distance), 1))
-			}
+			//if p.lobby.state == 1 {
+			//toSend = []byte(strings.Replace(string(toSend), "XXX", strconv.Itoa(p.distance), 1))
+			//p.lobby.points[p.User] = p.lobby.points[p.User] + p.point
+			// fmt.Println(p.lobby.points)
+			// }
 			err := p.conn.WriteMessage(websocket.TextMessage, toSend)
 			if err != nil {
 				p.lobby.unregister <- p
@@ -134,9 +137,19 @@ func (p *Player) ReceiveMessages() {
 
 		p.distance = int(dist)
 
+		p.point = p.awardPoints(dist)
+
+		util.Sugar.Debugw("Points awarded",
+			"player", p.User,
+			"lobby", p.lobby.LobbyID,
+			"message", string(message),
+			"distance", dist,
+			"points", p.point,
+		)
+
 		//log.Println("Submit", p.lobby.CurrentLocation, p.User, string(message), "Dist", dist, p.lobby.game.Cities[p.lobby.CurrentLocation].Lat, p.lobby.game.Cities[p.lobby.CurrentLocation].Lng)
 		// Handle Message and Calcualte Points:
-		p.lobby.points[p.User] = p.lobby.points[p.User] + int(dist)
+		// p.lobby.points[p.User] = p.lobby.points[p.User] + int(dist)
 
 		p.lobby.submitReceived <- submit{p.User, true}
 	}
@@ -185,4 +198,23 @@ func (p *Player) processSubmit(message []byte) (float64, error) {
 			city.Lat,
 			city.Lng) / 1000)
 	return distance, nil
+}
+
+func (p *Player) awardPoints(dist float64) int {
+	switch {
+	case dist < 10.0:
+		return 7
+	case dist < 50.0:
+		return 5
+	case dist < 100.0:
+		return 4
+	case dist < 250.0:
+		return 3
+	case dist < 500.0:
+		return 2
+	case dist < 1000.0:
+		return 1
+	default:
+		return 0
+	}
 }

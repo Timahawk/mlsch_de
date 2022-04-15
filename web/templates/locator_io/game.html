@@ -187,7 +187,7 @@
             if (message.status == "review") {
 
                 // document.getElementById("points").innerHTML = JSON.stringify(message.points)
-                document.getElementById("points").innerHTML = message.distance +  "km away."
+                document.getElementById("points").innerHTML = message.distance +  "km away. -> " + message.awarded + "Points."
                 AddDataset();
                 AddData();
                 AddSolution(message);
@@ -285,7 +285,7 @@
             data = myChart.data;
             data.labels.push(message.Location);
             
-            // console.log(data.datasets)
+            console.log(data.datasets)
 
 
             //if (data.datasets.length > 0) {

@@ -44,6 +44,8 @@ type Player struct {
 	distance int
 	// Points awarded for distance
 	point int
+	// totalPoints awarded during game
+	points int
 }
 
 func (p *Player) String() string {

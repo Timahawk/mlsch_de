@@ -123,28 +123,13 @@ func (l *Lobby) run() {
 		// Spieler wird hinzugefügt.
 		case newPlayer := <-l.register:
 
-			l.player[newPlayer.User] = newPlayer
-
-			util.Sugar.Debugw("New Player added",
-				"lobby", l.LobbyID,
-				"player", newPlayer.User,
-			)
-			go newPlayer.SendMessages()
-			go newPlayer.ReceiveMessages()
-
-			x := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v", "name":"%s"}`, l.CurrentLocation, l.state, newPlayer.User)
-			newPlayer.toSend <- []byte(x)
+			str := l.addPlayer(newPlayer)
+			newPlayer.toSend <- str
 
 		// Spieler wurde entfernt.
 		case removePlayer := <-l.unregister:
-			util.Sugar.Debugw("Player removed",
-				"lobby", l.LobbyID,
-				"player", removePlayer.User,
-				"LobbysizeOld", len(l.player),
-				"LobbysizeNew", len(l.player)-1,
-			)
 
-			delete(l.player, removePlayer.User)
+			l.removePlayer(removePlayer)
 
 			// This checks if the Lobby is empty.
 			if n := len(l.player); n == 0 {
@@ -252,6 +237,36 @@ func (l *Lobby) run() {
 
 		}
 	}
+}
+
+// removePlayer, removes the Player from the game.
+func (l *Lobby) removePlayer(p *Player) error {
+	util.Sugar.Debugw("Player removed",
+		"lobby", l.LobbyID,
+		"player", p.User,
+		"LobbysizeOld", len(l.player),
+		"LobbysizeNew", len(l.player)-1,
+	)
+
+	delete(l.player, p.User)
+	return nil
+}
+
+// addPlayer adds the Player to the Playerbase.
+// Also starts the Send and Receive Goroutines for this Player.
+// Returns a message to send to the new Player.
+func (l *Lobby) addPlayer(newPlayer *Player) []byte {
+	l.player[newPlayer.User] = newPlayer
+
+	util.Sugar.Debugw("New Player added",
+		"lobby", l.LobbyID,
+		"player", newPlayer.User,
+	)
+	go newPlayer.SendMessages()
+	go newPlayer.ReceiveMessages()
+
+	str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v", "name":"%s"}`, l.CurrentLocation, l.state, newPlayer.User)
+	return []byte(str)
 }
 
 // sendPointsToClient is a little helper function to send Message to the Player struct.

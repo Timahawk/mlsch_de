@@ -15,15 +15,13 @@ import (
 	"github.com/Timahawk/mlsch_de/pkg/locator_io"
 	"github.com/Timahawk/mlsch_de/pkg/util"
 
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/acme/autocert"
 )
 
 func main() {
-
-	util.InitLogger()
-	util.Sugar.Infof("Started mlsch_de application")
 
 	development := flag.Bool("dev", true, "Run local")
 	flag.Parse()
@@ -62,7 +60,14 @@ func main() {
 // Extra function for easier testsetup.
 func SetupRouter() *gin.Engine {
 
-	r := gin.Default()
+	Logger := util.InitLogger()
+	util.Sugar.Infof("Started mlsch_de application")
+
+	// r := gin.Default()
+	r := gin.New()
+	// Not using extra timestamp.
+	r.Use(ginzap.Ginzap(Logger, "", true))
+	r.Use(ginzap.RecoveryWithZap(Logger, true))
 
 	// *************************************************************** //
 	// 						Files & Templates 						   //

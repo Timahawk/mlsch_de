@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
@@ -39,6 +41,8 @@ type Player struct {
 	toSend chan []byte
 
 	cancel context.CancelFunc
+
+	distance int
 }
 
 func (p *Player) String() string {
@@ -63,6 +67,9 @@ func (p *Player) SendMessages() {
 			// This is to stop multiple writes to Dead Connection.
 			// Not really working.
 			p.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			if p.lobby.state == 1 {
+				toSend = []byte(strings.Replace(string(toSend), "XXX", strconv.Itoa(p.distance), 1))
+			}
 			err := p.conn.WriteMessage(websocket.TextMessage, toSend)
 			if err != nil {
 				p.lobby.unregister <- p
@@ -124,6 +131,8 @@ func (p *Player) ReceiveMessages() {
 				"distance", dist,
 				"error", err)
 		}
+
+		p.distance = int(dist)
 
 		//log.Println("Submit", p.lobby.CurrentLocation, p.User, string(message), "Dist", dist, p.lobby.game.Cities[p.lobby.CurrentLocation].Lat, p.lobby.game.Cities[p.lobby.CurrentLocation].Lng)
 		// Handle Message and Calcualte Points:

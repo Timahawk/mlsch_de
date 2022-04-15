@@ -10,3 +10,6 @@ certs/*
 
 # Exclude .exe files
 *.exe
+
+# Exclude log files 
+*.log

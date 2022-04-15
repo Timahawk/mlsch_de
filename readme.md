@@ -10,9 +10,10 @@
  - [x] Add User Names 
  - [ ] Write more Tests
  - [ ] Add Game Counter functionallity.
+ - [ ] Implement a better scoring system.
 
 ## Nice to have
- - [ ] Update Logger to Logrus or sth.
+ - [x] Update Logger to Logrus or sth. -> Switchted to Zap. Its okay. 
  - [ ] Footer Template
  - [ ] More gamesets.
  - [ ] Make Review Time lobby individual
@@ -20,4 +21,4 @@
 ## If I am bored
  - [ ] Check that no two Lobbies with same ID exists
  - [ ] Add Cookie to allow people to rejoin, when connection lost.
- - [ ]
+ - [ ] Check that no two player with same Name exists.

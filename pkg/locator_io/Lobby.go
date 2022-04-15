@@ -9,7 +9,7 @@ import (
 )
 
 // ReviewTime determines the duration of the review Screen.
-const ReviewTime = time.Second * 3
+const ReviewTime = time.Second * 7
 
 // Lobby maintains the set of active Player and broadcasts messages to the
 // clients. It is the dreh & angelpunkt of the ganze Veranstaltung.
@@ -140,7 +140,8 @@ func (l *Lobby) run() {
 			util.Sugar.Debugw("Player removed",
 				"lobby", l.LobbyID,
 				"player", removePlayer.User,
-				"Lobbysize", len(l.player),
+				"LobbysizeOld", len(l.player),
+				"LobbysizeNew", len(l.player)-1,
 			)
 
 			delete(l.player, removePlayer.User)
@@ -255,7 +256,15 @@ func (l *Lobby) run() {
 func (l *Lobby) sendPointsToClient() {
 	points, _ := json.Marshal(l.points)
 
-	str := fmt.Sprintf(`{"status":"review", "points":%s, "state": "%v", "Location":"%s", "Round":"%v", "time":"%v"}`, points, l.state, l.CurrentLocation, l.roundCounter, ReviewTime.Seconds())
+	str := fmt.Sprintf(
+		`{"status":"review", "points":%s, "state": "%v", "Location":"%s", "Round":"%v", "time":"%v", "distance":"XXX", "lat":"%v","lng":"%v"}`,
+		points,
+		l.state,
+		l.CurrentLocation,
+		l.roundCounter,
+		ReviewTime.Seconds(),
+		l.game.Cities[l.CurrentLocation].Lat,
+		l.game.Cities[l.CurrentLocation].Lng)
 
 	for _, player := range l.player {
 		player.toSend <- []byte(str)

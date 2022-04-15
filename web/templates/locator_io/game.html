@@ -48,7 +48,7 @@
         <div class="container">
             <div class="row"> 
                 <div class="col-sm">
-                    <button id="clickMe" type="button">Submit Guess!</button>
+                    <button id="clickMe" class="btn btn-primary mx-auto" type="button">Submit Guess!</button>
                 </div>
                 <div class="col-sm">
                     <h1 style="text-align:left;float:left;" id="city">Ready?</h1>
@@ -181,28 +181,21 @@
             if (message.status == "location") {
                 document.getElementById("city").innerHTML = message.Location
                 document.getElementById("points").innerHTML = ""
+                solution_layer.getSource().clear()
                 
             }
             if (message.status == "review") {
 
-                document.getElementById("points").innerHTML = JSON.stringify(message.points)
-                AddDataset()
-                AddData()
+                // document.getElementById("points").innerHTML = JSON.stringify(message.points)
+                document.getElementById("points").innerHTML = message.distance +  "km away."
+                AddDataset();
+                AddData();
+                AddSolution(message);
                 chartIndex++;
             }
         };
 
-        
-        function doTimestuff(time){
-            console.log("This is calling doTimeStuff")
-            clearInterval(timecounter)
-            return setInterval(function(){
-                document.getElementById("time").innerHTML = time
-                console.log("This is running", time)
-                time--
-            }/1000);
-        }
-        
+               
         var city
         var token = 'pk.eyJ1IjoidGltd2VuZGVsIiwiYSI6ImNraDBoeG9ubTFkd20zMXJydDA5YjR0OXEifQ.uuncQPQVAT2rDxfj81AILw';
 
@@ -292,7 +285,7 @@
             data = myChart.data;
             data.labels.push(message.Location);
             
-            console.log(data.datasets)
+            // console.log(data.datasets)
 
 
             //if (data.datasets.length > 0) {
@@ -317,6 +310,17 @@
             }
             myChart.update();
         }
+
+
+        function AddSolution(message){
+            solution = new ol.Feature({
+                geometry: new ol.geom.Point(ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857'))
+                });
+
+            solution_layer.getSource().addFeature(solution)
+            flyTo(ol.proj.fromLonLat([message.lng, message.lat]), function (){});
+        }
+
 
         function AddDataset() {
         data = myChart.data;
@@ -352,7 +356,7 @@
                     console.log("Should not run!")
                 };
 
-                console.log("Biggest", biggest)
+                // console.log("Biggest", biggest)
 
                 myChart.data.datasets.push(newDataset);
                 // chart.update();

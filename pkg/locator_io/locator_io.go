@@ -101,7 +101,7 @@ func ServeLobby(c *gin.Context) {
 	// but so far it works.
 	ctx, fn := context.WithCancel(context.Background())
 
-	player := Player{ctx, lobby, user, conn, make(chan []byte), fn}
+	player := Player{ctx, lobby, user, conn, make(chan []byte), fn, 0}
 
 	// log.Println("New Player registered", player)
 	util.Sugar.Infow("Serve Lobby Websockets",

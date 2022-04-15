@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
 )
@@ -41,6 +42,20 @@ type Game struct {
 // }
 
 func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, extent []float64) (*Game, error) {
+	start := time.Now()
+	defer func() {
+		util.Sugar.Debugw("New Game created",
+			"duration", time.Since(start),
+			"name", name,
+			"pfad", pfad,
+			"center", center,
+			"zoom", zoom,
+			"maxZoom", maxZoom,
+			"minZoom", minZoom,
+			"extent", extent,
+		)
+	}()
+
 	cities, err := LoadCities(pfad)
 	// log.Println(cities)
 	if err != nil {
@@ -49,20 +64,19 @@ func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, ex
 	newGame := Game{name, center, zoom, maxZoom, minZoom, extent, cities}
 	// Games[name] = &newGame
 
-	util.Sugar.Debugw("New Game created",
-		"name", name,
-		"pfad", pfad,
-		"center", center,
-		"zoom", zoom,
-		"maxZoom", maxZoom,
-		"minZoom", minZoom,
-		"extent", extent,
-	)
-
 	return &newGame, nil
 }
 
 func LoadCities(file string) (map[string]*City, error) {
+	start := time.Now()
+
+	defer func() {
+		util.Sugar.Debugw("File/Cities loaded",
+			"file", file,
+			"duration", time.Since(start),
+		)
+	}()
+
 	cities := make([]City, 0)
 
 	content, err := ioutil.ReadFile(file)
@@ -88,8 +102,6 @@ func LoadCities(file string) (map[string]*City, error) {
 	//for _, city := range cities {
 	//	cities_map[city.Name_ascii] = &city
 	//}
-	util.Sugar.Debugw("File/Cities loaded",
-		"file", file,
-	)
+
 	return cities_map, nil
 }

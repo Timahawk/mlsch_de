@@ -1,7 +1,7 @@
 # Bug List
  - [x] If a new Game starts and all Player submit during the inital 5 Second wait, then the round starts as all Player submitted -> Resultphase.
  - [x] If the timer is not 30 Sec the game is stuck in Review Phase.
- - [ ]
+ - [ ] Multiple submits during a round all get added. Fix imeadiattly!!!
 
 
 # ToDo List
@@ -11,6 +11,7 @@
  - [ ] Write more Tests
  - [ ] Add Game Counter functionallity.
  - [ ] Implement a better scoring system.
+ - [ ] Make it that not submitted, also Gets Points.
 
 ## Nice to have
  - [x] Update Logger to Logrus or sth. -> Switchted to Zap. Its okay. 

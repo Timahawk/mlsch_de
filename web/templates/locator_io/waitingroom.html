@@ -1,0 +1,44 @@
+{{ define "locator_io/waitingroom.html" }}
+
+<title>{{ .title }}</title>
+
+{{ template "globals/style_head.html" }}
+{{ template "globals/style_body.html" }}
+
+    <form id="formAddName">
+    <ol id="demo"></ol>
+
+    <script>
+    
+        var list = document.getElementById('demo');    
+
+        var host = document.location.host;
+        var path = document.location.pathname;
+
+        var message
+       
+        // Das hier weils wichtig ist ob https oder nicht.
+        // Browser erlauben KEIN downgrad also https zu ws!
+        if (location.protocol === 'https:'){
+            conn = new WebSocket("wss://" + document.location.host + path + "/ws")
+        } else {
+            conn = new WebSocket("ws://" + document.location.host + path + "/ws")
+        };
+
+        console.log("Connected", conn)
+
+        conn.onclose = function (evt) {
+            console.log("Closed", evt.data)
+        };
+        conn.onmessage = function (evt) {
+            message = evt.data
+            var entry = document.createElement('li');
+            entry.appendChild(document.createTextNode(evt.data));
+            list.appendChild(entry);
+            console.log(evt.data)
+        }
+
+</script>
+
+
+{{ end }}

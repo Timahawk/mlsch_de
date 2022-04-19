@@ -29,7 +29,7 @@ func CreateLobbyPOST(c *gin.Context) {
 	g := c.PostForm("gameset")
 	username := c.PostForm("username")
 
-	if ti == "" || g == "" {
+	if ti == "" || g == "" || username == "" {
 		c.JSON(400, gin.H{"status": "Form not good"})
 		log.Println(ti, g)
 		return
@@ -45,6 +45,8 @@ func CreateLobbyPOST(c *gin.Context) {
 	}
 
 	lobby := NewLobby(timeINT, game)
+	go lobby.waitRoom.run()
+
 	util.Sugar.Infow("Created new Lobby",
 		"Lobby", lobby.LobbyID,
 		"Game", lobby.game.Name,
@@ -56,7 +58,7 @@ func CreateLobbyPOST(c *gin.Context) {
 }
 
 // Join Lobby is the function which sends the actual gamepage.
-func JoinLobby(c *gin.Context) {
+func GetWaitingroom(c *gin.Context) {
 	lobbyID := c.Param("lobby")
 
 	// gets the user and sends it as a template
@@ -67,11 +69,61 @@ func JoinLobby(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "Lobby not found!"})
 		return
 	}
-	util.Sugar.Infow("Created new Lobby",
-		"Lobby", lobby.LobbyID,
-		"Game", lobby.game.Name,
-		"Roundtimes", lobby.RoundTime,
-		"Player", user)
+
+	if lobby.started {
+		c.JSON(200, gin.H{"status": "Lobby already started"})
+		return
+	}
+
+	c.HTML(200, "locator_io/waitingroom.html", gin.H{"user": user})
+}
+
+func Waitingroom_WS(c *gin.Context) {
+	lobbyID := c.Param("lobby")
+
+	lobby, err := getLobby(lobbyID)
+	if err != nil {
+		c.JSON(200, gin.H{"status": "Lobby not found!"})
+		return
+	}
+
+	var user string
+	user = c.Query("user")
+	if user == "" {
+		user = util.RandString(7)
+	}
+
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		log.Fatalln(err)
+		return
+	}
+
+	ctx, fn := context.WithCancel(context.Background())
+	// lobby.register <- &Player{ctx, lobby, user, conn, make(chan []byte), fn, 0, 0, 0}
+
+	fmt.Println("WaitingRoomWS registered ", user)
+
+	lobby.waitRoom.register <- &Player{ctx, lobby, user, conn, make(chan []byte), fn, 0, 0, 0}
+
+	fmt.Println("WaitingRoomWS registered 2", user)
+}
+
+func PlayGame(c *gin.Context) {
+	lobbyID := c.Param("lobby")
+
+	// gets the user and sends it as a template
+	user := c.Query("user")
+
+	lobby, err := getLobby(lobbyID)
+	if err != nil {
+		c.JSON(200, gin.H{"status": "Lobby not found!"})
+		return
+	}
+	if !lobby.started {
+		c.JSON(200, gin.H{"status": "Lobby not started."})
+		return
+	}
 	c.HTML(200, "locator_io/game.html", gin.H{"user": user})
 }
 

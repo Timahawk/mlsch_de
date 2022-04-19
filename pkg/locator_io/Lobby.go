@@ -17,6 +17,16 @@ type Lobby struct {
 	// Hub ID
 	LobbyID string
 
+	// Who creates the lobby. and starts the Lobby.
+	// TODO
+	//owner *Player
+
+	//WaitingRoom
+	waitRoom *Waitingroom
+
+	// This determines the wether the lobby is started.
+	started bool
+
 	// Determines the duration of a guessing round.
 	RoundTime int
 
@@ -72,6 +82,12 @@ func NewLobby(zeit int, game *Game) *Lobby {
 
 	lobby := Lobby{
 		id,
+		&Waitingroom{
+			register:     make(chan *Player),
+			unregister:   make(chan *Player),
+			players:      make(map[string]*Player),
+			player_names: make([]string, 0)},
+		false,
 		zeit,
 		make(map[string]*Player),
 		make(map[string]int),
@@ -85,7 +101,7 @@ func NewLobby(zeit int, game *Game) *Lobby {
 		0,
 		"Wait for a sec."}
 
-	go lobby.run()
+	// go lobby.run()
 	Lobbies[id] = &lobby
 	util.Sugar.Debugw("New Lobby created.",
 		"id", id,
@@ -264,8 +280,7 @@ func (l *Lobby) addPlayer(newPlayer *Player) []byte {
 	)
 	go newPlayer.SendMessages()
 	go newPlayer.ReceiveMessages()
-
-	str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v", "name":"%s"}`, l.CurrentLocation, l.state, newPlayer.User)
+	str := fmt.Sprintf(`{"status":"Waiting", "Player":"newPlayer.User"}`)
 	return []byte(str)
 }
 

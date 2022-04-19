@@ -3,6 +3,10 @@
  - [x] If the timer is not 30 Sec the game is stuck in Review Phase.
  - [ ] Multiple submits during a round all get added. Fix imeadiattly!!!
 
+# User Flow
+1) [ ] Create Lobby
+2) [ ] Lobby Waiting Room
+3) [ ] Play
 
 # ToDo List
 ## Need to be done

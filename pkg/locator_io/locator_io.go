@@ -63,6 +63,10 @@ func GetWaitingroom(c *gin.Context) {
 
 	// gets the user and sends it as a template
 	user := c.Query("user")
+	if user == "" {
+		c.JSON(200, gin.H{"status": "You need to join via link on frontpage."})
+		return
+	}
 
 	lobby, err := getLobby(lobbyID)
 	if err != nil {
@@ -87,8 +91,8 @@ func Waitingroom_WS(c *gin.Context) {
 		return
 	}
 
-	var user string
-	user = c.Query("user")
+	user := c.Query("user")
+	// fmt.Println(user)
 	if user == "" {
 		user = util.RandString(7)
 	}
@@ -102,11 +106,11 @@ func Waitingroom_WS(c *gin.Context) {
 	ctx, fn := context.WithCancel(context.Background())
 	// lobby.register <- &Player{ctx, lobby, user, conn, make(chan []byte), fn, 0, 0, 0}
 
-	fmt.Println("WaitingRoomWS registered ", user)
+	// fmt.Println("WaitingRoomWS registered ", user)
 
 	lobby.waitRoom.register <- &Player{ctx, lobby, user, conn, make(chan []byte), fn, 0, 0, 0}
 
-	fmt.Println("WaitingRoomWS registered 2", user)
+	// fmt.Println("WaitingRoomWS registered 2", user)
 }
 
 func PlayGame(c *gin.Context) {

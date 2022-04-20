@@ -8,6 +8,8 @@
     <form id="formAddName">
     <ol id="demo"></ol>
 
+    <button type="button">Start Lobby!</button> 
+
     <script>
     
         var list = document.getElementById('demo');    
@@ -20,13 +22,17 @@
         // Das hier weils wichtig ist ob https oder nicht.
         // Browser erlauben KEIN downgrad also https zu ws!
         if (location.protocol === 'https:'){
-            conn = new WebSocket("wss://" + document.location.host + path + "/ws")
+            conn = new WebSocket("wss://" + document.location.host + path + "/ws?user=" + {{ .user }})
         } else {
-            conn = new WebSocket("ws://" + document.location.host + path + "/ws")
+            conn = new WebSocket("ws://" + document.location.host + path + "/ws?user=" + {{ .user }})
         };
 
-        console.log("Connected", conn)
-
+        conn.onerror = function (evt){
+            console.log(evt.message)
+        }
+        conn.onopen = function (evt){
+            console.log("Connected", conn)
+        }
         conn.onclose = function (evt) {
             console.log("Closed", evt.data)
         };

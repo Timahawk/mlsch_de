@@ -1,0 +1,28 @@
+{{ define "locator_v2/Waitingroom.html" }}
+
+<title>{{ .LobbyID }}</title>
+
+    <form id="formAddName">
+    <ol id="demo"></ol>
+
+    <form method="post" action= "create">
+        <input type="submit" value="Start Lobby!">
+    </form>
+
+
+    <script>
+        var host = document.location.host;
+        var path = document.location.pathname;
+      
+        // Das hier weils wichtig ist ob https oder nicht.
+        // Browser erlauben KEIN downgrad also https zu ws!
+        if (location.protocol === 'https:'){
+            conn = new WebSocket("wss://" + document.location.host + path + "ws?user=" + {{ .user }})
+        } else {
+            conn = new WebSocket("ws://" + document.location.host + path + "ws?user=" + {{ .user }})
+        };
+
+        console.log(conn)
+    </script>
+
+{{ end }}

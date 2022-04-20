@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/Timahawk/go_watcher v0.0.0-20220408122751-04225c025979
+	github.com/gin-contrib/zap v0.0.2
 	github.com/gin-gonic/autotls v0.0.3
 	github.com/gin-gonic/gin v1.7.7
 	github.com/gorilla/websocket v1.5.0
@@ -14,7 +15,6 @@ require (
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-contrib/zap v0.0.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect

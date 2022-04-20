@@ -86,6 +86,28 @@ func (p *Player) SendMessages() {
 	}
 }
 
+func (p *Player) WriteToConn(str string) {
+	// This is stupid because it may be to short.
+	err := p.conn.SetWriteDeadline(time.Now().Add(time.Millisecond * 50))
+	if err != nil {
+		util.Sugar.Debugw("WriteDeadline failed",
+			"WaitRoom", p.lobby.LobbyID,
+			"player", p.User,
+			"error", err,
+		)
+		p.lobby.waitRoom.unregister <- p
+	}
+	err = p.conn.WriteMessage(websocket.TextMessage, []byte(str))
+	if err != nil {
+		util.Sugar.Debugw("WriteMessage failed",
+			"WaitRoom", p.lobby.LobbyID,
+			"player", p.User,
+			"error", err,
+		)
+		p.lobby.waitRoom.unregister <- p
+	}
+}
+
 // ReceiveMessages runs, parses and handles incoming messages.
 func (p *Player) ReceiveMessages() {
 	defer func() {

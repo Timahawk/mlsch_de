@@ -13,9 +13,9 @@ import (
 	"github.com/Timahawk/mlsch_de/pkg/chat"
 	"github.com/Timahawk/mlsch_de/pkg/locator"
 	"github.com/Timahawk/mlsch_de/pkg/locator_io"
+	"github.com/Timahawk/mlsch_de/pkg/locator_v2"
 	"github.com/Timahawk/mlsch_de/pkg/util"
 
-	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/acme/autocert"
@@ -60,14 +60,14 @@ func main() {
 // Extra function for easier testsetup.
 func SetupRouter() *gin.Engine {
 
-	Logger := util.InitLogger()
+	util.InitLogger()
 	util.Sugar.Infof("Started mlsch_de application")
 
-	// r := gin.Default()
-	r := gin.New()
+	r := gin.Default()
+	//r := gin.New()
 	// Not using extra timestamp.
-	r.Use(ginzap.Ginzap(Logger, "", true))
-	r.Use(ginzap.RecoveryWithZap(Logger, true))
+	// r.Use(ginzap.Ginzap(Logger, "", true))
+	// r.Use(ginzap.RecoveryWithZap(Logger, true))
 
 	// *************************************************************** //
 	// 						Files & Templates 						   //
@@ -153,6 +153,20 @@ func SetupRouter() *gin.Engine {
 		locator_ioGroup.GET("/:lobby/ws", locator_io.Waitingroom_WS)
 		locator_ioGroup.GET("/:lobby/game", locator_io.PlayGame)
 		locator_ioGroup.GET("/:lobby/game/ws", locator_io.ServeLobby)
+	}
+
+	// *************************************************************** //
+	// 							LOCATOR-V2							   //
+	// *************************************************************** //
+
+	locator_v2Group := r.Group("/v")
+	{
+		locator_v2Group.GET("/", locator_v2.CreateOrJoinLobby)
+		locator_v2Group.POST("/create", locator_v2.CreateLobbyPOST)
+		locator_v2Group.POST("/join", locator_v2.JoinLobbyPOST)
+		locator_v2Group.GET("/:lobby/", locator_v2.WaitingRoom)
+		locator_v2Group.GET("/:lobby/ws", locator_v2.WaitingRoomWS)
+		// locator_v2Group.GET("/", locator_v2.CreateOrJoinLobby)
 	}
 
 	return r

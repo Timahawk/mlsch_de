@@ -86,7 +86,8 @@ func NewLobby(zeit int, game *Game) *Lobby {
 			register:     make(chan *Player),
 			unregister:   make(chan *Player),
 			players:      make(map[string]*Player),
-			player_names: make([]string, 0)},
+			player_names: make([]string, 0),
+			lobby:        &Lobby{}},
 		false,
 		zeit,
 		make(map[string]*Player),
@@ -100,6 +101,8 @@ func NewLobby(zeit int, game *Game) *Lobby {
 		3,
 		0,
 		"Wait for a sec."}
+
+	lobby.waitRoom.lobby = &lobby
 
 	// go lobby.run()
 	Lobbies[id] = &lobby

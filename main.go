@@ -171,9 +171,10 @@ func SetupRouter() *gin.Engine {
 		locator_v2Group.GET("/", locator_v2.CreateOrJoinLobby)
 		locator_v2Group.POST("/create", locator_v2.CreateLobbyPOST)
 		locator_v2Group.POST("/join", locator_v2.JoinLobbyPOST)
-		locator_v2Group.GET("/:lobby/", locator_v2.WaitingRoom)
+		locator_v2Group.GET("/:lobby", locator_v2.WaitingRoom)
 		locator_v2Group.GET("/:lobby/ws", locator_v2.WaitingRoomWS)
-		// locator_v2Group.GET("/", locator_v2.CreateOrJoinLobby)
+		locator_v2Group.GET("/:lobby/game", locator_v2.GameRoom)
+		locator_v2Group.GET("/:lobby/game/ws", locator_v2.GameRoomWS)
 	}
 
 	return r

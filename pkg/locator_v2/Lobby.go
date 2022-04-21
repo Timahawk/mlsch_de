@@ -102,6 +102,8 @@ func (l *Lobby) serveWaitRoom() {
 				"Player", p.Name)
 			// delete(l.player, p.Name)
 			p.connected = false
+			p.ready = false
+			p.ctxcancel()
 			for _, pl := range l.player {
 				if pl.conn != nil && pl.connected == true {
 					pl.toConn <- fmt.Sprintf("%s left the lobby.", p.Name)
@@ -127,15 +129,39 @@ func (l *Lobby) serveWaitRoom() {
 			}
 		case <-timer.C:
 			// Start the Gameplay management goroutine.
-
+			go l.serveGame()
+			// Start the Lobby
+			l.started = true
 			// Send message to all connected clients
-
+			for _, p := range l.player {
+				if p.conn != nil && p.connected == true {
+					p.toConn <- fmt.Sprintf("Consider yourself redirected.")
+					// p.conn.WriteMessage(websocket.CloseMessage, []byte{})
+				}
+			}
 			// Stop all still running Goroutines.
-
+			for _, p := range l.player {
+				if p.conn != nil && p.connected == true {
+					p.ctxcancel()
+				}
+			}
+			// Reset Connected.
+			for _, p := range l.player {
+				if p.conn != nil && p.connected == true {
+					p.connected = false
+					// p.conn = nil
+				}
+			}
 			// Stop this function.
+			// return
+
+			// Start the Lobby
+			l.started = true
 		}
 	}
 }
+
+func (l *Lobby) serveGame() {}
 
 func (l *Lobby) getPlayer(name string) (*Player, error) {
 	if p, ok := l.player[name]; ok {
@@ -147,7 +173,7 @@ func (l *Lobby) getPlayer(name string) (*Player, error) {
 func (l *Lobby) getActivePlayers() string {
 	liste := ""
 	for _, p := range l.player {
-		if p.conn != nil {
+		if p.connected != false {
 			liste = liste + " " + p.Name
 		}
 	}

@@ -1,6 +1,7 @@
 package locator_v2
 
 import (
+	"context"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
@@ -25,6 +26,15 @@ type Player struct {
 
 	//If the Player is ready to start the game
 	ready bool
+
+	// Context to properly stop WriteToConn & ReceiveFromConn
+	ctx context.Context
+	// Cancelfunc
+	ctxcancel context.CancelFunc
+}
+
+func NewPlayer(ctx context.Context, ctxcancel context.CancelFunc, lobby *Lobby, name string) *Player {
+	return &Player{lobby, name, nil, false, make(chan string), false, ctx, ctxcancel}
 }
 
 func (p *Player) WriteToConn() {
@@ -60,11 +70,15 @@ func (p *Player) WriteToConn() {
 				)
 				p.lobby.drop <- p
 			}
+		case <-p.ctx.Done():
+			// p.conn.SetWriteDeadline(time.Now().Add(time.Millisecond * 50))
+			// p.conn.WriteMessage(websocket.CloseMessage, []byte("Consider yourself Closed!"))
+			return
 		}
-
 	}
 }
 
+// This does not terminate proberly when the connection is closed.
 func (p *Player) ReceiveFromConn() {
 	util.Sugar.Infow("ReceiveFromConn started",
 		"WaitRoom", p.lobby.LobbyID,
@@ -86,18 +100,7 @@ func (p *Player) ReceiveFromConn() {
 			p.conn.SetReadDeadline(time.Now().Add(60 * time.Second * 60))
 			return nil
 		})
-	// p.conn.SetCloseHandler(
-	// 	func(code int, text string) error {
-	// 		log.Println("SetCloseHandler Called.")
 
-	// 		message := websocket.FormatCloseMessage(code, "")
-	// 		// CloseMessage denotes a close control message. The optional message
-	// 		// payload contains a numeric code and text. Use the FormatCloseMessage
-	// 		// function to format a close message payload.
-	// 		CloseMessage := 8
-	// 		p.conn.WriteControl(CloseMessage, message, time.Now().Add(10*time.Second))
-	// 		return fmt.Errorf("SetCloseHandler Called.")
-	// 	})
 	for {
 		_, _, err := p.conn.ReadMessage()
 		if err != nil {

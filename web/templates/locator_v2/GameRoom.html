@@ -1,15 +1,9 @@
-{{ define "locator_v2/WaitingRoom.html" }}
+{{ define "locator_v2/GameRoom.html" }}
 
 <title>{{ .LobbyID }}</title>
 
-    <h1>Waiting Room</h1>
-    <h2 id="players"></h2>
-    <form id="formAddName">
-    <ol id="demo"></ol>
-
+    <h1>GameRoom</h1>
     
-    <button id="readybutton" type="button">Start Lobby!</button>
-
     <script>
         var list = document.getElementById('demo');   
         var host = document.location.host;
@@ -32,15 +26,7 @@
             console.log("Closed", conn, evt)
         };
         conn.onmessage = function (evt) {
-            // console.log("Message", evt.data)
-            var entry = document.createElement('li');
-            entry.appendChild(document.createTextNode(evt.data));
-            list.appendChild(entry);
-        };
-
-        document.getElementById("readybutton").onclick = function () {
-            conn.send("ready");
-            console.log("Send ready message!")
+            console.log("Message", evt.data)
         };
     </script>
 {{ end }}

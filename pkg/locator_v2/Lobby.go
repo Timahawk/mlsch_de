@@ -3,6 +3,7 @@ package locator_v2
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
 )
@@ -29,7 +30,10 @@ type Lobby struct {
 	add chan *Player
 
 	// Unregister requests from clients.
-	remove chan *Player
+	drop chan *Player
+
+	// Receives calls that players are ready
+	ready chan *Player
 }
 
 // NewLobby creates a new Lobby.
@@ -42,13 +46,14 @@ func NewLobby(zeit int, game *Game, owner *Player) *Lobby {
 		started:   false,
 		RoundTime: zeit,
 		player:    make(map[string]*Player),
-		add:       make(chan *Player, 5),
-		remove:    make(chan *Player, 5),
+		add:       make(chan *Player, 10),
+		drop:      make(chan *Player, 10),
+		ready:     make(chan *Player, 10),
 	}
 
 	Lobbies[id] = &lobby
 
-	util.Sugar.Debugw("New Lobby created.",
+	util.Sugar.Infow("New Lobby created.",
 		"id", id,
 		"time", zeit,
 		"state", 3,
@@ -60,20 +65,103 @@ func NewLobby(zeit int, game *Game, owner *Player) *Lobby {
 }
 
 func (l *Lobby) serveWaitRoom() {
+	defer func() {
+		util.Sugar.Infow("serveLobby stopped",
+			"Lobby", l.LobbyID)
+	}()
+
+	timer := new(time.Timer)
+
+	// Das macht einen nilPointer error??
+	// util.Sugar.Infow("serveLobby started",
+	// 	"Lobby", l.LobbyID)
 	for {
 		select {
 		case p := <-l.add:
+			// if _, err := l.getPlayer(p.Name); err == nil {
+			// 	util.Sugar.Infow("Add but Player already existed.",
+			// 		"Lobby", l.LobbyID,
+			// 		"Player", p.Name)
+			// 	l.player[p.Name] = p
+			// 	continue
+			// }
+			util.Sugar.Infow("Add",
+				"Lobby", l.LobbyID,
+				"Player", p.Name)
 			l.player[p.Name] = p
+			p.connected = true
 
-		case p := <-l.remove:
-			delete(l.player, p.Name)
+			for _, pl := range l.player {
+				if pl.conn != nil && pl.connected == true {
+					pl.toConn <- fmt.Sprintf("%s joined the lobby.", p.Name)
+				}
+			}
+		case p := <-l.drop:
+			util.Sugar.Infow("Remove",
+				"Lobby", l.LobbyID,
+				"Player", p.Name)
+			// delete(l.player, p.Name)
+			p.connected = false
+			for _, pl := range l.player {
+				if pl.conn != nil && pl.connected == true {
+					pl.toConn <- fmt.Sprintf("%s left the lobby.", p.Name)
+				}
+			}
+		case p := <-l.ready:
+			util.Sugar.Infow("Ready",
+				"Lobby", l.LobbyID,
+				"Player", p.Name)
+			// delete(l.player, p.Name)
+			for _, pl := range l.player {
+				if pl.conn != nil && pl.connected == true {
+					pl.toConn <- fmt.Sprintf("%s is ready to Play.", p.Name)
+				}
+			}
+			if l.areAllActivePlayersReady() {
+				for _, pl := range l.player {
+					if pl.conn != nil && pl.connected == true {
+						pl.toConn <- fmt.Sprintf("Lobby will start in 5 Seconds!")
+					}
+				}
+				timer = time.NewTimer(time.Second * 5)
+			}
+		case <-timer.C:
+			// Start the Gameplay management goroutine.
+
+			// Send message to all connected clients
+
+			// Stop all still running Goroutines.
+
+			// Stop this function.
 		}
 	}
 }
 
-func (l *Lobby) getUser(name string) (*Player, error) {
+func (l *Lobby) getPlayer(name string) (*Player, error) {
 	if p, ok := l.player[name]; ok {
 		return p, nil
 	}
 	return nil, errors.New(fmt.Sprintln(name, "not found for Lobby", l.LobbyID))
+}
+
+func (l *Lobby) getActivePlayers() string {
+	liste := ""
+	for _, p := range l.player {
+		if p.conn != nil {
+			liste = liste + " " + p.Name
+		}
+	}
+	return liste
+}
+
+func (l *Lobby) areAllActivePlayersReady() bool {
+	for _, p := range l.player {
+		if p.connected == false {
+			continue
+		}
+		if p.ready == false {
+			return false
+		}
+	}
+	return true
 }

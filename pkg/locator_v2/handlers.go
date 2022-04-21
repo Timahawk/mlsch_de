@@ -1,6 +1,7 @@
 package locator_v2
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"strings"
@@ -29,15 +30,15 @@ func CreateLobbyPOST(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "CreateLobbyPost failed, due to faulty Form Input."})
 		return
 	}
+	ctx, cancelCtx := context.WithCancel(contextbg)
+	p := NewPlayer(ctx, cancelCtx, &Lobby{}, username)
 
-	p := Player{&Lobby{}, username, nil, false, make(chan string), false}
-
-	l := NewLobby(roundTime, nil, &p)
+	l := NewLobby(roundTime, nil, p)
 	p.lobby = l
 
 	go l.serveWaitRoom()
 
-	l.add <- &p
+	l.add <- p
 
 	Lobbies[l.LobbyID] = l
 
@@ -62,9 +63,9 @@ func JoinLobbyPOST(c *gin.Context) {
 		c.JSON(213, gin.H{"status": "JoinLobbyPost failed, due to Lobby not Exists."})
 		return
 	}
-
-	p := Player{l, username, nil, false, make(chan string), false}
-	l.add <- &p
+	ctx, cancelCtx := context.WithCancel(contextbg)
+	p := NewPlayer(ctx, cancelCtx, l, username)
+	l.add <- p
 	// c.JSON(200, gin.H{"status": "JoinLobbyPost", "Lobby": l})
 	path := c.Request.URL.Path
 	path = strings.Replace(path, "/join", "", 1)
@@ -87,6 +88,9 @@ func WaitingRoom(c *gin.Context) {
 		c.JSON(213, gin.H{"status": "WaitingRoom failed, due to faulty Parameter User", "user": username, "error": err, "player": p})
 		return
 	}
+	ctx, cancelCtx := context.WithCancel(contextbg)
+	p.ctx = ctx
+	p.ctxcancel = cancelCtx
 	l.add <- p
 
 	c.HTML(200, "locator_v2/WaitingRoom.html", gin.H{"title": lobbyID, "user": p.Name})
@@ -125,9 +129,9 @@ func WaitingRoomWS(c *gin.Context) {
 
 	go p.WriteToConn()
 	go p.ReceiveFromConn()
-	util.Sugar.Infow("WaitingRoomWs enabled",
-		"Lobby", p.lobby.LobbyID,
-		"player", p.Name)
+	// util.Sugar.Infow("WaitingRoomWs enabled",
+	// 	"Lobby", p.lobby.LobbyID,
+	// 	"player", p.Name)
 
 	p.toConn <- fmt.Sprintf("Already joined Players: %s", l.getActivePlayers())
 }
@@ -137,14 +141,18 @@ func GameRoom(c *gin.Context) {
 
 	l, err := getLobby(lobbyID)
 	if err != nil {
-		c.JSON(213, gin.H{"status": "Play Game failed, due to Lobby not Exists."})
+		c.JSON(213, gin.H{"status": "PlayGame failed, due to Lobby not Exists."})
+		return
+	}
+	if l.started == false {
+		c.JSON(213, gin.H{"status": "PlayGame failed, due to Lobby Ready"})
 		return
 	}
 
 	username := c.Query("user")
 	p, err := l.getPlayer(username)
 	if err != nil {
-		c.JSON(213, gin.H{"status": "Play Game failed, due to faulty Parameter User"})
+		c.JSON(213, gin.H{"status": "PlayGame failed, due to faulty Parameter User"})
 		return
 	}
 	c.HTML(200, "locator_v2/GameRoom.html", gin.H{"title": lobbyID, "user": p.Name})
@@ -156,6 +164,10 @@ func GameRoomWS(c *gin.Context) {
 	l, err := getLobby(lobbyID)
 	if err != nil {
 		c.JSON(213, gin.H{"status": "WaitingRoomWS failed, due to Lobby not Exists."})
+		return
+	}
+	if l.started == false {
+		c.JSON(213, gin.H{"status": "PlayGameWS failed, due to Lobby Ready"})
 		return
 	}
 

@@ -1,6 +1,7 @@
 package locator_v2
 
 import (
+	"context"
 	"errors"
 	"fmt"
 
@@ -10,12 +11,16 @@ import (
 // All currently active Lobbies
 var Lobbies = map[string]*Lobby{}
 var upgrader = websocket.Upgrader{}
+var contextbg = context.Background()
 
 func init() {
 	// TODO if production dont do that.
-	testplayer := &Player{&Lobby{}, "test", nil, false, make(chan string), false}
-	testplayer2 := &Player{&Lobby{}, "test2", nil, false, make(chan string), false}
-	testplayer3 := &Player{&Lobby{}, "test3", nil, false, make(chan string), false}
+	ctx, cancelCtx := context.WithCancel(contextbg)
+	testplayer := NewPlayer(ctx, cancelCtx, &Lobby{}, "test1")
+	ctx, cancelCtx = context.WithCancel(contextbg)
+	testplayer2 := NewPlayer(ctx, cancelCtx, &Lobby{}, "test2")
+	ctx, cancelCtx = context.WithCancel(contextbg)
+	testplayer3 := NewPlayer(ctx, cancelCtx, &Lobby{}, "test3")
 
 	Lobbies["AAAAAAAA"] = &Lobby{
 		LobbyID:   "AAAAAAAA",
@@ -33,7 +38,7 @@ func init() {
 	testplayer.lobby = l
 	testplayer2.lobby = l
 	testplayer3.lobby = l
-	l.player["test"] = testplayer
+	l.player["test1"] = testplayer
 	l.player["test2"] = testplayer2
 	l.player["test3"] = testplayer3
 

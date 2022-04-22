@@ -2,7 +2,8 @@
 
 <head>
     <title>{{ .LobbyID }}</title>
-
+    {{ template "globals/style_head.html" }}
+    
     <style>
         .map {
           width: 100%;
@@ -18,7 +19,7 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css">
 </head>
 <body>
-    
+  {{ template "globals/style_body.html" }}
     <h1>GameRoom</h1>
     <div>
       <b id="time"></b>
@@ -26,6 +27,7 @@
       <b id="points"></b>
       <b id="status"></b>
       <b id="distance"></b>
+      <b id="awarded"></b>
     </div>
     
     <button id="submitButton" type="button">Submit Guess</button>

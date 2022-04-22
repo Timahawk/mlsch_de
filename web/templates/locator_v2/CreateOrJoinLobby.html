@@ -1,11 +1,12 @@
 {{ define "locator_v2/CreateOrJoinLobby.html" }}
 
 <title>{{ .title }}</title>
-
+{{ template "globals/style_head.html" }}
+{{ template "globals/style_body.html" }}
 
 <form method="post" action= "create">
     <label for="roundTime">Choose the length of each guessing round (seconds)</label>
-    <input type="number" required min=1 max=60 id="roundTime" name="roundTime" value="30"><br>
+    <input type="number" required min=1 max=240 id="roundTime" name="roundTime" value="45"><br>
 
     <label for="gameset">Choose a Gameset:</label>
     <select name="gameset" required id="gameset">

@@ -89,7 +89,7 @@ func (p *Player) WriteToConn() {
 			}
 			// TODO this is stupid i think.
 			if strings.Contains(str, "points") {
-				str = str + fmt.Sprintf(`,"distance":"%v"}`, int(math.Round(p.distance/1000)))
+				str = str + fmt.Sprintf(`,"distance":"%v", "awarded":"%v"}`, int(math.Round(p.distance/1000)), p.score[len(p.score)-1])
 			}
 
 			err = p.conn.WriteMessage(websocket.TextMessage, []byte(str))

@@ -12,7 +12,6 @@ import (
 	"github.com/Timahawk/go_watcher"
 	"github.com/Timahawk/mlsch_de/pkg/chat"
 	"github.com/Timahawk/mlsch_de/pkg/locator"
-	"github.com/Timahawk/mlsch_de/pkg/locator_io"
 	"github.com/Timahawk/mlsch_de/pkg/locator_v2"
 	"github.com/Timahawk/mlsch_de/pkg/util"
 
@@ -137,23 +136,23 @@ func SetupRouter() *gin.Engine {
 	// 							LOCATOR-IO							   //
 	// *************************************************************** //
 
-	locator_io.LoadedGames["world"], _ = locator_io.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator_io.LoadedGames["large"], _ = locator_io.NewGame("large", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator_io.LoadedGames["capitals"], _ = locator_io.NewGame("capitals", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	// locator_io.LoadedGames["world"], _ = locator_io.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	// locator_io.LoadedGames["large"], _ = locator_io.NewGame("large", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	// locator_io.LoadedGames["capitals"], _ = locator_io.NewGame("capitals", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
 
-	// util.Sugar.Infow("Loaded Games",
-	//	"Games", locator_io.LoadedGames)
+	// // util.Sugar.Infow("Loaded Games",
+	// //	"Games", locator_io.LoadedGames)
 
-	locator_ioGroup := r.Group("/l")
+	// locator_ioGroup := r.Group("/l")
 
-	{
-		locator_ioGroup.GET("/", locator_io.CreateLobbyGET)
-		locator_ioGroup.POST("/", locator_io.CreateLobbyPOST)
-		locator_ioGroup.GET("/:lobby", locator_io.GetWaitingroom)
-		locator_ioGroup.GET("/:lobby/ws", locator_io.Waitingroom_WS)
-		locator_ioGroup.GET("/:lobby/game", locator_io.PlayGame)
-		locator_ioGroup.GET("/:lobby/game/ws", locator_io.ServeLobby)
-	}
+	// {
+	// 	locator_ioGroup.GET("/", locator_io.CreateLobbyGET)
+	// 	locator_ioGroup.POST("/", locator_io.CreateLobbyPOST)
+	// 	locator_ioGroup.GET("/:lobby", locator_io.GetWaitingroom)
+	// 	locator_ioGroup.GET("/:lobby/ws", locator_io.Waitingroom_WS)
+	// 	locator_ioGroup.GET("/:lobby/game", locator_io.PlayGame)
+	// 	locator_ioGroup.GET("/:lobby/game/ws", locator_io.ServeLobby)
+	// }
 
 	// *************************************************************** //
 	// 							LOCATOR-V2							   //
@@ -165,7 +164,7 @@ func SetupRouter() *gin.Engine {
 
 	locator_v2.SetupTest()
 
-	locator_v2Group := r.Group("/v")
+	locator_v2Group := r.Group("/locate")
 	{
 		locator_v2Group.GET("/", locator_v2.CreateOrJoinLobby)
 		locator_v2Group.POST("/create", locator_v2.CreateLobbyPOST)

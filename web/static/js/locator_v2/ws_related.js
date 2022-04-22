@@ -38,13 +38,15 @@ conn.onmessage = function (evt) {
         document.getElementById("status").innerHTML = message.status
         document.getElementById("points").innerHTML = ""
         document.getElementById("distance").innerHTML =""
+        document.getElementById("awarded").innerHTML =""
         solution_layer.getSource().clear()
         
     }
     if (message.status == "reviewing") {
         document.getElementById("status").innerHTML = message.status
         document.getElementById("points").innerHTML = JSON.stringify(message.points)
-        document.getElementById("distance").innerHTML = message.distance +  "km away."
+        document.getElementById("distance").innerHTML = message.distance +  " km away. "
+        document.getElementById("awarded").innerHTML = "--> "+ message.awarded + " Points"
         addSolution(message)
         }
 };

@@ -1,12 +1,15 @@
 {{ define "locator_v2/WaitingRoom.html" }}
 
+{{ template "globals/style_head.html" }}
+{{ template "globals/style_body.html" }}
+
 <title>{{ .LobbyID }}</title>
 
-    <h1>Waiting Room</h1>
-    <button id="readybutton" type="button">Start Lobby!</button>
-    <h2 id="players"></h2>
-    <form id="formAddName"></form>
-    <ol id="demo"></ol>
+<h1>Waiting Room</h1>
+<button id="readybutton" type="button">Start Lobby!</button>
+<h2 id="players"></h2>
+<form id="formAddName"></form>
+<ol id="demo"></ol>
 
     
    

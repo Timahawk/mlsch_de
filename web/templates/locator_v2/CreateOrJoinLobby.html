@@ -10,9 +10,9 @@
 
     <label for="gameset">Choose a Gameset:</label>
     <select name="gameset" required id="gameset">
-      <option value="world">all cities; worldwide</option>
-      <option value="large">large cities; worldwide</option>
-      <option value="capitals">capitals;worldwide</option>
+      {{ range .Games }}
+        <option value="{{ .Name }}">{{ .Name }}</option>
+      {{ end }}
     </select><br>
 
     <label for="username">Choose your Name</label>

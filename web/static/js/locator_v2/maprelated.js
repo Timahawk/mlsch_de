@@ -57,10 +57,17 @@ const map = new ol.Map({
     interactions: ol.interaction.defaults().extend([select, translate]),
     layers: [mb],
     target: 'map',
+    // view: new ol.View({
+    //     center: [0, 0],
+    //     zoom: 1,
+    //     }),
     view: new ol.View({
-        center: [0, 0],
-        zoom: 1,
-        }),
+      center: ol.proj.transform(center, 'EPSG:4326', 'EPSG:3857'),
+      zoom: zoom,
+      maxZoom: maxZoom,
+      minZoom: minZoom,
+      extent: ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857'),
+  }),
 });
 
 map.on('click', function(evt){

@@ -10,7 +10,7 @@ import (
 )
 
 func CreateOrJoinLobby(c *gin.Context) {
-	c.HTML(200, "locator_v2/CreateOrJoinLobby.html", gin.H{})
+	c.HTML(200, "locator_v2/CreateOrJoinLobby.html", gin.H{"Games": LoadedGames})
 }
 
 // CreateLobbyPost checks form, creates User, creates Lobby, adds User as Owner,
@@ -174,7 +174,14 @@ func GameRoom(c *gin.Context) {
 		c.JSON(213, gin.H{"status": "PlayGame failed, due to faulty Parameter User"})
 		return
 	}
-	c.HTML(200, "locator_v2/GameRoom.html", gin.H{"title": lobbyID, "user": p.Name})
+	c.HTML(200, "locator_v2/GameRoom.html", gin.H{
+		"title":   lobbyID,
+		"user":    p.Name,
+		"center":  l.game.Center,
+		"zoom":    l.game.Zoom,
+		"maxZoom": l.game.MaxZoom,
+		"minZoom": l.game.MinZoom,
+		"extent":  l.game.Extent})
 }
 
 func GameRoomWS(c *gin.Context) {

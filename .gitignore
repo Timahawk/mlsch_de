@@ -13,3 +13,6 @@ certs/*
 
 # Exclude log files 
 *.log
+
+# Exclude fme recover files
+*.fmw.recover

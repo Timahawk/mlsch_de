@@ -20,13 +20,15 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 )
 
+var development bool
+
 func main() {
 
-	development := flag.Bool("dev", true, "Run local")
+	development = *flag.Bool("dev", true, "Run local")
 	flag.Parse()
 
 	// This must be set before router is created.
-	if !*development {
+	if !development {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
@@ -42,13 +44,12 @@ func main() {
 		Cache:      autocert.DirCache("certs"),         //Folder for storing certificates
 	}
 
-	go func() {
-		log.Println(http.ListenAndServe("localhost:6060", nil))
-	}()
-
 	// Check if development (default) or Prod.
-	if *development {
+	if development {
 		log.Fatalln(r.Run())
+		go func() {
+			log.Println(http.ListenAndServe("localhost:6060", nil))
+		}()
 	} else {
 		fmt.Println("Starting in Release Mode!")
 		log.Fatalln(autotls.RunWithManager(r, &certManager))
@@ -159,11 +160,18 @@ func SetupRouter() *gin.Engine {
 	// *************************************************************** //
 
 	locator_v2.LoadedGames["world"], _ = locator_v2.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator_v2.LoadedGames["large"], _ = locator_v2.NewGame("large", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	locator_v2.LoadedGames["cities_larger_250000"], _ = locator_v2.NewGame("cities_larger_250000", "data/cities/cities_larger_250000.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
 	locator_v2.LoadedGames["capitals"], _ = locator_v2.NewGame("capitals", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	// Germany
+	locator_v2.LoadedGames["germany"], _ = locator_v2.NewGame("germany", "data/cities/german_cities.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86})
+	locator_v2.LoadedGames["germany_larger25000"], _ = locator_v2.NewGame("germany_larger25000", "data/cities/german_cities_larger25000.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86})
+	// Region specific games
+	locator_v2.LoadedGames["european_cities_larger_100000"], _ = locator_v2.NewGame("european_cities_larger_100000", "data/cities/european_cities_larger_100000.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-41.8, 27.0, 69.6, 73.7})
+	locator_v2.LoadedGames["north_american_cities_larger_100000"], _ = locator_v2.NewGame("north_american_cities_larger_100000", "data/cities/north_american_cities_larger_100000.json", []float64{-100, 40}, 1, 14, 1, []float64{-180, -15, 40, 85})
 
-	locator_v2.SetupTest()
-
+	if !development {
+		locator_v2.SetupTest()
+	}
 	locator_v2Group := r.Group("/locate")
 	{
 		locator_v2Group.GET("/", locator_v2.CreateOrJoinLobby)

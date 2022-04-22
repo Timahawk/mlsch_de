@@ -1,32 +1,48 @@
 {{ define "locator_v2/GameRoom.html" }}
 
-<title>{{ .LobbyID }}</title>
+<head>
+    <title>{{ .LobbyID }}</title>
 
+    <style>
+        .map {
+          width: 100%;
+          height: 100%;
+        }
+        .map {
+          background: #f8f4f0 ;
+        }
+      </style>
+      
+      
+      <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css">
+</head>
+<body>
+    
     <h1>GameRoom</h1>
+    <div>
+      <h3 id="time"></h3>
+      <h3 id="city">Ready?</h3>
+      <h3 id="points"></h3>
+      <h3 id="status"></h3>
+      <h3 id="distance"></h3>
+    </div>
+    
+    <button id="submitButton" type="button">Submit Guess</button>
+    <div id="map" class="map"></div>
+
+    <script>
+        var user = {{ .user }}
+    </script>
+
+    <script src="../../static/js/locator_v2/maprelated.js"></script>
+    <script src="../../static/js/locator_v2/ws_related.js"></script>
     
     <script>
-        var list = document.getElementById('demo');   
-        var host = document.location.host;
-        var path = document.location.pathname;
-      
-        // Das hier weils wichtig ist ob https oder nicht.
-        // Browser erlauben KEIN downgrad also https zu ws!
-        if (location.protocol === 'https:'){
-            conn = new WebSocket("wss://" + document.location.host + path + "/ws?user=" + {{ .user }})
-        } else {
-            conn = new WebSocket("ws://" + document.location.host + path + "/ws?user=" + {{ .user }})
-        };
-
-        console.log(conn)
-
-        conn.onopen = function (evt) {
-            console.log("Success", conn, evt)
-        };
-        conn.onclose = function (evt) {
-            console.log("Closed", conn, evt)
-        };
-        conn.onmessage = function (evt) {
-            console.log("Message", evt.data)
-        };
+        console.log("Entering new Script Blog")
+        // console.log(map)
+        // console.log(conn)
     </script>
+
+</body>
 {{ end }}

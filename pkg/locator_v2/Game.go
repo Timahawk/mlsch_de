@@ -2,6 +2,7 @@ package locator_v2
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"time"
@@ -104,4 +105,11 @@ func LoadCities(file string) (map[string]*City, error) {
 	//}
 
 	return cities_map, nil
+}
+
+func getGame(name string) (*Game, error) {
+	if g, ok := LoadedGames[name]; ok {
+		return g, nil
+	}
+	return nil, errors.New(fmt.Sprintln(name, "is not a available Game."))
 }

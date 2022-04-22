@@ -1,11 +1,14 @@
 package locator_v2
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
+	"golang.org/x/exp/slices"
 )
 
 // Lobby maintains the set of active Player and broadcasts messages to the
@@ -22,6 +25,8 @@ type Lobby struct {
 
 	// Determines the duration of a guessing round.
 	RoundTime int
+	// Review Time determines the time spent reviewing
+	ReviewTime int
 
 	// Registered clients.
 	player map[string]*Player
@@ -34,6 +39,25 @@ type Lobby struct {
 
 	// Receives calls that players are ready
 	ready chan *Player
+
+	// Receives calls that players submitted.
+	submitted chan *Player
+
+	// The game which is played.
+	game *Game
+
+	// This determines if review or Location
+	// reviewing
+	// guessing
+	// finished
+	// startup
+	state     string
+	nextState string
+
+	// The location used by the game
+	location string
+	// All played locations
+	locations []string
 }
 
 // NewLobby creates a new Lobby.
@@ -41,14 +65,21 @@ func NewLobby(zeit int, game *Game, owner *Player) *Lobby {
 	id := util.RandString(8)
 
 	lobby := Lobby{
-		LobbyID:   id,
-		owner:     owner,
-		started:   false,
-		RoundTime: zeit,
-		player:    make(map[string]*Player),
-		add:       make(chan *Player, 10),
-		drop:      make(chan *Player, 10),
-		ready:     make(chan *Player, 10),
+		LobbyID:    id,
+		owner:      owner,
+		started:    false,
+		RoundTime:  zeit,
+		ReviewTime: 10,
+		player:     make(map[string]*Player),
+		add:        make(chan *Player, 10),
+		drop:       make(chan *Player, 10),
+		ready:      make(chan *Player, 10),
+		submitted:  make(chan *Player, 10),
+		game:       game,
+		state:      "startup",
+		nextState:  "guessing",
+		location:   "",
+		locations:  []string{},
 	}
 
 	Lobbies[id] = &lobby
@@ -153,15 +184,128 @@ func (l *Lobby) serveWaitRoom() {
 				}
 			}
 			// Stop this function.
-			// return
-
-			// Start the Lobby
-			l.started = true
+			return
 		}
 	}
 }
 
-func (l *Lobby) serveGame() {}
+func (l *Lobby) serveGame() {
+	defer func() {
+		util.Sugar.Infow("serveGame stopped",
+			"Lobby", l.LobbyID)
+	}()
+	util.Sugar.Infow("serveGame started",
+		"Lobby", l.LobbyID)
+
+	sendUpdate := time.NewTimer(5 * time.Second)
+
+	for {
+		select {
+
+		// A Player submitted his guess.
+		case p := <-l.submitted:
+			util.Sugar.Infow("A new submit received",
+				"lobby", l.LobbyID,
+				"player", p.Name,
+				"state", l.state,
+				"nextState", l.nextState,
+			)
+
+			// We are Currently in a review Round -> so do nothing.
+			if l.state == "reviewing" || l.state == "startup" || l.state == "finished" {
+				break
+			}
+
+			if l.allActivePlayersSubmitted() {
+
+				// Set to Location mode for next time the Timer ticks down.
+				l.state = "guessing"
+				l.nextState = "reviewing"
+
+				util.Sugar.Infow("All Players submitted.",
+					"lobby", l.LobbyID,
+					"time", l.RoundTime,
+					"state", l.state,
+					"nextState", l.nextState,
+				)
+
+				sendUpdate = time.NewTimer(0)
+			}
+
+		// Something needs to be send!
+		case <-sendUpdate.C:
+
+			// Case 1 New Location
+			if l.nextState == "guessing" {
+
+				l.state = "guessing"
+				l.nextState = "reviewing"
+
+				util.Sugar.Infow("guessing",
+					"lobby", l.LobbyID,
+					"location", l.location,
+					"time", l.RoundTime,
+					"state", l.state,
+					"nextState", l.nextState,
+				)
+
+				// log.Println("Sending new Location")
+
+				l.location = l.getNewLocation()
+				str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v", "time":"%v"}`, l.location, l.state, l.RoundTime)
+
+				for _, p := range l.player {
+					if p.conn != nil && p.connected == true {
+						p.toConn <- str
+						p.submitted = false
+						p.distance = 9999
+
+					}
+				}
+
+				sendUpdate = time.NewTimer(time.Duration(l.RoundTime) * time.Second)
+
+				// Case 2 Review
+			} else if l.nextState == "reviewing" {
+
+				l.state = "reviewing"
+				l.nextState = "guessing"
+
+				util.Sugar.Infow("reviewing",
+					"lobby", l.LobbyID,
+					"time", l.RoundTime,
+					"state", l.state,
+					"nextState", l.nextState,
+				)
+
+				for _, p := range l.player {
+					if p.conn != nil && p.connected == true {
+						p.score = append(p.score, p.points)
+						p.points = 0
+					}
+				}
+
+				str := fmt.Sprintf(`{"status":"reviewing","Location":"%s", "state": "%v", "time":"%v", "lat":"%v", "lng":"%v", "points":%s`,
+					l.location, l.state, l.ReviewTime, l.game.Cities[l.location].Lat, l.game.Cities[l.location].Lng, string(l.getScore()))
+				for _, p := range l.player {
+					if p.conn != nil && p.connected == true {
+						p.toConn <- str
+					}
+				}
+
+				sendUpdate = time.NewTimer(time.Duration(l.ReviewTime) * time.Second)
+
+			} else {
+				util.Sugar.Infow("Timer run down. Nothing happend...",
+					"lobby", l.LobbyID,
+					// "time", l.RoundTime,
+					"state", l.state,
+					"nextState", l.nextState,
+				)
+			}
+		}
+	}
+}
 
 func (l *Lobby) getPlayer(name string) (*Player, error) {
 	if p, ok := l.player[name]; ok {
@@ -190,4 +334,41 @@ func (l *Lobby) areAllActivePlayersReady() bool {
 		}
 	}
 	return true
+}
+
+// getNewLocation helper function, gets a semi random new Location.
+func (l *Lobby) getNewLocation() string {
+
+	for key := range l.game.Cities {
+		if slices.Contains(l.locations, key) {
+			continue
+		}
+		return key
+	}
+	return ""
+}
+
+func (l *Lobby) allActivePlayersSubmitted() bool {
+	for _, p := range l.player {
+		if p.connected == false {
+			continue
+		}
+		if p.submitted == false {
+			return false
+		}
+	}
+	return true
+}
+
+func (l *Lobby) getScore() []byte {
+	liste := make(map[string]int)
+	for _, p := range l.player {
+		liste[p.Name] = p.calcScore()
+
+	}
+	res, err := json.Marshal(liste)
+	if err != nil {
+		log.Println(liste, err)
+	}
+	return res
 }

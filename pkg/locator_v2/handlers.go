@@ -30,10 +30,17 @@ func CreateLobbyPOST(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "CreateLobbyPost failed, due to faulty Form Input."})
 		return
 	}
+
+	g, err := getGame(gameset)
+	if err != nil {
+		c.JSON(200, gin.H{"status": "CreateLobbyPost failed, due to Game not available."})
+		return
+	}
+
 	ctx, cancelCtx := context.WithCancel(contextbg)
 	p := NewPlayer(ctx, cancelCtx, &Lobby{}, username)
 
-	l := NewLobby(roundTime, nil, p)
+	l := NewLobby(roundTime, g, p)
 	p.lobby = l
 
 	go l.serveWaitRoom()
@@ -186,6 +193,10 @@ func GameRoomWS(c *gin.Context) {
 	}
 
 	p.conn = conn
+	p.connected = true
+	ctx, cancelCtx := context.WithCancel(contextbg)
+	p.ctx = ctx
+	p.ctxcancel = cancelCtx
 
 	go p.WriteToConn()
 	go p.ReceiveFromConn()
@@ -193,5 +204,5 @@ func GameRoomWS(c *gin.Context) {
 		"Lobby", p.lobby.LobbyID,
 		"player", p.Name)
 
-	p.toConn <- fmt.Sprintf("Active Players: %s", l.getActivePlayers())
+	// p.toConn <- fmt.Sprintf("Active Players: %s", l.getActivePlayers())
 }

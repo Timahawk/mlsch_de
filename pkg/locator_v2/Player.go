@@ -2,6 +2,10 @@ package locator_v2
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"math"
+	"strings"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
@@ -23,6 +27,8 @@ type Player struct {
 
 	// Channel which receives messages to be sent to the client.
 	toConn chan string
+	// Channel which receives messages from the client.
+	fromConn chan string
 
 	//If the Player is ready to start the game
 	ready bool
@@ -31,10 +37,30 @@ type Player struct {
 	ctx context.Context
 	// Cancelfunc
 	ctxcancel context.CancelFunc
+
+	//If the Player submitted his guess
+	submitted bool
+
+	// The distance of the last guess.
+	distance float64
+	// Points awarded for the last round.
+	points int
+	// Points awareded each round -> sum is total points.
+	score []int
 }
 
 func NewPlayer(ctx context.Context, ctxcancel context.CancelFunc, lobby *Lobby, name string) *Player {
-	return &Player{lobby, name, nil, false, make(chan string), false, ctx, ctxcancel}
+	return &Player{
+		lobby:     lobby,
+		Name:      name,
+		conn:      nil,
+		connected: false,
+		toConn:    make(chan string),
+		fromConn:  make(chan string),
+		ready:     false,
+		ctx:       ctx,
+		ctxcancel: ctxcancel,
+		submitted: false}
 }
 
 func (p *Player) WriteToConn() {
@@ -61,6 +87,11 @@ func (p *Player) WriteToConn() {
 				)
 				p.lobby.drop <- p
 			}
+			// TODO this is stupid i think.
+			if strings.Contains(str, "points") {
+				str = str + fmt.Sprintf(`,"distance":"%v"}`, int(math.Round(p.distance/1000)))
+			}
+
 			err = p.conn.WriteMessage(websocket.TextMessage, []byte(str))
 			if err != nil {
 				util.Sugar.Debugw("WriteMessage failed",
@@ -102,7 +133,7 @@ func (p *Player) ReceiveFromConn() {
 		})
 
 	for {
-		_, _, err := p.conn.ReadMessage()
+		_, message, err := p.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				p.lobby.drop <- p
@@ -123,8 +154,83 @@ func (p *Player) ReceiveFromConn() {
 				return
 			}
 		}
-		//log.Println(string(message))
-		p.ready = true
-		p.lobby.ready <- p
+		// log.Println(string(message))
+		if string(message) == "ready" {
+			p.ready = true
+			p.lobby.ready <- p
+		}
+		// TODO this should be proteced from edge cases.
+		p.lobby.submitted <- p
+		p.submitted = true
+
+		p.process_submit(message)
+		p.points = p.getPoints()
 	}
+}
+
+type Submit_guess struct {
+	Latitude  float64 `json:"lat"`
+	Longitude float64 `json:"long"`
+}
+
+func (p *Player) process_submit(message []byte) error {
+	var submit Submit_guess
+
+	util.Sugar.Infow("processing Message",
+		"player", p.Name,
+		"lobby", p.lobby.LobbyID,
+		"message", string(message))
+
+	// Process Message
+	err := json.Unmarshal(message, &submit)
+	if err != nil {
+		util.Sugar.Warnw("Marshalling failed",
+			"player", p.Name,
+			"lobby", p.lobby.LobbyID,
+			"message", string(message),
+			"error", err)
+		return err
+	}
+
+	// This is to much but yeah...
+	city, StatusOK := p.lobby.game.Cities[p.lobby.location]
+	if !StatusOK {
+		return fmt.Errorf("Failed to get City.")
+	}
+
+	// log.Println("Submit:", submit)
+	p.distance = util.Distance(
+		submit.Latitude,
+		submit.Longitude,
+		city.Lat,
+		city.Lng)
+	return nil
+}
+
+func (p *Player) getPoints() int {
+	dist := p.distance / 1000
+	switch {
+	case dist < 10.0:
+		return 7
+	case dist < 50.0:
+		return 5
+	case dist < 100.0:
+		return 4
+	case dist < 250.0:
+		return 3
+	case dist < 500.0:
+		return 2
+	case dist < 1000.0:
+		return 1
+	default:
+		return 0
+	}
+}
+
+func (p *Player) calcScore() int {
+	score := 0
+	for _, point := range p.score {
+		score += point
+	}
+	return score
 }

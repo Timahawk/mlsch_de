@@ -4,16 +4,21 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/gorilla/websocket"
 )
 
 // All currently active Lobbies
 var Lobbies = map[string]*Lobby{}
+
+// All currently loaded games
+var LoadedGames = map[string]*Game{}
+
 var upgrader = websocket.Upgrader{}
 var contextbg = context.Background()
 
-func init() {
+func SetupTest() {
 	// TODO if production dont do that.
 	ctx, cancelCtx := context.WithCancel(contextbg)
 	testplayer := NewPlayer(ctx, cancelCtx, &Lobby{}, "test1")
@@ -22,15 +27,27 @@ func init() {
 	ctx, cancelCtx = context.WithCancel(contextbg)
 	testplayer3 := NewPlayer(ctx, cancelCtx, &Lobby{}, "test3")
 
+	g, err := getGame("capitals")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	Lobbies["AAAAAAAA"] = &Lobby{
-		LobbyID:   "AAAAAAAA",
-		owner:     testplayer,
-		started:   false,
-		RoundTime: 30,
-		player:    make(map[string]*Player),
-		add:       make(chan *Player, 10),
-		drop:      make(chan *Player, 10),
-		ready:     make(chan *Player, 10),
+		LobbyID:    "AAAAAAAA",
+		owner:      testplayer,
+		started:    false,
+		RoundTime:  60,
+		ReviewTime: 15,
+		player:     make(map[string]*Player),
+		add:        make(chan *Player, 10),
+		drop:       make(chan *Player, 10),
+		ready:      make(chan *Player, 10),
+		submitted:  make(chan *Player, 10),
+		game:       g,
+		state:      "startup",
+		nextState:  "guessing",
+		location:   "",
+		locations:  []string{},
 	}
 
 	l := Lobbies["AAAAAAAA"]

@@ -159,6 +159,12 @@ func SetupRouter() *gin.Engine {
 	// 							LOCATOR-V2							   //
 	// *************************************************************** //
 
+	locator_v2.LoadedGames["world"], _ = locator_v2.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	locator_v2.LoadedGames["large"], _ = locator_v2.NewGame("large", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	locator_v2.LoadedGames["capitals"], _ = locator_v2.NewGame("capitals", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+
+	locator_v2.SetupTest()
+
 	locator_v2Group := r.Group("/v")
 	{
 		locator_v2Group.GET("/", locator_v2.CreateOrJoinLobby)

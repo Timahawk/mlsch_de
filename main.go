@@ -20,15 +20,15 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 )
 
-var development bool
+var development *bool
 
 func main() {
 
-	development = *flag.Bool("dev", true, "Run local")
+	development = flag.Bool("dev", true, "Run local")
 	flag.Parse()
 
 	// This must be set before router is created.
-	if !development {
+	if *development == false {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
@@ -45,7 +45,7 @@ func main() {
 	}
 
 	// Check if development (default) or Prod.
-	if development {
+	if *development {
 		log.Fatalln(r.Run())
 		go func() {
 			log.Println(http.ListenAndServe("localhost:6060", nil))
@@ -169,7 +169,7 @@ func SetupRouter() *gin.Engine {
 	locator_v2.LoadedGames["european_cities_larger_100000"], _ = locator_v2.NewGame("european_cities_larger_100000", "data/cities/european_cities_larger_100000.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-41.8, 27.0, 69.6, 73.7})
 	locator_v2.LoadedGames["north_american_cities_larger_100000"], _ = locator_v2.NewGame("north_american_cities_larger_100000", "data/cities/north_american_cities_larger_100000.json", []float64{-100, 40}, 1, 14, 1, []float64{-180, -15, 40, 85})
 
-	if !development {
+	if !*development {
 		locator_v2.SetupTest()
 	}
 	locator_v2Group := r.Group("/locate")

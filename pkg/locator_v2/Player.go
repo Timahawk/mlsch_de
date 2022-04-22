@@ -112,12 +112,23 @@ func (p *Player) WriteToConn() {
 // This does not terminate proberly when the connection is closed.
 func (p *Player) ReceiveFromConn() {
 	util.Sugar.Infow("ReceiveFromConn started",
-		"WaitRoom", p.lobby.LobbyID,
+		"Lobby", p.lobby.LobbyID,
 		"player", p.Name,
 	)
 	defer func() {
+		p.lobby.drop <- p
+		p.conn.Close()
+
+		// Dont know but this is needed for some reaseon.
+		if p.conn != nil {
+			p.ctxcancel()
+		}
+		p.conn = nil
+		p.connected = false
+		p.ready = false
+
 		util.Sugar.Infow("ReceiveFromConn stopped",
-			"WaitRoom", p.lobby.LobbyID,
+			"Lobby", p.lobby.LobbyID,
 			"player", p.Name,
 		)
 	}()
@@ -133,28 +144,26 @@ func (p *Player) ReceiveFromConn() {
 		})
 
 	for {
+		// this should provided all the invalid memory address or nil pointer dereference errors
+		if p.conn == nil {
+			util.Sugar.Infow("Conn == nil in ReceiveFromClientLoop",
+				"Lobby", p.lobby.LobbyID,
+				"Player", p.Name)
+			return
+		}
+
 		_, message, err := p.conn.ReadMessage()
 		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				p.lobby.drop <- p
-				util.Sugar.Infow("p.ReceiveFromConn",
-					"Lobby", p.lobby.LobbyID,
-					"Player", p.Name,
-					"error", "IsUnexpectedCloseError")
-				return
-			}
-			if websocket.IsCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				p.lobby.drop <- p
-				p.conn.Close()
-				p.conn = nil
-				util.Sugar.Infow("p.ReceiveFromConn",
-					"Lobby", p.lobby.LobbyID,
-					"Player", p.Name,
-					"error", "IsCloseError")
-				return
-			}
+
+			util.Sugar.Debugw("Read Message failed",
+				"Lobby", p.lobby.LobbyID,
+				"Player", p.Name,
+				"error", err,
+				"conn", p.conn)
+			return
 		}
-		// log.Println(string(message))
+
+		// log.Println(string(message), err)
 		if string(message) == "ready" {
 			p.ready = true
 			p.lobby.ready <- p

@@ -18,7 +18,7 @@ type Lobby struct {
 	LobbyID string
 
 	// Who creates the lobby. and starts the Lobby.
-	owner *Player
+	// owner *Player
 
 	// This determines the weather the lobby is started.
 	started bool
@@ -65,14 +65,14 @@ func NewLobby(zeit int, game *Game, owner *Player) *Lobby {
 	id := util.RandString(8)
 
 	lobby := Lobby{
-		LobbyID:    id,
-		owner:      owner,
+		LobbyID: id,
+		// owner:      owner,
 		started:    false,
 		RoundTime:  zeit,
 		ReviewTime: 10,
 		player:     make(map[string]*Player),
 		add:        make(chan *Player, 10),
-		drop:       make(chan *Player, 10),
+		drop:       make(chan *Player, 100),
 		ready:      make(chan *Player, 10),
 		submitted:  make(chan *Player, 10),
 		game:       game,
@@ -131,15 +131,20 @@ func (l *Lobby) serveWaitRoom() {
 			util.Sugar.Infow("Remove",
 				"Lobby", l.LobbyID,
 				"Player", p.Name)
+
 			// delete(l.player, p.Name)
-			p.connected = false
-			p.ready = false
-			p.ctxcancel()
+			// This should have always been handled on the Player side.
+			// p.connected = false
+			// p.ready = false
+			// p.ctxcancel()
+			// p.conn.Close()
+
 			for _, pl := range l.player {
 				if pl.conn != nil && pl.connected == true {
 					pl.toConn <- fmt.Sprintf("%s left the lobby.", p.Name)
 				}
 			}
+
 		case p := <-l.ready:
 			util.Sugar.Infow("Ready",
 				"Lobby", l.LobbyID,
@@ -153,10 +158,10 @@ func (l *Lobby) serveWaitRoom() {
 			if l.areAllActivePlayersReady() {
 				for _, pl := range l.player {
 					if pl.conn != nil && pl.connected == true {
-						pl.toConn <- fmt.Sprintf("Lobby will start in 5 Seconds!")
+						pl.toConn <- fmt.Sprintf("Lobby will start in 2 Seconds!")
 					}
 				}
-				timer = time.NewTimer(time.Second * 5)
+				timer = time.NewTimer(time.Second * 2)
 			}
 		case <-timer.C:
 			// Start the Gameplay management goroutine.
@@ -173,7 +178,11 @@ func (l *Lobby) serveWaitRoom() {
 			// Stop all still running Goroutines.
 			for _, p := range l.player {
 				if p.conn != nil && p.connected == true {
-					p.ctxcancel()
+					// Should stop WriteToConn
+					// p.ctxcancel()
+					// Should stop ReadfromConn
+					// p.conn.Close()
+
 				}
 			}
 			// Reset Connected.
@@ -197,14 +206,14 @@ func (l *Lobby) serveGame() {
 	util.Sugar.Infow("serveGame started",
 		"Lobby", l.LobbyID)
 
-	sendUpdate := time.NewTimer(5 * time.Second)
+	sendUpdate := time.NewTimer(2 * time.Second)
 
 	for {
 		select {
 
 		// A Player submitted his guess.
 		case p := <-l.submitted:
-			util.Sugar.Infow("A new submit received",
+			util.Sugar.Debugw("A Player submitted sth.",
 				"lobby", l.LobbyID,
 				"player", p.Name,
 				"state", l.state,
@@ -273,7 +282,8 @@ func (l *Lobby) serveGame() {
 
 				util.Sugar.Infow("reviewing",
 					"lobby", l.LobbyID,
-					"time", l.RoundTime,
+					"location", l.location,
+					"time", l.ReviewTime,
 					"state", l.state,
 					"nextState", l.nextState,
 				)
@@ -302,6 +312,19 @@ func (l *Lobby) serveGame() {
 					"state", l.state,
 					"nextState", l.nextState,
 				)
+			}
+
+			// This simply checks if the serveLobby goroutine should be exited.
+			i := 0
+			for _, p := range l.player {
+				if p.conn == nil {
+					i += 1
+				}
+				if i == len(l.player) {
+					util.Sugar.Infow("serveLobby will be stopped because all players are disconnected.",
+						"Lobby", l.LobbyID)
+					return
+				}
 			}
 		}
 	}

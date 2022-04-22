@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Timahawk/mlsch_de/pkg/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -72,7 +71,13 @@ func JoinLobbyPOST(c *gin.Context) {
 	}
 	ctx, cancelCtx := context.WithCancel(contextbg)
 	p := NewPlayer(ctx, cancelCtx, l, username)
-	l.add <- p
+
+	if l.started {
+		l.player[p.Name] = p
+		p.connected = true
+	} else {
+		l.add <- p
+	}
 	// c.JSON(200, gin.H{"status": "JoinLobbyPost", "Lobby": l})
 	path := c.Request.URL.Path
 	path = strings.Replace(path, "/join", "", 1)
@@ -95,6 +100,13 @@ func WaitingRoom(c *gin.Context) {
 		c.JSON(213, gin.H{"status": "WaitingRoom failed, due to faulty Parameter User", "user": username, "error": err, "player": p})
 		return
 	}
+
+	if l.started {
+		path := c.Request.URL.Path
+		c.Redirect(303, fmt.Sprintf("%s/game?user=%s", path, username))
+		return
+	}
+
 	ctx, cancelCtx := context.WithCancel(contextbg)
 	p.ctx = ctx
 	p.ctxcancel = cancelCtx
@@ -191,18 +203,25 @@ func GameRoomWS(c *gin.Context) {
 		fmt.Println("Error", err)
 		return
 	}
-
+	p.conn = nil
 	p.conn = conn
 	p.connected = true
-	ctx, cancelCtx := context.WithCancel(contextbg)
-	p.ctx = ctx
-	p.ctxcancel = cancelCtx
+	p.ctx, p.ctxcancel = context.WithCancel(contextbg)
 
 	go p.WriteToConn()
 	go p.ReceiveFromConn()
-	util.Sugar.Infow("GameRoomWs enabled",
-		"Lobby", p.lobby.LobbyID,
-		"player", p.Name)
+	// util.Sugar.Infow("GameRoomWs enabled",
+	// 	"Lobby", p.lobby.LobbyID,
+	// 	"player", p.Name)
 
+	// This is for the when reconnection during match.
+	if l.state == "guessing" {
+		str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v"}`, l.location, l.state)
+		p.toConn <- str
+	}
+	if l.state == "reviewing" {
+		str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v"}`, l.location, l.state)
+		p.toConn <- str
+	}
 	// p.toConn <- fmt.Sprintf("Active Players: %s", l.getActivePlayers())
 }

@@ -21,7 +21,7 @@ var contextbg = context.Background()
 func SetupTest() {
 	// TODO if production dont do that.
 	ctx, cancelCtx := context.WithCancel(contextbg)
-	testplayer := NewPlayer(ctx, cancelCtx, &Lobby{}, "test1")
+	testplayer1 := NewPlayer(ctx, cancelCtx, &Lobby{}, "test1")
 	ctx, cancelCtx = context.WithCancel(contextbg)
 	testplayer2 := NewPlayer(ctx, cancelCtx, &Lobby{}, "test2")
 	ctx, cancelCtx = context.WithCancel(contextbg)
@@ -33,8 +33,8 @@ func SetupTest() {
 	}
 
 	Lobbies["AAAAAAAA"] = &Lobby{
-		LobbyID:    "AAAAAAAA",
-		owner:      testplayer,
+		LobbyID: "AAAAAAAA",
+		// owner:      testplayer1,
 		started:    false,
 		RoundTime:  60,
 		ReviewTime: 15,
@@ -52,10 +52,10 @@ func SetupTest() {
 
 	l := Lobbies["AAAAAAAA"]
 
-	testplayer.lobby = l
+	testplayer1.lobby = l
 	testplayer2.lobby = l
 	testplayer3.lobby = l
-	l.player["test1"] = testplayer
+	l.player["test1"] = testplayer1
 	l.player["test2"] = testplayer2
 	l.player["test3"] = testplayer3
 

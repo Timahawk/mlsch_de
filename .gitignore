@@ -1,5 +1,15 @@
+# This ignores everything except Folders,
+# and files with an extension.
+*
+!*/
+!*.*
+
+
 # Exclude everything in certs
 certs/*
 
 # Exclude .exe files
 *.exe
+
+# Exclude log files 
+*.log

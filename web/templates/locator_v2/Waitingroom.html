@@ -1,0 +1,56 @@
+{{ define "locator_v2/WaitingRoom.html" }}
+
+<title>{{ .LobbyID }}</title>
+
+    <h1>Waiting Room</h1>
+    <button id="readybutton" type="button">Start Lobby!</button>
+    <h2 id="players"></h2>
+    <form id="formAddName"></form>
+    <ol id="demo"></ol>
+
+    
+   
+
+    <script>
+        var list = document.getElementById('demo');   
+        var host = document.location.host;
+        var path = document.location.pathname;
+      
+        // Das hier weils wichtig ist ob https oder nicht.
+        // Browser erlauben KEIN downgrad also https zu ws!
+        if (location.protocol === 'https:'){
+            conn = new WebSocket("wss://" + document.location.host + path + "/ws?user=" + {{ .user }})
+        } else {
+            conn = new WebSocket("ws://" + document.location.host + path + "/ws?user=" + {{ .user }})
+        };
+
+        console.log(conn)
+
+        conn.onopen = function (evt) {
+            console.log("Success", conn, evt)
+        };
+        conn.onclose = function (evt) {
+            // conn.close();
+            var entry = document.createElement('li');
+            entry.appendChild(document.createTextNode("Connection Closed by Hub!"));
+            list.appendChild(entry);
+            console.log("Closed", conn, evt)
+        };
+        conn.onmessage = function (evt) {
+            // console.log("Message", evt.data)
+            if (evt.data == "Consider yourself redirected."){
+                // console.log(window.location.protocol + document.location.host + path + "/game", "worked.")
+                window.location.href =path + "/game?user=" + {{ .user }};
+                
+            }
+            var entry = document.createElement('li');
+            entry.appendChild(document.createTextNode(evt.data));
+            list.appendChild(entry);
+        };
+
+        document.getElementById("readybutton").onclick = function () {
+            conn.send("ready");
+            console.log("Send ready message!")
+        };
+    </script>
+{{ end }}

@@ -95,7 +95,7 @@ func LoadCities(file string) (map[string]*City, error) {
 	//  what the fuck is the difference between those two?
 	// TODO figure this out.
 	for i := 0; i < len(cities); i++ {
-		cities_map[cities[i].Name_ascii] = &cities[i]
+		cities_map[cities[i].Name] = &cities[i]
 	}
 
 	// This assigns each value the same pointer!

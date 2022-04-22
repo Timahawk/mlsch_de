@@ -169,7 +169,9 @@ func SetupRouter() *gin.Engine {
 	locator_v2.LoadedGames["european_cities_larger_100000"], _ = locator_v2.NewGame("european_cities_larger_100000", "data/cities/european_cities_larger_100000.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-41.8, 27.0, 69.6, 73.7})
 	locator_v2.LoadedGames["north_american_cities_larger_100000"], _ = locator_v2.NewGame("north_american_cities_larger_100000", "data/cities/north_american_cities_larger_100000.json", []float64{-100, 40}, 1, 14, 1, []float64{-180, -15, 40, 85})
 
-	if !*development {
+	if *development == true {
+		util.Sugar.Infow("Staring Testing Lobby AAAAAAAA",
+			"development", *development)
 		locator_v2.SetupTest()
 	}
 	locator_v2Group := r.Group("/locate")

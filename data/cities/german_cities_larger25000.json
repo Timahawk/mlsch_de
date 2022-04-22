@@ -10,7 +10,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Berlin",
 		"capital" : "primary",
-		"population" : 3644826,
+		"population" : 3664088,
 		"id" : 1276451290
 	},
 	{
@@ -24,21 +24,21 @@
 		"iso3" : "DEU",
 		"admin_name" : "Hamburg",
 		"capital" : "admin",
-		"population" : 1841179,
+		"population" : 1852478,
 		"id" : 1276041799
 	},
 	{
 		"json_featuretype" : "CSV",
 		"city" : "Munich",
 		"city_ascii" : "Munich",
-		"lat" : 48.13719940185547,
-		"lng" : 11.5755,
+		"lat" : 48.13750076293945,
+		"lng" : 11.575,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
 		"admin_name" : "Bavaria",
 		"capital" : "admin",
-		"population" : 1471508,
+		"population" : 1488202,
 		"id" : 1276692352
 	},
 	{
@@ -52,7 +52,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : null,
-		"population" : 1085664,
+		"population" : 1083498,
 		"id" : 1276015998
 	},
 	{
@@ -66,22 +66,8 @@
 		"iso3" : "DEU",
 		"admin_name" : "Hesse",
 		"capital" : "minor",
-		"population" : 753056,
+		"population" : 764104,
 		"id" : 1276054552
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Bremen",
-		"city_ascii" : "Bremen",
-		"lat" : 53.115299224853516,
-		"lng" : 8.7975,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Bremen",
-		"capital" : "admin",
-		"population" : 724909,
-		"id" : 1276376509
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -108,7 +94,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : "admin",
-		"population" : 634830,
+		"population" : 630305,
 		"id" : 1276171358
 	},
 	{
@@ -122,7 +108,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Saxony",
 		"capital" : "minor",
-		"population" : 593197,
+		"population" : 597215,
 		"id" : 1276563678
 	},
 	{
@@ -136,7 +122,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 587010,
+		"population" : 587696,
 		"id" : 1276562886
 	},
 	{
@@ -150,8 +136,22 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 583109,
+		"population" : 582415,
 		"id" : 1276769247
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Bremen",
+		"city_ascii" : "Bremen",
+		"lat" : 53.076900482177734,
+		"lng" : 8.8089,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Bremen",
+		"capital" : "admin",
+		"population" : 566573,
+		"id" : 1276376509
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -164,7 +164,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Saxony",
 		"capital" : "admin",
-		"population" : 556549,
+		"population" : 554907,
 		"id" : 1276561036
 	},
 	{
@@ -178,7 +178,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Lower Saxony",
 		"capital" : "admin",
-		"population" : 538068,
+		"population" : 542668,
 		"id" : 1276457707
 	},
 	{
@@ -192,7 +192,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Bavaria",
 		"capital" : "minor",
-		"population" : 518365,
+		"population" : 515543,
 		"id" : 1276166609
 	},
 	{
@@ -206,7 +206,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 498590,
+		"population" : 495885,
 		"id" : 1276977172
 	},
 	{
@@ -220,7 +220,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 364628,
+		"population" : 364454,
 		"id" : 1276227288
 	},
 	{
@@ -234,7 +234,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 354382,
+		"population" : 355004,
 		"id" : 1276004611
 	},
 	{
@@ -248,7 +248,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 333786,
+		"population" : 333509,
 		"id" : 1276112885
 	},
 	{
@@ -262,7 +262,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 327258,
+		"population" : 330579,
 		"id" : 1276807850
 	},
 	{
@@ -276,22 +276,8 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 314319,
+		"population" : 316403,
 		"id" : 1276714504
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Karlsruhe",
-		"city_ascii" : "Karlsruhe",
-		"lat" : 49.016700744628906,
-		"lng" : 8.4,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Baden-Württemberg",
-		"capital" : "minor",
-		"population" : 313092,
-		"id" : 1276923210
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -304,8 +290,22 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : "minor",
-		"population" : 309370,
+		"population" : 309721,
 		"id" : 1276150104
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Karlsruhe",
+		"city_ascii" : "Karlsruhe",
+		"lat" : 49.016700744628906,
+		"lng" : 8.4,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Baden-Württemberg",
+		"capital" : "minor",
+		"population" : 308436,
+		"id" : 1276923210
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -318,22 +318,8 @@
 		"iso3" : "DEU",
 		"admin_name" : "Bavaria",
 		"capital" : "minor",
-		"population" : 295135,
+		"population" : 295830,
 		"id" : 1276314100
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Kassel",
-		"city_ascii" : "Kassel",
-		"lat" : 51.31660079956055,
-		"lng" : 9.4912,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Hesse",
-		"capital" : "minor",
-		"population" : 289924,
-		"id" : 1276791686
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -346,7 +332,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Hesse",
 		"capital" : "admin",
-		"population" : 278342,
+		"population" : 278609,
 		"id" : 1276652118
 	},
 	{
@@ -360,7 +346,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 260654,
+		"population" : 259105,
 		"id" : 1276788537
 	},
 	{
@@ -374,22 +360,8 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 261454,
+		"population" : 259665,
 		"id" : 1276982173
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Braunschweig",
-		"city_ascii" : "Braunschweig",
-		"lat" : 52.26919937133789,
-		"lng" : 10.5211,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Lower Saxony",
-		"capital" : "minor",
-		"population" : 248292,
-		"id" : 1276941443
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -402,8 +374,22 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 247380,
+		"population" : 248960,
 		"id" : 1276805572
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Braunschweig",
+		"city_ascii" : "Braunschweig",
+		"lat" : 52.26919937133789,
+		"lng" : 10.5211,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Lower Saxony",
+		"capital" : "minor",
+		"population" : 248561,
+		"id" : 1276941443
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -416,7 +402,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Schleswig-Holstein",
 		"capital" : "admin",
-		"population" : 246794,
+		"population" : 246601,
 		"id" : 1276305306
 	},
 	{
@@ -430,7 +416,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Saxony",
 		"capital" : "minor",
-		"population" : 245403,
+		"population" : 243487,
 		"id" : 1276519956
 	},
 	{
@@ -444,35 +430,35 @@
 		"iso3" : "DEU",
 		"admin_name" : "Saxony-Anhalt",
 		"capital" : "minor",
-		"population" : 239257,
+		"population" : 237865,
 		"id" : 1276167077
 	},
 	{
 		"json_featuretype" : "CSV",
 		"city" : "Magdeburg",
 		"city_ascii" : "Magdeburg",
-		"lat" : 52.12779998779297,
-		"lng" : 11.6292,
+		"lat" : 52.13169860839844,
+		"lng" : 11.6392,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
 		"admin_name" : "Saxony-Anhalt",
 		"capital" : "admin",
-		"population" : 238697,
+		"population" : 235775,
 		"id" : 1276418236
 	},
 	{
 		"json_featuretype" : "CSV",
 		"city" : "Freiburg im Breisgau",
 		"city_ascii" : "Freiburg im Breisgau",
-		"lat" : 47.99470138549805,
-		"lng" : 7.8497,
+		"lat" : 47.994998931884766,
+		"lng" : 7.85,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : "minor",
-		"population" : 230241,
+		"population" : 230940,
 		"id" : 1276371228
 	},
 	{
@@ -486,7 +472,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 227020,
+		"population" : 226844,
 		"id" : 1276149829
 	},
 	{
@@ -500,7 +486,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Rhineland-Palatinate",
 		"capital" : "admin",
-		"population" : 217118,
+		"population" : 217123,
 		"id" : 1276801317
 	},
 	{
@@ -514,8 +500,22 @@
 		"iso3" : "DEU",
 		"admin_name" : "Schleswig-Holstein",
 		"capital" : "minor",
-		"population" : 216530,
+		"population" : 215846,
 		"id" : 1276852342
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Erfurt",
+		"city_ascii" : "Erfurt",
+		"lat" : 50.97809982299805,
+		"lng" : 11.0292,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Thuringia",
+		"capital" : "admin",
+		"population" : 213835,
+		"id" : 1276924655
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -528,7 +528,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 210829,
+		"population" : 209566,
 		"id" : 1276448936
 	},
 	{
@@ -542,22 +542,22 @@
 		"iso3" : "DEU",
 		"admin_name" : "Mecklenburg-Western Pomerania",
 		"capital" : null,
-		"population" : 208886,
+		"population" : 209061,
 		"id" : 1276210265
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Erfurt",
-		"city_ascii" : "Erfurt",
-		"lat" : 50.97869873046875,
-		"lng" : 11.0328,
+		"city" : "Kassel",
+		"city_ascii" : "Kassel",
+		"lat" : 51.315799713134766,
+		"lng" : 9.4979,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
-		"admin_name" : "Thuringia",
-		"capital" : "admin",
-		"population" : 203254,
-		"id" : 1276924655
+		"admin_name" : "Hesse",
+		"capital" : "minor",
+		"population" : 201048,
+		"id" : 1276791686
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -570,7 +570,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 188814,
+		"population" : 188687,
 		"id" : 1276389303
 	},
 	{
@@ -584,7 +584,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Brandenburg",
 		"capital" : "admin",
-		"population" : 182219,
+		"population" : 182112,
 		"id" : 1276395100
 	},
 	{
@@ -598,7 +598,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Saarland",
 		"capital" : "admin",
-		"population" : 180741,
+		"population" : 179349,
 		"id" : 1276419711
 	},
 	{
@@ -612,7 +612,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 179111,
+		"population" : 178967,
 		"id" : 1276808737
 	},
 	{
@@ -626,7 +626,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Rhineland-Palatinate",
 		"capital" : "minor",
-		"population" : 172253,
+		"population" : 172557,
 		"id" : 1276912330
 	},
 	{
@@ -640,7 +640,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : "minor",
-		"population" : 170880,
+		"population" : 170921,
 		"id" : 1276676856
 	},
 	{
@@ -687,20 +687,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Heidelberg",
-		"city_ascii" : "Heidelberg",
-		"lat" : 49.412200927734375,
-		"lng" : 8.71,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Baden-Württemberg",
-		"capital" : "minor",
-		"population" : 160355,
-		"id" : 1276519742
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Solingen",
 		"city_ascii" : "Solingen",
 		"lat" : 51.16669845581055,
@@ -726,6 +712,20 @@
 		"capital" : "minor",
 		"population" : 159207,
 		"id" : 1276607395
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Heidelberg",
+		"city_ascii" : "Heidelberg",
+		"lat" : 49.412200927734375,
+		"lng" : 8.71,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Baden-Württemberg",
+		"capital" : "minor",
+		"population" : 158741,
+		"id" : 1276519742
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -827,20 +827,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Ulm",
-		"city_ascii" : "Ulm",
-		"lat" : 48.398399353027344,
-		"lng" : 9.9916,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Baden-Württemberg",
-		"capital" : "minor",
-		"population" : 126329,
-		"id" : 1276002212
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Heilbronn",
 		"city_ascii" : "Heilbronn",
 		"lat" : 49.14039993286133,
@@ -850,8 +836,22 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : "minor",
-		"population" : 125960,
+		"population" : 126458,
 		"id" : 1276377359
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Ulm",
+		"city_ascii" : "Ulm",
+		"lat" : 48.398399353027344,
+		"lng" : 9.9916,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Baden-Württemberg",
+		"capital" : "minor",
+		"population" : 126405,
+		"id" : 1276002212
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -864,7 +864,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : "minor",
-		"population" : 125542,
+		"population" : 126016,
 		"id" : 1276732622
 	},
 	{
@@ -1025,8 +1025,8 @@
 		"json_featuretype" : "CSV",
 		"city" : "Trier",
 		"city_ascii" : "Trier",
-		"lat" : 49.75669860839844,
-		"lng" : 6.6414,
+		"lat" : 49.755699157714844,
+		"lng" : 6.6394,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
@@ -1104,20 +1104,6 @@
 		"capital" : "minor",
 		"population" : 100194,
 		"id" : 1276587494
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Cottbus",
-		"city_ascii" : "Cottbus",
-		"lat" : 51.76060104370117,
-		"lng" : 14.3342,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Brandenburg",
-		"capital" : "minor",
-		"population" : 100219,
-		"id" : 1276436655
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -1219,6 +1205,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Halle-Neustadt",
+		"city_ascii" : "Halle-Neustadt",
+		"lat" : 51.47890090942383,
+		"lng" : 11.9214,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Saxony-Anhalt",
+		"capital" : null,
+		"population" : 46280,
+		"id" : 1276281757
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Pinneberg",
 		"city_ascii" : "Pinneberg",
 		"lat" : 53.65909957885742,
@@ -1244,6 +1244,20 @@
 		"capital" : null,
 		"population" : 33803,
 		"id" : 1276918130
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Cottbus",
+		"city_ascii" : "Cottbus",
+		"lat" : 51.76060104370117,
+		"lng" : 14.3342,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Brandenburg",
+		"capital" : "minor",
+		"population" : 98693,
+		"id" : 1276436655
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -1292,7 +1306,7 @@
 		"city" : "Iserlohn",
 		"city_ascii" : "Iserlohn",
 		"lat" : 51.38330078125,
-		"lng" : 7.6667000000000005,
+		"lng" : 7.6667,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
@@ -1326,7 +1340,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Schleswig-Holstein",
 		"capital" : "minor",
-		"population" : 90164,
+		"population" : 89934,
 		"id" : 1276853315
 	},
 	{
@@ -1583,20 +1597,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Wilhelmshaven",
-		"city_ascii" : "Wilhelmshaven",
-		"lat" : 53.516700744628906,
-		"lng" : 8.1333,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Lower Saxony",
-		"capital" : "minor",
-		"population" : 76097,
-		"id" : 1276324633
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Rheine",
 		"city_ascii" : "Rheine",
 		"lat" : 52.28329849243164,
@@ -1622,6 +1622,20 @@
 		"capital" : null,
 		"population" : 74903,
 		"id" : 1276488227
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Wilhelmshaven",
+		"city_ascii" : "Wilhelmshaven",
+		"lat" : 53.516700744628906,
+		"lng" : 8.1333,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Lower Saxony",
+		"capital" : "minor",
+		"population" : 75189,
+		"id" : 1276324633
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -1746,7 +1760,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Brandenburg",
 		"capital" : "minor",
-		"population" : 72124,
+		"population" : 72040,
 		"id" : 1276372220
 	},
 	{
@@ -1844,7 +1858,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : "minor",
-		"population" : 68456,
+		"population" : 68361,
 		"id" : 1276757787
 	},
 	{
@@ -1933,20 +1947,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Plauen",
-		"city_ascii" : "Plauen",
-		"lat" : 50.494998931884766,
-		"lng" : 12.1383,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Saxony",
-		"capital" : "minor",
-		"population" : 64931,
-		"id" : 1276134198
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Neuwied",
 		"city_ascii" : "Neuwied",
 		"lat" : 50.4286003112793,
@@ -2000,6 +2000,20 @@
 		"capital" : "minor",
 		"population" : 64086,
 		"id" : 1276954105
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Plauen",
+		"city_ascii" : "Plauen",
+		"lat" : 50.494998931884766,
+		"lng" : 12.1383,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Saxony",
+		"capital" : "minor",
+		"population" : 63706,
+		"id" : 1276134198
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -2101,20 +2115,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Stralsund",
-		"city_ascii" : "Stralsund",
-		"lat" : 54.309200286865234,
-		"lng" : 13.0819,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Mecklenburg-Western Pomerania",
-		"capital" : "minor",
-		"population" : 59421,
-		"id" : 1276640152
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Wesel",
 		"city_ascii" : "Wesel",
 		"lat" : 51.658599853515625,
@@ -2126,6 +2126,20 @@
 		"capital" : "minor",
 		"population" : 60357,
 		"id" : 1276261527
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Stralsund",
+		"city_ascii" : "Stralsund",
+		"lat" : 54.309200286865234,
+		"lng" : 13.0819,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Mecklenburg-Western Pomerania",
+		"capital" : "minor",
+		"population" : 59205,
+		"id" : 1276640152
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -2227,20 +2241,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Frankfurt (Oder)",
-		"city_ascii" : "Frankfurt (Oder)",
-		"lat" : 52.349998474121094,
-		"lng" : 14.55,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Brandenburg",
-		"capital" : "minor",
-		"population" : 57873,
-		"id" : 1276397323
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Hameln",
 		"city_ascii" : "Hameln",
 		"lat" : 52.10309982299805,
@@ -2252,6 +2252,20 @@
 		"capital" : "minor",
 		"population" : 57510,
 		"id" : 1276101153
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Frankfurt (Oder)",
+		"city_ascii" : "Frankfurt (Oder)",
+		"lat" : 52.34189987182617,
+		"lng" : 14.5517,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Brandenburg",
+		"capital" : "minor",
+		"population" : 57015,
+		"id" : 1276397323
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -2280,20 +2294,6 @@
 		"capital" : null,
 		"population" : 56792,
 		"id" : 1276202704
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Görlitz",
-		"city_ascii" : "Gorlitz",
-		"lat" : 51.152801513671875,
-		"lng" : 14.9872,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Saxony",
-		"capital" : "minor",
-		"population" : 56324,
-		"id" : 1276000121
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -2328,7 +2328,7 @@
 		"city" : "Meerbusch",
 		"city_ascii" : "Meerbusch",
 		"lat" : 51.266700744628906,
-		"lng" : 6.6667000000000005,
+		"lng" : 6.6667,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
@@ -2353,17 +2353,17 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Schweinfurt",
-		"city_ascii" : "Schweinfurt",
-		"lat" : 50.04999923706055,
-		"lng" : 10.2333,
+		"city" : "Görlitz",
+		"city_ascii" : "Gorlitz",
+		"lat" : 51.152801513671875,
+		"lng" : 14.9872,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
-		"admin_name" : "Bavaria",
-		"capital" : null,
-		"population" : 54032,
-		"id" : 1276316912
+		"admin_name" : "Saxony",
+		"capital" : "minor",
+		"population" : 55583,
+		"id" : 1276000121
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -2376,8 +2376,22 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : "minor",
-		"population" : 55123,
+		"population" : 55449,
 		"id" : 1276150269
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Schweinfurt",
+		"city_ascii" : "Schweinfurt",
+		"lat" : 50.04999923706055,
+		"lng" : 10.2333,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Bavaria",
+		"capital" : null,
+		"population" : 54032,
+		"id" : 1276316912
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -2614,7 +2628,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : "minor",
-		"population" : 50155,
+		"population" : 50121,
 		"id" : 1276001231
 	},
 	{
@@ -2955,6 +2969,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Hennef",
+		"city_ascii" : "Hennef",
+		"lat" : 50.78329849243164,
+		"lng" : 7.2833,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "North Rhine-Westphalia",
+		"capital" : null,
+		"population" : 47339,
+		"id" : 1276962178
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Fellbach",
 		"city_ascii" : "Fellbach",
 		"lat" : 48.80860137939453,
@@ -3165,6 +3193,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Bruchsal",
+		"city_ascii" : "Bruchsal",
+		"lat" : 49.13330078125,
+		"lng" : 8.6,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Baden-Württemberg",
+		"capital" : null,
+		"population" : 45364,
+		"id" : 1276034362
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Albstadt",
 		"city_ascii" : "Albstadt",
 		"lat" : 48.21189880371094,
@@ -3174,8 +3216,22 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : null,
-		"population" : 45327,
+		"population" : 45465,
 		"id" : 1276969750
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Oranienburg",
+		"city_ascii" : "Oranienburg",
+		"lat" : 52.754398345947266,
+		"lng" : 13.2369,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Brandenburg",
+		"capital" : "minor",
+		"population" : 45492,
+		"id" : 1276677137
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -3190,20 +3246,6 @@
 		"capital" : null,
 		"population" : 44397,
 		"id" : 1276307796
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Bruchsal",
-		"city_ascii" : "Bruchsal",
-		"lat" : 49.13330078125,
-		"lng" : 8.6,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Baden-Württemberg",
-		"capital" : null,
-		"population" : 44644,
-		"id" : 1276034362
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -3235,20 +3277,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Oranienburg",
-		"city_ascii" : "Oranienburg",
-		"lat" : 52.754398345947266,
-		"lng" : 13.2369,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Brandenburg",
-		"capital" : "minor",
-		"population" : 44512,
-		"id" : 1276677137
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Kaarst",
 		"city_ascii" : "Kaarst",
 		"lat" : 51.22779846191406,
@@ -3272,7 +3300,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : null,
-		"population" : 43093,
+		"population" : 43146,
 		"id" : 1276916733
 	},
 	{
@@ -3445,20 +3473,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Amberg",
-		"city_ascii" : "Amberg",
-		"lat" : 49.444400787353516,
-		"lng" : 11.8483,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Bavaria",
-		"capital" : "minor",
-		"population" : 41970,
-		"id" : 1276551955
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Eisenach",
 		"city_ascii" : "Eisenach",
 		"lat" : 50.974700927734375,
@@ -3470,6 +3484,20 @@
 		"capital" : "minor",
 		"population" : 42370,
 		"id" : 1276000880
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Amberg",
+		"city_ascii" : "Amberg",
+		"lat" : 49.444400787353516,
+		"lng" : 11.8483,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Bavaria",
+		"capital" : "minor",
+		"population" : 41970,
+		"id" : 1276551955
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -3641,17 +3669,17 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Freiberg",
-		"city_ascii" : "Freiberg",
-		"lat" : 50.91189956665039,
-		"lng" : 13.3428,
+		"city" : "Eberswalde",
+		"city_ascii" : "Eberswalde",
+		"lat" : 52.833099365234375,
+		"lng" : 13.8331,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
-		"admin_name" : "Saxony",
+		"admin_name" : "Brandenburg",
 		"capital" : "minor",
-		"population" : 40885,
-		"id" : 1276914988
+		"population" : 40965,
+		"id" : 1276311453
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -3711,20 +3739,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Eberswalde",
-		"city_ascii" : "Eberswalde",
-		"lat" : 52.833099365234375,
-		"lng" : 13.8331,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Brandenburg",
-		"capital" : "minor",
-		"population" : 40387,
-		"id" : 1276311453
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Pirmasens",
 		"city_ascii" : "Pirmasens",
 		"lat" : 49.20000076293945,
@@ -3778,6 +3792,20 @@
 		"capital" : null,
 		"population" : 40409,
 		"id" : 1276292106
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Freiberg",
+		"city_ascii" : "Freiberg",
+		"lat" : 50.91189956665039,
+		"lng" : 13.3428,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Saxony",
+		"capital" : "minor",
+		"population" : 39872,
+		"id" : 1276914988
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -3865,20 +3893,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Freital",
-		"city_ascii" : "Freital",
-		"lat" : 51.016700744628906,
-		"lng" : 13.65,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Saxony",
-		"capital" : null,
-		"population" : 39405,
-		"id" : 1276672229
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Löhne",
 		"city_ascii" : "Lohne",
 		"lat" : 52.20000076293945,
@@ -3904,6 +3918,20 @@
 		"capital" : null,
 		"population" : 39634,
 		"id" : 1276068626
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Freital",
+		"city_ascii" : "Freital",
+		"lat" : 51.016700744628906,
+		"lng" : 13.65,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Saxony",
+		"capital" : null,
+		"population" : 39352,
+		"id" : 1276672229
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -3977,6 +4005,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Ahaus",
+		"city_ascii" : "Ahaus",
+		"lat" : 52.07939910888672,
+		"lng" : 7.0134,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "North Rhine-Westphalia",
+		"capital" : null,
+		"population" : 39381,
+		"id" : 1276411347
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Stendal",
 		"city_ascii" : "Stendal",
 		"lat" : 52.599998474121094,
@@ -3988,20 +4030,6 @@
 		"capital" : "minor",
 		"population" : 39439,
 		"id" : 1276016814
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Ahaus",
-		"city_ascii" : "Ahaus",
-		"lat" : 52.07939910888672,
-		"lng" : 7.0134,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "North Rhine-Westphalia",
-		"capital" : null,
-		"population" : 39223,
-		"id" : 1276411347
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -4070,7 +4098,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Saxony",
 		"capital" : "minor",
-		"population" : 38316,
+		"population" : 38277,
 		"id" : 1276247543
 	},
 	{
@@ -4089,20 +4117,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Bautzen",
-		"city_ascii" : "Bautzen",
-		"lat" : 51.181400299072266,
-		"lng" : 14.4239,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Saxony",
-		"capital" : "minor",
-		"population" : 38329,
-		"id" : 1276088190
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Fürstenfeldbruck",
 		"city_ascii" : "Furstenfeldbruck",
 		"lat" : 48.177799224853516,
@@ -4117,6 +4131,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Bautzen",
+		"city_ascii" : "Bautzen",
+		"lat" : 51.181400299072266,
+		"lng" : 14.4239,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Saxony",
+		"capital" : "minor",
+		"population" : 37966,
+		"id" : 1276088190
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Backnang",
 		"city_ascii" : "Backnang",
 		"lat" : 48.9463996887207,
@@ -4126,7 +4154,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : null,
-		"population" : 37253,
+		"population" : 37558,
 		"id" : 1276031423
 	},
 	{
@@ -4257,6 +4285,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Mühlhausen",
+		"city_ascii" : "Muhlhausen",
+		"lat" : 51.21670150756836,
+		"lng" : 10.45,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Thuringia",
+		"capital" : "minor",
+		"population" : 36200,
+		"id" : 1276181580
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Kehl",
 		"city_ascii" : "Kehl",
 		"lat" : 48.57109832763672,
@@ -4282,20 +4324,6 @@
 		"capital" : null,
 		"population" : 36012,
 		"id" : 1276439566
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Mühlhausen",
-		"city_ascii" : "Muhlhausen",
-		"lat" : 51.21670150756836,
-		"lng" : 10.45,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Thuringia",
-		"capital" : "minor",
-		"population" : 36200,
-		"id" : 1276181580
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -4453,6 +4481,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Leer",
+		"city_ascii" : "Leer",
+		"lat" : 53.23080062866211,
+		"lng" : 7.4528,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Lower Saxony",
+		"capital" : "minor",
+		"population" : 34958,
+		"id" : 1276392695
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Cloppenburg",
 		"city_ascii" : "Cloppenburg",
 		"lat" : 52.847801208496094,
@@ -4481,20 +4523,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Radebeul",
-		"city_ascii" : "Radebeul",
-		"lat" : 51.10329818725586,
-		"lng" : 13.67,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Saxony",
-		"capital" : null,
-		"population" : 34008,
-		"id" : 1276277969
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Bad Vilbel",
 		"city_ascii" : "Bad Vilbel",
 		"lat" : 50.1781005859375,
@@ -4506,6 +4534,20 @@
 		"capital" : null,
 		"population" : 33990,
 		"id" : 1276387851
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Radebeul",
+		"city_ascii" : "Radebeul",
+		"lat" : 51.10329818725586,
+		"lng" : 13.67,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Saxony",
+		"capital" : null,
+		"population" : 33935,
+		"id" : 1276277969
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -4554,7 +4596,7 @@
 		"city" : "Kempen",
 		"city_ascii" : "Kempen",
 		"lat" : 51.36579895019531,
-		"lng" : 6.4193999999999996,
+		"lng" : 6.4194,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
@@ -4579,17 +4621,17 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Leer",
-		"city_ascii" : "Leer",
-		"lat" : 53.23080062866211,
-		"lng" : 7.4528,
+		"city" : "Balingen",
+		"city_ascii" : "Balingen",
+		"lat" : 48.273101806640625,
+		"lng" : 8.8506,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
-		"admin_name" : "Lower Saxony",
+		"admin_name" : "Baden-Württemberg",
 		"capital" : "minor",
-		"population" : 34486,
-		"id" : 1276392695
+		"population" : 34505,
+		"id" : 1276586382
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -4632,20 +4674,6 @@
 		"capital" : "minor",
 		"population" : 34209,
 		"id" : 1276900149
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Balingen",
-		"city_ascii" : "Balingen",
-		"lat" : 48.273101806640625,
-		"lng" : 8.8506,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Baden-Württemberg",
-		"capital" : "minor",
-		"population" : 34217,
-		"id" : 1276586382
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -4789,6 +4817,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Biberach",
+		"city_ascii" : "Biberach",
+		"lat" : 48.09809875488281,
+		"lng" : 9.7886,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Baden-Württemberg",
+		"capital" : "minor",
+		"population" : 33510,
+		"id" : 1276241010
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Uelzen",
 		"city_ascii" : "Uelzen",
 		"lat" : 52.964698791503906,
@@ -4820,7 +4862,7 @@
 		"city" : "Rheinfelden (Baden)",
 		"city_ascii" : "Rheinfelden (Baden)",
 		"lat" : 47.561100006103516,
-		"lng" : 7.7917000000000005,
+		"lng" : 7.7917,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
@@ -4828,20 +4870,6 @@
 		"capital" : null,
 		"population" : 33074,
 		"id" : 1276547516
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Biberach",
-		"city_ascii" : "Biberach",
-		"lat" : 48.09809875488281,
-		"lng" : 9.7886,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Baden-Württemberg",
-		"capital" : "minor",
-		"population" : 32938,
-		"id" : 1276241010
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -4854,7 +4882,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Hesse",
 		"capital" : null,
-		"population" : 32163,
+		"population" : 32493,
 		"id" : 1276664999
 	},
 	{
@@ -4943,20 +4971,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Naumburg",
-		"city_ascii" : "Naumburg",
-		"lat" : 51.152099609375,
-		"lng" : 11.8098,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Saxony-Anhalt",
-		"capital" : "minor",
-		"population" : 32402,
-		"id" : 1276335227
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Vechta",
 		"city_ascii" : "Vechta",
 		"lat" : 52.73059844970703,
@@ -4985,17 +4999,31 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Hoyerswerda",
-		"city_ascii" : "Hoyerswerda",
-		"lat" : 51.433101654052734,
-		"lng" : 14.25,
+		"city" : "Naumburg",
+		"city_ascii" : "Naumburg",
+		"lat" : 51.152099609375,
+		"lng" : 11.8098,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",
-		"admin_name" : "Saxony",
+		"admin_name" : "Saxony-Anhalt",
+		"capital" : "minor",
+		"population" : 32402,
+		"id" : 1276335227
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Fürstenwalde",
+		"city_ascii" : "Furstenwalde",
+		"lat" : 52.36669921875,
+		"lng" : 14.0667,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Brandenburg",
 		"capital" : null,
-		"population" : 32123,
-		"id" : 1276992982
+		"population" : 31992,
+		"id" : 1276767308
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -5010,20 +5038,6 @@
 		"capital" : null,
 		"population" : 31827,
 		"id" : 1276001308
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Fürstenwalde",
-		"city_ascii" : "Furstenwalde",
-		"lat" : 52.36669921875,
-		"lng" : 14.0667,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Brandenburg",
-		"capital" : null,
-		"population" : 31941,
-		"id" : 1276767308
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -5080,6 +5094,20 @@
 		"capital" : null,
 		"population" : 31545,
 		"id" : 1276549799
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Hoyerswerda",
+		"city_ascii" : "Hoyerswerda",
+		"lat" : 51.433101654052734,
+		"lng" : 14.25,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Saxony",
+		"capital" : null,
+		"population" : 31575,
+		"id" : 1276992982
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -5288,7 +5316,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Brandenburg",
 		"capital" : "minor",
-		"population" : 30846,
+		"population" : 30764,
 		"id" : 1276820903
 	},
 	{
@@ -5332,20 +5360,6 @@
 		"capital" : null,
 		"population" : 30075,
 		"id" : 1276394678
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Riesa",
-		"city_ascii" : "Riesa",
-		"lat" : 51.308101654052734,
-		"lng" : 13.2939,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Saxony",
-		"capital" : null,
-		"population" : 30054,
-		"id" : 1276381687
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -5433,20 +5447,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Schwedt (Oder)",
-		"city_ascii" : "Schwedt (Oder)",
-		"lat" : 53.0630989074707,
-		"lng" : 14.2831,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Brandenburg",
-		"capital" : null,
-		"population" : 29920,
-		"id" : 1276552729
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Saalfeld",
 		"city_ascii" : "Saalfeld",
 		"lat" : 50.65060043334961,
@@ -5475,8 +5475,8 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Werve",
-		"city_ascii" : "Werve",
+		"city" : "Werne an der Lippe",
+		"city_ascii" : "Werne an der Lippe",
 		"lat" : 51.66669845581055,
 		"lng" : 7.6167,
 		"country" : "Germany",
@@ -5485,7 +5485,7 @@
 		"admin_name" : "North Rhine-Westphalia",
 		"capital" : null,
 		"population" : 29662,
-		"id" : 1276001404
+		"id" : 1276066567
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -5559,6 +5559,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Bretten",
+		"city_ascii" : "Bretten",
+		"lat" : 49.036399841308594,
+		"lng" : 8.7061,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Baden-Württemberg",
+		"capital" : null,
+		"population" : 29538,
+		"id" : 1276638008
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Schwelm",
 		"city_ascii" : "Schwelm",
 		"lat" : 51.290401458740234,
@@ -5584,20 +5598,6 @@
 		"capital" : null,
 		"population" : 29467,
 		"id" : 1276306973
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Bretten",
-		"city_ascii" : "Bretten",
-		"lat" : 49.036399841308594,
-		"lng" : 8.7061,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Baden-Württemberg",
-		"capital" : null,
-		"population" : 29412,
-		"id" : 1276638008
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -5699,6 +5699,34 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Schwedt (Oder)",
+		"city_ascii" : "Schwedt (Oder)",
+		"lat" : 53.0630989074707,
+		"lng" : 14.2831,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Brandenburg",
+		"capital" : null,
+		"population" : 29433,
+		"id" : 1276552729
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Riesa",
+		"city_ascii" : "Riesa",
+		"lat" : 51.308101654052734,
+		"lng" : 13.2939,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Saxony",
+		"capital" : null,
+		"population" : 29038,
+		"id" : 1276381687
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Rösrath",
 		"city_ascii" : "Rosrath",
 		"lat" : 50.900001525878906,
@@ -5764,7 +5792,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : null,
-		"population" : 28900,
+		"population" : 28889,
 		"id" : 1276639756
 	},
 	{
@@ -5780,6 +5808,20 @@
 		"capital" : null,
 		"population" : 28951,
 		"id" : 1276257894
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Meißen",
+		"city_ascii" : "Meissen",
+		"lat" : 51.16360092163086,
+		"lng" : 13.4775,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Saxony",
+		"capital" : "minor",
+		"population" : 28153,
+		"id" : 1276054483
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -5808,20 +5850,6 @@
 		"capital" : "minor",
 		"population" : 28824,
 		"id" : 1276004976
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Meißen",
-		"city_ascii" : "Meissen",
-		"lat" : 51.16360092163086,
-		"lng" : 13.4775,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Saxony",
-		"capital" : "minor",
-		"population" : 28044,
-		"id" : 1276054483
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -5909,6 +5937,34 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Olching",
+		"city_ascii" : "Olching",
+		"lat" : 48.20000076293945,
+		"lng" : 11.3167,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Bavaria",
+		"capital" : null,
+		"population" : 27741,
+		"id" : 1276458023
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Idar-Oberstein",
+		"city_ascii" : "Idar-Oberstein",
+		"lat" : 49.701900482177734,
+		"lng" : 7.3253,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Rhineland-Palatinate",
+		"capital" : null,
+		"population" : 28323,
+		"id" : 1276902522
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Reinbek",
 		"city_ascii" : "Reinbek",
 		"lat" : 53.5088996887207,
@@ -5962,20 +6018,6 @@
 		"capital" : null,
 		"population" : 27750,
 		"id" : 1276339266
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Blankenfelde",
-		"city_ascii" : "Blankenfelde",
-		"lat" : 52.349998474121094,
-		"lng" : 13.4,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Brandenburg",
-		"capital" : null,
-		"population" : 27837,
-		"id" : 1276580790
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -6189,6 +6231,34 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Strausberg",
+		"city_ascii" : "Strausberg",
+		"lat" : 52.5807991027832,
+		"lng" : 13.8814,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Brandenburg",
+		"capital" : null,
+		"population" : 26939,
+		"id" : 1276019110
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Garmisch-Partenkirchen",
+		"city_ascii" : "Garmisch-Partenkirchen",
+		"lat" : 47.5,
+		"lng" : 11.0833,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Bavaria",
+		"capital" : "minor",
+		"population" : 27194,
+		"id" : 1276000934
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Heiligenhaus",
 		"city_ascii" : "Heiligenhaus",
 		"lat" : 51.326499938964844,
@@ -6256,34 +6326,6 @@
 		"capital" : null,
 		"population" : 26762,
 		"id" : 1276514079
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Teltow",
-		"city_ascii" : "Teltow",
-		"lat" : 52.402198791503906,
-		"lng" : 13.2706,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Brandenburg",
-		"capital" : null,
-		"population" : 25825,
-		"id" : 1276388501
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Strausberg",
-		"city_ascii" : "Strausberg",
-		"lat" : 52.5807991027832,
-		"lng" : 13.8814,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Brandenburg",
-		"capital" : null,
-		"population" : 26587,
-		"id" : 1276019110
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -6455,6 +6497,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Schleswig",
+		"city_ascii" : "Schleswig",
+		"lat" : 54.51530075073242,
+		"lng" : 9.5697,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Schleswig-Holstein",
+		"capital" : "minor",
+		"population" : 25322,
+		"id" : 1276884755
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Bad Honnef am Rhein",
 		"city_ascii" : "Bad Honnef am Rhein",
 		"lat" : 50.64500045776367,
@@ -6466,20 +6522,6 @@
 		"capital" : null,
 		"population" : 25816,
 		"id" : 1276512885
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Ludwigsfelde",
-		"city_ascii" : "Ludwigsfelde",
-		"lat" : 52.29970169067383,
-		"lng" : 13.2667,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Brandenburg",
-		"capital" : null,
-		"population" : 26112,
-		"id" : 1276940684
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -6497,20 +6539,6 @@
 	},
 	{
 		"json_featuretype" : "CSV",
-		"city" : "Schleswig",
-		"city_ascii" : "Schleswig",
-		"lat" : 54.51530075073242,
-		"lng" : 9.5697,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Schleswig-Holstein",
-		"capital" : "minor",
-		"population" : 25276,
-		"id" : 1276884755
-	},
-	{
-		"json_featuretype" : "CSV",
 		"city" : "Geretsried",
 		"city_ascii" : "Geretsried",
 		"lat" : 47.86669921875,
@@ -6525,6 +6553,20 @@
 	},
 	{
 		"json_featuretype" : "CSV",
+		"city" : "Helmstedt",
+		"city_ascii" : "Helmstedt",
+		"lat" : 52.22809982299805,
+		"lng" : 11.0106,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Lower Saxony",
+		"capital" : "minor",
+		"population" : 25728,
+		"id" : 1276360393
+	},
+	{
+		"json_featuretype" : "CSV",
 		"city" : "Lindau",
 		"city_ascii" : "Lindau",
 		"lat" : 47.545799255371094,
@@ -6536,6 +6578,20 @@
 		"capital" : null,
 		"population" : 25490,
 		"id" : 1276918139
+	},
+	{
+		"json_featuretype" : "CSV",
+		"city" : "Köthen",
+		"city_ascii" : "Kothen",
+		"lat" : 51.7510986328125,
+		"lng" : 11.9779,
+		"country" : "Germany",
+		"iso2" : "DE",
+		"iso3" : "DEU",
+		"admin_name" : "Saxony-Anhalt",
+		"capital" : "minor",
+		"population" : 25911,
+		"id" : 1276148346
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -6564,20 +6620,6 @@
 		"capital" : "minor",
 		"population" : 25915,
 		"id" : 1276728110
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Helmstedt",
-		"city_ascii" : "Helmstedt",
-		"lat" : 52.22809982299805,
-		"lng" : 11.0106,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Lower Saxony",
-		"capital" : "minor",
-		"population" : 25728,
-		"id" : 1276360393
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -6618,7 +6660,7 @@
 		"iso3" : "DEU",
 		"admin_name" : "Baden-Württemberg",
 		"capital" : null,
-		"population" : 25630,
+		"population" : 25615,
 		"id" : 1276045216
 	},
 	{
@@ -6676,20 +6718,6 @@
 		"capital" : "minor",
 		"population" : 25302,
 		"id" : 1276722779
-	},
-	{
-		"json_featuretype" : "CSV",
-		"city" : "Zittau",
-		"city_ascii" : "Zittau",
-		"lat" : 50.89609909057617,
-		"lng" : 14.8072,
-		"country" : "Germany",
-		"iso2" : "DE",
-		"iso3" : "DEU",
-		"admin_name" : "Saxony",
-		"capital" : null,
-		"population" : 25381,
-		"id" : 1276061456
 	},
 	{
 		"json_featuretype" : "CSV",
@@ -6850,7 +6878,7 @@
 		"city" : "Norden",
 		"city_ascii" : "Norden",
 		"lat" : 53.59669876098633,
-		"lng" : 7.2056000000000004,
+		"lng" : 7.2056,
 		"country" : "Germany",
 		"iso2" : "DE",
 		"iso3" : "DEU",

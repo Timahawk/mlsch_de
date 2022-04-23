@@ -28,8 +28,8 @@
 #!   END_TCL=""
 #!   EXPLICIT_BOOKMARK_ORDER="false"
 #!   FME_BUILD_NUM="21789"
-#!   FME_DOCUMENT_GUID="1648d476-9733-4586-976e-843b8fc5bc7f"
-#!   FME_DOCUMENT_PRIORGUID="814734a6-28d7-4222-a0d2-98489e8cbe57,3d88e78a-6a66-41c8-8ac3-b738d2071f48,ffc6cb18-feb8-4f0b-baef-579cb7097cac,426cc87e-7046-4d2b-a4d7-2ad033b0f9e0,b4b6fd27-2a0b-4642-999e-a9353759ec11,914a823b-e7d3-437b-815d-05820b3c29d3,8938ae7d-9b3e-4a76-8e8c-4c34dfe28b65"
+#!   FME_DOCUMENT_GUID="69782130-4385-444e-9892-d7300e5a7f16"
+#!   FME_DOCUMENT_PRIORGUID="814734a6-28d7-4222-a0d2-98489e8cbe57,3d88e78a-6a66-41c8-8ac3-b738d2071f48,ffc6cb18-feb8-4f0b-baef-579cb7097cac,426cc87e-7046-4d2b-a4d7-2ad033b0f9e0,b4b6fd27-2a0b-4642-999e-a9353759ec11,914a823b-e7d3-437b-815d-05820b3c29d3,8938ae7d-9b3e-4a76-8e8c-4c34dfe28b65,1648d476-9733-4586-976e-843b8fc5bc7f"
 #!   FME_GEOMETRY_HANDLING="Enhanced"
 #!   FME_IMPLICIT_CSMAP_REPROJECTION_MODE="Auto"
 #!   FME_NAMES_ENCODING="windows-1252"
@@ -39,7 +39,7 @@
 #!   HISTORY=""
 #!   IGNORE_READER_FAILURE="No"
 #!   LAST_SAVE_BUILD="FME(R) 2021.2.0.1 (20211112 - Build 21789 - WIN64)"
-#!   LAST_SAVE_DATE="2022-04-22T23:19:30"
+#!   LAST_SAVE_DATE="2022-04-22T23:38:34"
 #!   LOG_FILE=""
 #!   LOG_MAX_RECORDED_FEATURES="200"
 #!   MARKDOWN_DESCRIPTION=""
@@ -58,7 +58,7 @@
 #!   TITLE=""
 #!   USAGE=""
 #!   USE_MARKDOWN=""
-#!   VIEW_POSITION="-4663.04 0"
+#!   VIEW_POSITION="-4663.04 618.879"
 #!   WARN_INVALID_XFORM_PARAM="Yes"
 #!   WORKSPACE_VERSION="1"
 #!   ZOOM_SCALE="51"
@@ -1148,7 +1148,7 @@
 #!   FEAT_GEOMTYPE="json_no_geom"
 #!   POSITION="-50.008000080000784 215.63165631656315"
 #!   BOUNDING_RECT="-50.008000080000784 215.63165631656315 454 71"
-#!   ORDER="500000000000008"
+#!   ORDER="500000000000051"
 #!   COLLAPSED="true"
 #!   KEYWORD="JSON_1"
 #!   PARMS_EDITED="true"
@@ -1177,7 +1177,7 @@
 #!   FEAT_GEOMTYPE="json_no_geom"
 #!   POSITION="799.02009804411773 -503.61573223575374"
 #!   BOUNDING_RECT="799.02009804411773 -503.61573223575374 454 71"
-#!   ORDER="500000000000015"
+#!   ORDER="500000000000043"
 #!   COLLAPSED="true"
 #!   KEYWORD="JSON_2"
 #!   PARMS_EDITED="true"
@@ -1206,7 +1206,7 @@
 #!   FEAT_GEOMTYPE="json_no_geom"
 #!   POSITION="750 -87.496374963749702"
 #!   BOUNDING_RECT="750 -87.496374963749702 454 71"
-#!   ORDER="500000000000016"
+#!   ORDER="500000000000045"
 #!   COLLAPSED="true"
 #!   KEYWORD="JSON_3"
 #!   PARMS_EDITED="true"
@@ -1235,7 +1235,7 @@
 #!   FEAT_GEOMTYPE="json_no_geom"
 #!   POSITION="1573.5301470661766 -839.7097794507356"
 #!   BOUNDING_RECT="1573.5301470661766 -839.7097794507356 454 71"
-#!   ORDER="500000000000021"
+#!   ORDER="500000000000041"
 #!   COLLAPSED="true"
 #!   KEYWORD="JSON_4"
 #!   PARMS_EDITED="true"
@@ -1264,7 +1264,7 @@
 #!   FEAT_GEOMTYPE="json_no_geom"
 #!   POSITION="2161.5031060114534 -1200"
 #!   BOUNDING_RECT="2161.5031060114534 -1200 454 71"
-#!   ORDER="500000000000023"
+#!   ORDER="500000000000039"
 #!   COLLAPSED="true"
 #!   KEYWORD="JSON_5"
 #!   PARMS_EDITED="true"
@@ -1293,7 +1293,7 @@
 #!   FEAT_GEOMTYPE="json_no_geom"
 #!   POSITION="2224.3101066304789 -2338.5530521971887"
 #!   BOUNDING_RECT="2224.3101066304789 -2338.5530521971887 454 71"
-#!   ORDER="500000000000028"
+#!   ORDER="500000000000047"
 #!   COLLAPSED="true"
 #!   KEYWORD="JSON_6"
 #!   PARMS_EDITED="true"
@@ -1322,7 +1322,7 @@
 #!   FEAT_GEOMTYPE="json_no_geom"
 #!   POSITION="2249.9999999999991 -2850"
 #!   BOUNDING_RECT="2249.9999999999991 -2850 454 71"
-#!   ORDER="500000000000032"
+#!   ORDER="500000000000049"
 #!   COLLAPSED="true"
 #!   KEYWORD="JSON_7"
 #!   PARMS_EDITED="true"
@@ -1379,22 +1379,26 @@
 #!   IS_EDITABLE="true"
 #!   IDENTIFIER="62"
 #!   FEAT_GEOMTYPE="json_no_geom"
-#!   POSITION="2250 -1650"
-#!   BOUNDING_RECT="2250 -1650 454 71"
-#!   ORDER="500000000000034"
+#!   POSITION="2188.7248774448517 -1650"
+#!   BOUNDING_RECT="2188.7248774448517 -1650 454 71"
+#!   ORDER="500000000000037"
 #!   COLLAPSED="true"
 #!   KEYWORD="JSON_8"
 #!   PARMS_EDITED="true"
 #!   ENABLED="true"
 #!   SCHEMA_ATTRIBUTE_SOURCE="1"
 #! >
-#!     <FEAT_ATTRIBUTE ATTR_NAME="No" ATTR_TYPE="int" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
-#!     <FEAT_ATTRIBUTE ATTR_NAME="Country" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
-#!     <FEAT_ATTRIBUTE ATTR_NAME="ISO3" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
-#!     <FEAT_ATTRIBUTE ATTR_NAME="M49Code" ATTR_TYPE="int" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
-#!     <FEAT_ATTRIBUTE ATTR_NAME="Region1" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
-#!     <FEAT_ATTRIBUTE ATTR_NAME="Region2" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
-#!     <FEAT_ATTRIBUTE ATTR_NAME="Continent" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="city" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="city_ascii" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="lat" ATTR_TYPE="float" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="lng" ATTR_TYPE="float" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="country" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="iso2" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="iso3" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="admin_name" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="capital" ATTR_TYPE="string" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="population" ATTR_TYPE="float" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
+#!     <FEAT_ATTRIBUTE ATTR_NAME="id" ATTR_TYPE="int" ATTR_HAS_PORT="true" ATTR_VALUE=""/>
 #! </FEATURE_TYPE>
 #! </FEATURE_TYPES>
 #! <FMESERVER>
@@ -3772,4 +3776,4 @@ JSON_6_DEF CSV   city                         string   city_ascii               
 # -------------------------------------------------------------------------
 JSON_7_DEF CSV   city                         string   city_ascii                   string   lat                          float   lng                          float   country                      string   iso2                         string   iso3                         string   admin_name                   string   capital                      string   population                   float   id                           int
 # -------------------------------------------------------------------------
-JSON_8_DEF CSV   No                           int   Country                      string   ISO3                         string   M49Code                      int   Region1                      string   Region2                      string   Continent                    string
+JSON_8_DEF CSV   city                         string   city_ascii                   string   lat                          float   lng                          float   country                      string   iso2                         string   iso3                         string   admin_name                   string   capital                      string   population                   float   id                           int

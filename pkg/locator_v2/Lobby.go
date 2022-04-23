@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
-	"golang.org/x/exp/slices"
 )
 
 // Lobby maintains the set of active Player and broadcasts messages to the
@@ -27,6 +26,8 @@ type Lobby struct {
 	RoundTime int
 	// Review Time determines the time spent reviewing
 	ReviewTime int
+	// The number of rounds played
+	Rounds int
 
 	// Registered clients.
 	player map[string]*Player
@@ -61,15 +62,16 @@ type Lobby struct {
 }
 
 // NewLobby creates a new Lobby.
-func NewLobby(zeit int, game *Game, owner *Player) *Lobby {
+func NewLobby(roundt, reviewt, rounds int, game *Game) *Lobby {
 	id := util.RandString(8)
 
 	lobby := Lobby{
 		LobbyID: id,
 		// owner:      owner,
 		started:    false,
-		RoundTime:  zeit,
-		ReviewTime: 10,
+		RoundTime:  roundt,
+		ReviewTime: reviewt,
+		Rounds:     rounds,
 		player:     make(map[string]*Player),
 		add:        make(chan *Player, 10),
 		drop:       make(chan *Player, 100),
@@ -86,7 +88,9 @@ func NewLobby(zeit int, game *Game, owner *Player) *Lobby {
 
 	util.Sugar.Infow("New Lobby created.",
 		"id", id,
-		"time", zeit,
+		"roundtime", roundt,
+		"reviewtime", reviewt,
+		"rounds", rounds,
 		"state", 3,
 		"nextState", 0,
 		"roundCounter", 0,
@@ -119,8 +123,8 @@ func (l *Lobby) serveWaitRoom() {
 			util.Sugar.Infow("Add",
 				"Lobby", l.LobbyID,
 				"Player", p.Name)
-			l.player[p.Name] = p
-			p.connected = true
+			// l.player[p.Name] = p
+			// p.connected = true
 
 			for _, pl := range l.player {
 				if pl.conn != nil && pl.connected == true {
@@ -200,7 +204,9 @@ func (l *Lobby) serveWaitRoom() {
 
 func (l *Lobby) serveGame() {
 	defer func() {
-		util.Sugar.Infow("serveGame stopped",
+		l.started = false
+		delete(Lobbies, l.LobbyID)
+		util.Sugar.Infow("serveGame stopped and Lobby deleteted",
 			"Lobby", l.LobbyID)
 	}()
 	util.Sugar.Infow("serveGame started",
@@ -261,7 +267,7 @@ func (l *Lobby) serveGame() {
 				// log.Println("Sending new Location")
 
 				l.location = l.getNewLocation()
-				str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v", "time":"%v"}`, l.location, l.state, l.RoundTime)
+				str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v", "time":"%v", "rounds":"%v"}`, l.location, l.state, l.RoundTime, l.Rounds)
 
 				for _, p := range l.player {
 					if p.conn != nil && p.connected == true {
@@ -279,6 +285,10 @@ func (l *Lobby) serveGame() {
 
 				l.state = "reviewing"
 				l.nextState = "guessing"
+				l.Rounds -= 1
+				if l.Rounds == 0 {
+					l.nextState = "finished"
+				}
 
 				util.Sugar.Infow("reviewing",
 					"lobby", l.LobbyID,
@@ -304,14 +314,31 @@ func (l *Lobby) serveGame() {
 				}
 
 				sendUpdate = time.NewTimer(time.Duration(l.ReviewTime) * time.Second)
+			} else if l.nextState == "finished" {
+				util.Sugar.Infow("finished",
+					"lobby", l.LobbyID,
+					"location", l.location,
+					"time", l.ReviewTime,
+					"state", l.state,
+					"nextState", l.nextState,
+					"rounds", l.Rounds)
 
+				str := fmt.Sprintf(`{"status":"finished","points":%s`, string(l.getScore()))
+				for _, p := range l.player {
+					if p.conn != nil && p.connected == true {
+						p.toConn <- str
+					}
+				}
+				time.Sleep(time.Second)
+				return
 			} else {
-				util.Sugar.Infow("Timer run down. Nothing happend...",
+				util.Sugar.Warnw("Timer run down. Nothing happend...",
 					"lobby", l.LobbyID,
 					// "time", l.RoundTime,
 					"state", l.state,
 					"nextState", l.nextState,
 				)
+				return
 			}
 
 			// This simply checks if the serveLobby goroutine should be exited.
@@ -360,15 +387,20 @@ func (l *Lobby) areAllActivePlayersReady() bool {
 }
 
 // getNewLocation helper function, gets a semi random new Location.
+// But its a super buggy implementation i think.
 func (l *Lobby) getNewLocation() string {
+	var newLocation string
 
 	for key := range l.game.Cities {
-		if slices.Contains(l.locations, key) {
-			continue
+		newLocation = key
+
+		for _, ap := range l.locations {
+			if newLocation == ap {
+				return l.getNewLocation()
+			}
 		}
-		return key
 	}
-	return ""
+	return newLocation
 }
 
 func (l *Lobby) allActivePlayersSubmitted() bool {

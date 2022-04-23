@@ -1,0 +1,25 @@
+package locator_v2
+
+import (
+	"testing"
+
+	"github.com/Timahawk/mlsch_de/pkg/util"
+	"github.com/stretchr/testify/assert"
+)
+
+func Test_getNewLocation(t *testing.T) {
+	util.InitLogger()
+
+	l := NewLobby(3, 3, 3, &Game{
+		Cities: make(map[string]*City),
+	})
+
+	assert.Equal(t, "", l.getNewLocation(), "No entry available")
+
+	l.game.Cities["test"] = &City{}
+
+	assert.Equal(t, "test", l.getNewLocation(), "Only entry already played")
+
+	l.game.Cities["nottest"] = &City{}
+	assert.Equal(t, "nottest", l.getNewLocation(), "They should be equal")
+}

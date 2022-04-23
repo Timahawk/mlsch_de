@@ -36,7 +36,8 @@ conn.onmessage = function (evt) {
     if (message.status == "location") {
         document.getElementById("city").innerHTML = message.Location
         document.getElementById("status").innerHTML = message.status
-        document.getElementById("points").innerHTML = ""
+        document.getElementById("rounds").innerHTML = message.rounds
+        // document.getElementById("points").innerHTML = ""
         document.getElementById("distance").innerHTML =""
         document.getElementById("awarded").innerHTML =""
         solution_layer.getSource().clear()
@@ -46,9 +47,20 @@ conn.onmessage = function (evt) {
         document.getElementById("status").innerHTML = message.status
         document.getElementById("points").innerHTML = JSON.stringify(message.points)
         document.getElementById("distance").innerHTML = message.distance +  " km away. "
-        document.getElementById("awarded").innerHTML = "--> "+ message.awarded + " Points"
+        document.getElementById("awarded").innerHTML = message.awarded + " Points"
         addSolution(message)
         }
+    if (message.status == "finished"){
+        clearInterval(timecounter)
+        document.getElementById("status").innerHTML = message.status
+        document.getElementById("points").innerHTML = JSON.stringify(message.points)
+        document.getElementById("distance").innerHTML =""
+        document.getElementById("awarded").innerHTML =""
+        document.getElementById("time").innerHTML =""
+        document.getElementById("city").innerHTML =""
+        solution_layer.getSource().clear()
+        conn.close()
+    }
 };
 
 function submitGuess(){

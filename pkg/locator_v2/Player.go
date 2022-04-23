@@ -168,12 +168,26 @@ func (p *Player) ReceiveFromConn() {
 			p.ready = true
 			p.lobby.ready <- p
 		}
-		// TODO this should be proteced from edge cases.
-		p.lobby.submitted <- p
-		p.submitted = true
 
-		p.process_submit(message)
-		p.points = p.getPoints()
+		var submit Submit_guess
+		err = json.Unmarshal(message, &submit)
+		if err == nil {
+			// this is doubled in p.process_submit.
+			p.lobby.submitted <- p
+			p.submitted = true
+
+			p.process_submit(message)
+			p.points = p.getPoints()
+
+			util.Sugar.Debugw("Points calculated and awarded",
+				"Lobby", p.lobby.LobbyID,
+				"Player", p.Name,
+				"conn", p.conn,
+				"distance", p.distance,
+				// this breaks at the first entry.
+				// "awarded", p.score[len(p.score)-1],
+				"score", p.score)
+		}
 	}
 }
 

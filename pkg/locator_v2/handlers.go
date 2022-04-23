@@ -22,10 +22,18 @@ func CreateLobbyPOST(c *gin.Context) {
 	if err != nil {
 		roundTime = 0
 	}
+	reviewTime, err := strconv.Atoi(c.PostForm("reviewTime"))
+	if err != nil {
+		reviewTime = 0
+	}
+	rounds, err := strconv.Atoi(c.PostForm("rounds"))
+	if err != nil {
+		rounds = 0
+	}
 	gameset := c.PostForm("gameset")
 	username := c.PostForm("username")
 
-	if roundTime == 0 || gameset == "" || username == "" {
+	if roundTime == 0 || reviewTime == 0 || rounds == 0 || gameset == "" || username == "" {
 		c.JSON(200, gin.H{"status": "CreateLobbyPost failed, due to faulty Form Input."})
 		return
 	}
@@ -39,12 +47,14 @@ func CreateLobbyPOST(c *gin.Context) {
 	ctx, cancelCtx := context.WithCancel(contextbg)
 	p := NewPlayer(ctx, cancelCtx, &Lobby{}, username)
 
-	l := NewLobby(roundTime, g, p)
+	l := NewLobby(roundTime, reviewTime, rounds, g)
 	p.lobby = l
 
 	go l.serveWaitRoom()
 
-	l.add <- p
+	// was called twice
+	// l.add <- p
+	l.player[p.Name] = p
 
 	Lobbies[l.LobbyID] = l
 
@@ -69,14 +79,22 @@ func JoinLobbyPOST(c *gin.Context) {
 		c.JSON(213, gin.H{"status": "JoinLobbyPost failed, due to Lobby not Exists."})
 		return
 	}
+
+	if l.started == true {
+		c.JSON(213, gin.H{"status": "You cannot join already started lobby."})
+		return
+	}
+
 	ctx, cancelCtx := context.WithCancel(contextbg)
 	p := NewPlayer(ctx, cancelCtx, l, username)
 
 	if l.started {
 		l.player[p.Name] = p
-		p.connected = true
+		// p.connected = true
 	} else {
-		l.add <- p
+		// was called twice.
+		// l.add <- p
+		l.player[p.Name] = p
 	}
 	// c.JSON(200, gin.H{"status": "JoinLobbyPost", "Lobby": l})
 	path := c.Request.URL.Path
@@ -145,6 +163,7 @@ func WaitingRoomWS(c *gin.Context) {
 	}
 
 	p.conn = conn
+	p.connected = true
 
 	go p.WriteToConn()
 	go p.ReceiveFromConn()
@@ -164,7 +183,7 @@ func GameRoom(c *gin.Context) {
 		return
 	}
 	if l.started == false {
-		c.JSON(213, gin.H{"status": "PlayGame failed, due to Lobby Ready"})
+		c.JSON(213, gin.H{"status": "PlayGame failed, due to Lobby not started or already finished"})
 		return
 	}
 
@@ -210,7 +229,7 @@ func GameRoomWS(c *gin.Context) {
 		fmt.Println("Error", err)
 		return
 	}
-	p.conn = nil
+	// p.conn = nil
 	p.conn = conn
 	p.connected = true
 	p.ctx, p.ctxcancel = context.WithCancel(contextbg)

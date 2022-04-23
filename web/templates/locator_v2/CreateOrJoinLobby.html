@@ -6,7 +6,13 @@
 
 <form method="post" action= "create">
     <label for="roundTime">Choose the length of each guessing round (seconds)</label>
-    <input type="number" required min=1 max=240 id="roundTime" name="roundTime" value="45"><br>
+    <input type="number" required min=3 max=240 id="roundTime" name="roundTime" value="45"><br>
+
+    <label for="reviewTime">Choose the length of each review round (seconds)</label>
+    <input type="number" required min=3 max=240 id="reviewTime" name="reviewTime" value="15"><br>
+
+    <label for="rounds">Choose the numbers of gamerounds</label>
+    <input type="number" required min=1 max=20 id="rounds" name="rounds" value="10"><br>
 
     <label for="gameset">Choose a Gameset:</label>
     <select name="gameset" required id="gameset">

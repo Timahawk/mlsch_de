@@ -21,14 +21,27 @@
 <body>
   {{ template "globals/style_body.html" }}
     <h1>GameRoom</h1>
-    <div>
-      <b id="time"></b>
-      <b id="city">Ready?</b>
-      <b id="points"></b>
-      <b id="status"></b>
-      <b id="distance"></b>
-      <b id="awarded"></b>
-    </div>
+    <table class="table table-striped table-bordered">
+      <tr>
+        <th style="width: 10%" scope="col"> State</th>
+        <th style="width: 10%" scope="col">Time left</th>
+        <th style="width: 10%" scope="col">Rounds left</th>
+        <th style="width: 10%" scope="col">Points</th>
+        <th style="width: 10%" scope="col">City</th>
+        <th style="width: 10%" scope="col">Distance to City</th>
+        <th style="width: 10%" scope="col">Awarded for your Guess</th>
+        
+      </tr>
+      <tr>
+        <td id="status"></td>
+        <td id="time"></td>
+        <td id="rounds"></td>
+        <td id="points"></td>
+        <td id="city">Ready?</td>
+        <td id="distance"></td>
+        <td id="awarded"></td>
+      </tr>
+    </table>
     
     <button id="submitButton" type="button">Submit Guess</button>
     <div id="map" class="map"></div>

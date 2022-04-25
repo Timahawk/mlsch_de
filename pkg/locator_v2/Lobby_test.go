@@ -15,7 +15,7 @@ func init() {
 func Test_getNewLocation(t *testing.T) {
 
 	l := NewLobby(3, 3, 3, &Game{
-		Cities: make(map[string]*City),
+		Cities: make(map[string]Locations),
 	})
 
 	assert.Equal(t, "", l.getNewLocation(), "No entry available")
@@ -27,7 +27,7 @@ func Test_getNewLocation(t *testing.T) {
 
 func Test_getPlayer(t *testing.T) {
 	l := NewLobby(3, 3, 3, &Game{
-		Cities: make(map[string]*City),
+		Cities: make(map[string]Locations),
 	})
 	p, err := l.getPlayer("TEST")
 	assert.Nil(t, p)

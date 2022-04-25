@@ -216,7 +216,7 @@ func (p *Player) processSubmit(message []byte) (float64, error) {
 
 	// log.Println("Submit:", submit)
 	distance := math.Round(
-		util.Distance(
+		util.CalcDistance(
 			submit.Latitude,
 			submit.Longitude,
 			city.Lat,

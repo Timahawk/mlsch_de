@@ -127,7 +127,7 @@ func HandleGameSubmit(c *gin.Context) {
 		}
 	}
 
-	distance := util.Distance(
+	distance := util.CalcDistance(
 		city_lat,
 		city_lng,
 		submit.Latitude,

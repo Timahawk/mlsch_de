@@ -222,11 +222,7 @@ func (p *Player) process_submit(message []byte) error {
 	}
 
 	// log.Println("Submit:", submit)
-	p.distance = util.Distance(
-		submit.Latitude,
-		submit.Longitude,
-		city.Lat,
-		city.Lng)
+	p.distance = city.Distance(submit.Latitude, submit.Longitude)
 	return nil
 }
 

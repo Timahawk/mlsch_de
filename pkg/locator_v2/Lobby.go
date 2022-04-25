@@ -305,9 +305,9 @@ func (l *Lobby) serveGame() {
 						p.points = 0
 					}
 				}
-
-				str := fmt.Sprintf(`{"status":"reviewing","Location":"%s", "state": "%v", "time":"%v", "lat":"%v", "lng":"%v", "points":%s`,
-					l.location, l.state, l.ReviewTime, l.game.Cities[l.location].Lat, l.game.Cities[l.location].Lng, string(l.getScore()))
+				coords := l.game.Cities[l.location].Center()
+				str := fmt.Sprintf(`{"status":"reviewing","Location":"%s", "state": "%v", "time":"%v", "geojson":%s, "lat":%v,"lng":%v, "points":%s`,
+					l.location, l.state, l.ReviewTime, l.game.Cities[l.location].Geom(), coords[0], coords[1], string(l.getScore()))
 				for _, p := range l.player {
 					if p.conn != nil && p.connected == true {
 						p.toConn <- str

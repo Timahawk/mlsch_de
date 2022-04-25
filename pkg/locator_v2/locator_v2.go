@@ -19,6 +19,9 @@ var upgrader = websocket.Upgrader{}
 var contextbg = context.Background()
 
 func SetupTest() {
+
+	log.Println("SetupTEST enabled.")
+
 	// TODO if production dont do that.
 	ctx, cancelCtx := context.WithCancel(contextbg)
 	testplayer1 := NewPlayer(ctx, cancelCtx, &Lobby{}, "test1")

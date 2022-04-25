@@ -3,6 +3,7 @@ var host = document.location.host;
 var path = document.location.pathname;
 var timecounter =setInterval(function(){},1000000)
 var conn
+var message
 
 // Das hier weils wichtig ist ob https oder nicht.
 // Browser erlauben KEIN downgrad also https zu ws!
@@ -80,10 +81,9 @@ document.getElementById("submitButton").onclick = function () {
 console.log("ws_related loaded successfully")
 
 function addSolution(message){
-    solution = new ol.Feature({
-        geometry: new ol.geom.Point(ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857'))
-        });
+    // solution = new ol.format.GeoJSON().readFeatures(message.geojson);
+    solution = new ol.format.GeoJSON().readFeatures(message.geojson, {dataProjection:4326});
 
-    solution_layer.getSource().addFeature(solution)
+    solution_layer.getSource().addFeatures(solution)
     flyTo(ol.proj.fromLonLat([message.lng, message.lat]), function (){});
 }

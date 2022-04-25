@@ -2,12 +2,12 @@ package locator_v2
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
+	"golang.org/x/exp/slices"
 )
 
 // Lobby maintains the set of active Player and broadcasts messages to the
@@ -84,7 +84,7 @@ func NewLobby(roundt, reviewt, rounds int, game *Game) *Lobby {
 		locations:  []string{},
 	}
 
-	Lobbies[id] = &lobby
+	// Lobbies[id] = &lobby
 
 	util.Sugar.Infow("New Lobby created.",
 		"id", id,
@@ -267,6 +267,7 @@ func (l *Lobby) serveGame() {
 				// log.Println("Sending new Location")
 
 				l.location = l.getNewLocation()
+
 				str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v", "time":"%v", "rounds":"%v"}`, l.location, l.state, l.RoundTime, l.Rounds)
 
 				for _, p := range l.player {
@@ -361,7 +362,7 @@ func (l *Lobby) getPlayer(name string) (*Player, error) {
 	if p, ok := l.player[name]; ok {
 		return p, nil
 	}
-	return nil, errors.New(fmt.Sprintln(name, "not found for Lobby", l.LobbyID))
+	return nil, fmt.Errorf("%s not found for Lobby %s", name, l.LobbyID)
 }
 
 func (l *Lobby) getActivePlayers() string {
@@ -386,21 +387,18 @@ func (l *Lobby) areAllActivePlayersReady() bool {
 	return true
 }
 
-// getNewLocation helper function, gets a semi random new Location.
-// But its a super buggy implementation i think.
+// getNewLocation helper function, gets a random new Locations
+// and appends it to l.locations
 func (l *Lobby) getNewLocation() string {
-	var newLocation string
-
 	for key := range l.game.Cities {
-		newLocation = key
-
-		for _, ap := range l.locations {
-			if newLocation == ap {
-				return l.getNewLocation()
-			}
+		if slices.Contains(l.locations, key) {
+			fmt.Println(l.locations, key)
+			continue
 		}
+		l.locations = append(l.locations, key)
+		return key
 	}
-	return newLocation
+	return ""
 }
 
 func (l *Lobby) allActivePlayersSubmitted() bool {

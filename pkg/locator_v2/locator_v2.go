@@ -31,7 +31,8 @@ func SetupTest() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	b := NewLobby(10, 10, 10, g)
+	Lobbies[b.LobbyID] = b
 	Lobbies["AAAAAAAA"] = &Lobby{
 		LobbyID: "AAAAAAAA",
 		// owner:      testplayer1,

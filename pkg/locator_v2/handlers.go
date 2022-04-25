@@ -48,6 +48,8 @@ func CreateLobbyPOST(c *gin.Context) {
 	p := NewPlayer(ctx, cancelCtx, &Lobby{}, username)
 
 	l := NewLobby(roundTime, reviewTime, rounds, g)
+	Lobbies[l.LobbyID] = l
+
 	p.lobby = l
 
 	go l.serveWaitRoom()
@@ -55,8 +57,6 @@ func CreateLobbyPOST(c *gin.Context) {
 	// was called twice
 	// l.add <- p
 	l.player[p.Name] = p
-
-	Lobbies[l.LobbyID] = l
 
 	// c.JSON(200, gin.H{"status": "CreateLobbyPost", "Lobby": l})
 	path := c.Request.URL.Path
@@ -70,13 +70,13 @@ func JoinLobbyPOST(c *gin.Context) {
 	username := c.PostForm("username")
 
 	if lobbyID == "" || username == "" {
-		c.JSON(213, gin.H{"status": "JoinLobbyPost failed, due to faulty Form Input."})
+		c.JSON(213, gin.H{"status": "JoinLobbyPost failed, due to faulty Form Input.", "existing": Lobbies, "your input": lobbyID})
 		return
 	}
 
 	l, err := getLobby(lobbyID)
 	if err != nil {
-		c.JSON(213, gin.H{"status": "JoinLobbyPost failed, due to Lobby not Exists."})
+		c.JSON(213, gin.H{"status": "JoinLobbyPost failed, due to Lobby not Exists.", "existing": Lobbies, "your input": lobbyID})
 		return
 	}
 

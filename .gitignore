@@ -16,3 +16,8 @@ certs/*
 
 # Exclude fme recover files
 *.fmw.recover
+
+# Exclude gpgk because way to big.
+*.gpkg
+# Exclude tar backup files
+*.tar

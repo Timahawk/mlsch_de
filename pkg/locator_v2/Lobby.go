@@ -274,7 +274,7 @@ func (l *Lobby) serveGame() {
 					if p.conn != nil && p.connected == true {
 						p.toConn <- str
 						p.submitted = false
-						p.distance = 9999
+						// p.distance = 9999
 
 					}
 				}
@@ -306,8 +306,8 @@ func (l *Lobby) serveGame() {
 					}
 				}
 				coords := l.game.Cities[l.location].Center()
-				str := fmt.Sprintf(`{"status":"reviewing","Location":"%s", "state": "%v", "time":"%v", "geojson":%s, "lat":%v,"lng":%v, "points":%s`,
-					l.location, l.state, l.ReviewTime, l.game.Cities[l.location].Geom(), coords[0], coords[1], string(l.getScore()))
+				str := fmt.Sprintf(`{"status":"reviewing","Location":"%s", "state": "%v", "time":"%v", "geojson":%s, "lat":%v,"lng":%v, "points":%s, "geom":"%s"`,
+					l.location, l.state, l.ReviewTime, l.game.Cities[l.location].Geom(), coords[0], coords[1], string(l.getScore()), l.game.Geom)
 				for _, p := range l.player {
 					if p.conn != nil && p.connected == true {
 						p.toConn <- str

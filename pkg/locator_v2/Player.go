@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"math"
 	"strings"
 	"time"
 
@@ -78,7 +77,7 @@ func (p *Player) WriteToConn() {
 		select {
 		case str := <-p.toConn:
 			// This is stupid because it may be to short.
-			err := p.conn.SetWriteDeadline(time.Now().Add(time.Millisecond * 50))
+			err := p.conn.SetWriteDeadline(time.Now().Add(time.Millisecond * 100))
 			if err != nil {
 				util.Sugar.Debugw("WriteDeadline failed",
 					"Lobby", p.lobby.LobbyID,
@@ -89,7 +88,7 @@ func (p *Player) WriteToConn() {
 			}
 			// TODO this is stupid i think.
 			if strings.Contains(str, "points") {
-				str = str + fmt.Sprintf(`,"distance":"%v", "awarded":"%v"}`, int(math.Round(p.distance/1000)), p.score[len(p.score)-1])
+				str = str + fmt.Sprintf(`,"distance":"%v", "awarded":"%v"}`, p.distance, p.score[len(p.score)-1])
 			}
 
 			err = p.conn.WriteMessage(websocket.TextMessage, []byte(str))
@@ -172,22 +171,28 @@ func (p *Player) ReceiveFromConn() {
 		var submit Submit_guess
 		err = json.Unmarshal(message, &submit)
 		if err == nil {
-			// this is doubled in p.process_submit.
-			p.lobby.submitted <- p
-			p.submitted = true
 
-			p.process_submit(message)
+			p.process_submit(submit)
 			p.points = p.getPoints()
 
 			util.Sugar.Debugw("Points calculated and awarded",
 				"Lobby", p.lobby.LobbyID,
 				"Player", p.Name,
 				"conn", p.conn,
+				"location", p.lobby.location,
+				"locations", p.lobby.locations,
 				"distance", p.distance,
 				// this breaks at the first entry.
 				// "awarded", p.score[len(p.score)-1],
 				"score", p.score)
+
+			// this is doubled in p.process_submit.
+			p.lobby.submitted <- p
+			p.submitted = true
+		} else {
+			fmt.Println("Marshalling failed", err)
 		}
+
 	}
 }
 
@@ -196,33 +201,16 @@ type Submit_guess struct {
 	Longitude float64 `json:"long"`
 }
 
-func (p *Player) process_submit(message []byte) error {
-	var submit Submit_guess
-
-	util.Sugar.Infow("processing Message",
-		"player", p.Name,
-		"lobby", p.lobby.LobbyID,
-		"message", string(message))
-
-	// Process Message
-	err := json.Unmarshal(message, &submit)
-	if err != nil {
-		util.Sugar.Warnw("Marshalling failed",
-			"player", p.Name,
-			"lobby", p.lobby.LobbyID,
-			"message", string(message),
-			"error", err)
-		return err
-	}
+func (p *Player) process_submit(submit Submit_guess) error {
 
 	// This is to much but yeah...
-	city, StatusOK := p.lobby.game.Cities[p.lobby.location]
+	loc, StatusOK := p.lobby.game.Cities[p.lobby.location]
 	if !StatusOK {
 		return fmt.Errorf("Failed to get City.")
 	}
 
 	// log.Println("Submit:", submit)
-	p.distance = city.Distance(submit.Latitude, submit.Longitude)
+	p.distance = loc.Distance(submit.Latitude, submit.Longitude)
 	return nil
 }
 

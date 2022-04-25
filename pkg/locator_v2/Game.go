@@ -3,6 +3,8 @@ package locator_v2
 import (
 	"errors"
 	"fmt"
+	"log"
+	"strings"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
@@ -15,6 +17,7 @@ type Locations interface {
 	Distance(lat, lng float64) float64
 	Geom() string
 	Center() [2]float64
+	GetName() string
 	// Current() *Locations
 	// Next() *Locations
 }
@@ -28,6 +31,7 @@ type Game struct {
 	MaxZoom int
 	MinZoom int
 	Extent  []float64
+	Geom    string
 	Cities  map[string]Locations
 }
 
@@ -35,7 +39,7 @@ type Game struct {
 // 	return fmt.Sprintf(" with %v Locations", len(g.Cities))
 // }
 
-func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, extent []float64) (*Game, error) {
+func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, extent []float64, geom string) (*Game, error) {
 	start := time.Now()
 	defer func() {
 		util.Sugar.Debugw("New Game created",
@@ -47,15 +51,36 @@ func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, ex
 			"maxZoom", maxZoom,
 			"minZoom", minZoom,
 			"extent", extent,
+			"Geom", geom,
 		)
 	}()
 
-	cities, err := LoadCities(pfad)
-	// log.Println(cities)
-	if err != nil {
-		return &Game{}, err
+	locs := make(map[string]Locations)
+	err := errors.New("")
+
+	if strings.HasPrefix(pfad, "data/cities") {
+		locs, err = LoadCities(pfad)
+		// fmt.Println(locs)
+		if err != nil {
+			return &Game{}, err
+		}
+
+	} else if strings.HasPrefix(pfad, "pg/lvl_0") {
+		log.Println("Reaching prefix selection")
+		locs, err = NewWorldBorders()
+		if err != nil {
+			log.Fatalln(err)
+		}
+	} else {
+		fmt.Println(locs)
+
+		log.Fatalf("%s, pfad could not be laoded", pfad)
 	}
-	newGame := Game{name, center, zoom, maxZoom, minZoom, extent, cities}
+
+	if len(locs) == 0 {
+		log.Fatalln("Locs is empty")
+	}
+	newGame := Game{name, center, zoom, maxZoom, minZoom, extent, geom, locs}
 	// Games[name] = &newGame
 
 	return &newGame, nil

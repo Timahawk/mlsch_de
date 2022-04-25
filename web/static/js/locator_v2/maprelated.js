@@ -8,7 +8,7 @@ const mb = new ol.layer.Tile({
 });
 
 const fill = new ol.style.Fill({
-    color: "#FF0000",
+    color: 'rgba(255, 255, 0, 0.5)',
     });
 
 const stroke = new ol.style.Stroke({

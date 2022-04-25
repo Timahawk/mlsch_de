@@ -22,8 +22,8 @@ conn.onclose = function (evt) {
     // console.log("Closed", conn, evt)
 };
 conn.onmessage = function (evt) {
-    console.log("Message", evt.data)
-    //message = JSON.parse(JSON.stringify(evt.data))
+    // console.log("Message", evt.data)
+    // message = JSON.parse(JSON.stringify(evt.data))
     message = JSON.parse(evt.data)
     console.log(message)
 
@@ -47,7 +47,7 @@ conn.onmessage = function (evt) {
     if (message.status == "reviewing") {
         document.getElementById("status").innerHTML = message.status
         document.getElementById("points").innerHTML = JSON.stringify(message.points)
-        document.getElementById("distance").innerHTML = message.distance +  " km away. "
+        document.getElementById("distance").innerHTML = (message.distance / 1000).toFixed(2) +  " km away. "
         document.getElementById("awarded").innerHTML = message.awarded + " Points"
         addSolution(message)
         }
@@ -81,9 +81,16 @@ document.getElementById("submitButton").onclick = function () {
 console.log("ws_related loaded successfully")
 
 function addSolution(message){
-    // solution = new ol.format.GeoJSON().readFeatures(message.geojson);
-    solution = new ol.format.GeoJSON().readFeatures(message.geojson, {dataProjection:4326});
-
+    if (message.geom == "Point"){
+        solution = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857'))
+            });
+        solution_layer.getSource().addFeature(solution)
+        flyTo(ol.proj.fromLonLat([message.lng, message.lat]), function (){});
+        console.log(solution)
+        return
+    }
+    solution = new ol.format.GeoJSON().readFeatures(message.geojson);
     solution_layer.getSource().addFeatures(solution)
     flyTo(ol.proj.fromLonLat([message.lng, message.lat]), function (){});
 }

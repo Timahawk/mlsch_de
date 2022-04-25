@@ -102,3 +102,7 @@ func (c *City) Center() [2]float64 {
 	center[0], center[1] = c.Lat, c.Lng
 	return center
 }
+
+func (c *City) GetName() string {
+	return c.Name
+}

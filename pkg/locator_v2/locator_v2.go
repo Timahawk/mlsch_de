@@ -42,6 +42,7 @@ func SetupTest() {
 		started:    false,
 		RoundTime:  60,
 		ReviewTime: 15,
+		Rounds:     10,
 		player:     make(map[string]*Player),
 		add:        make(chan *Player, 10),
 		drop:       make(chan *Player, 10),

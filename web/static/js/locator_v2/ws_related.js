@@ -37,7 +37,7 @@ conn.onmessage = function (evt) {
     if (message.status == "location") {
         document.getElementById("city").innerHTML = message.Location
         document.getElementById("status").innerHTML = message.status
-        document.getElementById("rounds").innerHTML = message.rounds
+        document.getElementById("rounds").innerHTML = message.rounds - 1
         // document.getElementById("points").innerHTML = ""
         document.getElementById("distance").innerHTML =""
         document.getElementById("awarded").innerHTML =""

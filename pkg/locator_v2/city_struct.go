@@ -12,17 +12,17 @@ import (
 // The City as per the file.
 type City struct {
 	// json_featuretype string
-	Name       string  `json:"city"`
-	Name_ascii string  `json:"city_ascii"`
-	Lat        float64 `json:"lat"`
-	Lng        float64 `json:"lng"`
-	Country    string
-	Iso2       string
-	Iso3       string
-	// admin_name       string
-	Capital    string
-	Population int
-	Id         int
+	Name string `json:"city"`
+	// Name_ascii string  `json:"city_ascii"`
+	Lat float64 `json:"lat"`
+	Lng float64 `json:"lng"`
+	// Country    string
+	// Iso2       string
+	// Iso3       string
+	// // admin_name       string
+	// Capital    string
+	// Population int
+	// Id         int
 }
 
 func LoadCities(file string) (map[string]Locations, error) {
@@ -46,8 +46,6 @@ func LoadCities(file string) (map[string]Locations, error) {
 		return nil, fmt.Errorf("%s, %v ", file, err)
 	}
 
-	// log.Println(cities)
-
 	cities_map := make(map[string]Locations)
 
 	//  what the fuck is the difference between those two?
@@ -60,6 +58,10 @@ func LoadCities(file string) (map[string]Locations, error) {
 	//for _, city := range cities {
 	//	cities_map[city.Name_ascii] = &city
 	//}
+
+	if len(cities_map) == 0 {
+		return nil, fmt.Errorf("%s Load Cites loaded 0 Locations", file)
+	}
 
 	return cities_map, nil
 }

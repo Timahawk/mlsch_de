@@ -84,8 +84,6 @@ func NewLobby(roundt, reviewt, rounds int, game *Game) *Lobby {
 		locations:  []string{},
 	}
 
-	// Lobbies[id] = &lobby
-
 	util.Sugar.Infow("New Lobby created.",
 		"id", id,
 		"roundtime", roundt,
@@ -94,7 +92,7 @@ func NewLobby(roundt, reviewt, rounds int, game *Game) *Lobby {
 		"state", 3,
 		"nextState", 0,
 		"roundCounter", 0,
-		// "game", game.Name,
+		"game", game.Name,
 	)
 	return &lobby
 }
@@ -113,18 +111,10 @@ func (l *Lobby) serveWaitRoom() {
 	for {
 		select {
 		case p := <-l.add:
-			// if _, err := l.getPlayer(p.Name); err == nil {
-			// 	util.Sugar.Infow("Add but Player already existed.",
-			// 		"Lobby", l.LobbyID,
-			// 		"Player", p.Name)
-			// 	l.player[p.Name] = p
-			// 	continue
-			// }
-			util.Sugar.Infow("Add",
+
+			util.Sugar.Debugw("Add Player to Lobby",
 				"Lobby", l.LobbyID,
 				"Player", p.Name)
-			// l.player[p.Name] = p
-			// p.connected = true
 
 			for _, pl := range l.player {
 				if pl.conn != nil && pl.connected == true {
@@ -132,16 +122,9 @@ func (l *Lobby) serveWaitRoom() {
 				}
 			}
 		case p := <-l.drop:
-			util.Sugar.Infow("Remove",
+			util.Sugar.Debugw("Removed Player from Lobby",
 				"Lobby", l.LobbyID,
 				"Player", p.Name)
-
-			// delete(l.player, p.Name)
-			// This should have always been handled on the Player side.
-			// p.connected = false
-			// p.ready = false
-			// p.ctxcancel()
-			// p.conn.Close()
 
 			for _, pl := range l.player {
 				if pl.conn != nil && pl.connected == true {
@@ -150,16 +133,20 @@ func (l *Lobby) serveWaitRoom() {
 			}
 
 		case p := <-l.ready:
-			util.Sugar.Infow("Ready",
+			util.Sugar.Debugw("Player is ready",
 				"Lobby", l.LobbyID,
 				"Player", p.Name)
-			// delete(l.player, p.Name)
+
 			for _, pl := range l.player {
 				if pl.conn != nil && pl.connected == true {
 					pl.toConn <- fmt.Sprintf("%s is ready to Play.", p.Name)
 				}
 			}
+
 			if l.areAllActivePlayersReady() {
+				util.Sugar.Debugw("All Players are ready",
+					"Lobby", l.LobbyID)
+
 				for _, pl := range l.player {
 					if pl.conn != nil && pl.connected == true {
 						pl.toConn <- fmt.Sprintf("Lobby will start in 2 Seconds!")
@@ -167,6 +154,7 @@ func (l *Lobby) serveWaitRoom() {
 				}
 				timer = time.NewTimer(time.Second * 2)
 			}
+
 		case <-timer.C:
 			// Start the Gameplay management goroutine.
 			go l.serveGame()
@@ -176,24 +164,12 @@ func (l *Lobby) serveWaitRoom() {
 			for _, p := range l.player {
 				if p.conn != nil && p.connected == true {
 					p.toConn <- fmt.Sprintf("Consider yourself redirected.")
-					// p.conn.WriteMessage(websocket.CloseMessage, []byte{})
-				}
-			}
-			// Stop all still running Goroutines.
-			for _, p := range l.player {
-				if p.conn != nil && p.connected == true {
-					// Should stop WriteToConn
-					// p.ctxcancel()
-					// Should stop ReadfromConn
-					// p.conn.Close()
-
 				}
 			}
 			// Reset Connected.
 			for _, p := range l.player {
 				if p.conn != nil && p.connected == true {
 					p.connected = false
-					// p.conn = nil
 				}
 			}
 			// Stop this function.
@@ -237,7 +213,7 @@ func (l *Lobby) serveGame() {
 				l.state = "guessing"
 				l.nextState = "reviewing"
 
-				util.Sugar.Infow("All Players submitted.",
+				util.Sugar.Debugw("All Players submitted.",
 					"lobby", l.LobbyID,
 					"time", l.RoundTime,
 					"state", l.state,
@@ -256,7 +232,7 @@ func (l *Lobby) serveGame() {
 				l.state = "guessing"
 				l.nextState = "reviewing"
 
-				util.Sugar.Infow("guessing",
+				util.Sugar.Debugw("guessing",
 					"lobby", l.LobbyID,
 					"location", l.location,
 					"time", l.RoundTime,
@@ -274,7 +250,6 @@ func (l *Lobby) serveGame() {
 					if p.conn != nil && p.connected == true {
 						p.toConn <- str
 						p.submitted = false
-						// p.distance = 9999
 
 					}
 				}
@@ -291,7 +266,7 @@ func (l *Lobby) serveGame() {
 					l.nextState = "finished"
 				}
 
-				util.Sugar.Infow("reviewing",
+				util.Sugar.Debugw("reviewing",
 					"lobby", l.LobbyID,
 					"location", l.location,
 					"time", l.ReviewTime,
@@ -349,7 +324,7 @@ func (l *Lobby) serveGame() {
 					i += 1
 				}
 				if i == len(l.player) {
-					util.Sugar.Infow("serveLobby will be stopped because all players are disconnected.",
+					util.Sugar.Debug("serveLobby will be stopped because all players are disconnected.",
 						"Lobby", l.LobbyID)
 					return
 				}

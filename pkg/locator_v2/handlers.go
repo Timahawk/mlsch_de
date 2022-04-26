@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Timahawk/mlsch_de/pkg/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -54,11 +55,8 @@ func CreateLobbyPOST(c *gin.Context) {
 
 	go l.serveWaitRoom()
 
-	// was called twice
-	// l.add <- p
 	l.player[p.Name] = p
 
-	// c.JSON(200, gin.H{"status": "CreateLobbyPost", "Lobby": l})
 	path := c.Request.URL.Path
 	path = strings.Replace(path, "/create", "", 1)
 	c.Redirect(303, fmt.Sprintf("%s/%s?user=%s", path, l.LobbyID, username))
@@ -70,13 +68,13 @@ func JoinLobbyPOST(c *gin.Context) {
 	username := c.PostForm("username")
 
 	if lobbyID == "" || username == "" {
-		c.JSON(213, gin.H{"status": "JoinLobbyPost failed, due to faulty Form Input.", "existing": Lobbies, "your input": lobbyID})
+		c.JSON(213, gin.H{"status": "JoinLobbyPost failed, due to faulty Form Input.", "your input": lobbyID})
 		return
 	}
 
 	l, err := getLobby(lobbyID)
 	if err != nil {
-		c.JSON(213, gin.H{"status": "JoinLobbyPost failed, due to Lobby not Exists.", "existing": Lobbies, "your input": lobbyID})
+		c.JSON(213, gin.H{"status": "JoinLobbyPost failed, due to Lobby not Exists.", "your input": lobbyID})
 		return
 	}
 
@@ -88,22 +86,15 @@ func JoinLobbyPOST(c *gin.Context) {
 	ctx, cancelCtx := context.WithCancel(contextbg)
 	p := NewPlayer(ctx, cancelCtx, l, username)
 
-	if l.started {
-		l.player[p.Name] = p
-		// p.connected = true
-	} else {
-		// was called twice.
-		// l.add <- p
-		l.player[p.Name] = p
-	}
-	// c.JSON(200, gin.H{"status": "JoinLobbyPost", "Lobby": l})
+	l.player[p.Name] = p
+
 	path := c.Request.URL.Path
 	path = strings.Replace(path, "/join", "", 1)
 	c.Redirect(303, fmt.Sprintf("%s/%s?user=%s", path, l.LobbyID, username))
 }
 
 func WaitingRoom(c *gin.Context) {
-	// fmt.Println("WaitingRoom called")
+
 	lobbyID := c.Param("lobby")
 
 	l, err := getLobby(lobbyID)
@@ -134,7 +125,7 @@ func WaitingRoom(c *gin.Context) {
 }
 
 func WaitingRoomWS(c *gin.Context) {
-	// fmt.Println("WaitingRoomWS called")
+
 	lobbyID := c.Param("lobby")
 
 	l, err := getLobby(lobbyID)
@@ -144,21 +135,20 @@ func WaitingRoomWS(c *gin.Context) {
 	}
 
 	username := c.Query("user")
-	// if username == "" {
-	// 	c.JSON(200, gin.H{"status": "WaitingRoomWS failed, due to faulty Parameter User"})
-	// 	return
-	// }
+
 	p, err := l.getPlayer(username)
 	if err != nil {
 		c.JSON(213, gin.H{"status": "WaitingRoomWS failed, due to faulty Parameter User"})
 		return
 	}
-
-	// fmt.Println("This is before")
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
-	// fmt.Println("This is after")
+
 	if err != nil {
-		fmt.Println("Error", err)
+		util.Sugar.Warnw("Upgrade to Websocket failed",
+			"Error", err,
+			"Player", username,
+			"Lobby", lobbyID)
+		c.JSON(213, gin.H{"status": "WaitingRoomWS failed, due to Websocket Error"})
 		return
 	}
 
@@ -167,9 +157,10 @@ func WaitingRoomWS(c *gin.Context) {
 
 	go p.WriteToConn()
 	go p.ReceiveFromConn()
-	// util.Sugar.Infow("WaitingRoomWs enabled",
-	// 	"Lobby", p.lobby.LobbyID,
-	// 	"player", p.Name)
+
+	util.Sugar.Debugw("WaitingRoomWs enabled",
+		"Lobby", p.lobby.LobbyID,
+		"player", p.Name)
 
 	p.toConn <- fmt.Sprintf("Already joined Players: %s", l.getActivePlayers())
 }
@@ -193,6 +184,11 @@ func GameRoom(c *gin.Context) {
 		c.JSON(213, gin.H{"status": "PlayGame failed, due to faulty Parameter User"})
 		return
 	}
+
+	util.Sugar.Debugw("Game Room send",
+		"Lobby", p.lobby.LobbyID,
+		"player", p.Name)
+
 	c.HTML(200, "locator_v2/GameRoom.html", gin.H{
 		"title":   lobbyID,
 		"user":    p.Name,
@@ -226,19 +222,24 @@ func GameRoomWS(c *gin.Context) {
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 
 	if err != nil {
-		fmt.Println("Error", err)
+		util.Sugar.Warnw("Upgrade to Websocket failed",
+			"Error", err,
+			"Player", username,
+			"Lobby", lobbyID)
+		c.JSON(213, gin.H{"status": "GameRoomWS failed, due to Websocket Error"})
 		return
 	}
-	// p.conn = nil
+
 	p.conn = conn
 	p.connected = true
 	p.ctx, p.ctxcancel = context.WithCancel(contextbg)
 
 	go p.WriteToConn()
 	go p.ReceiveFromConn()
-	// util.Sugar.Infow("GameRoomWs enabled",
-	// 	"Lobby", p.lobby.LobbyID,
-	// 	"player", p.Name)
+
+	util.Sugar.Debugw("GameRoomWs enabled",
+		"Lobby", p.lobby.LobbyID,
+		"player", p.Name)
 
 	// This is for the when reconnection during match.
 	if l.state == "guessing" {
@@ -249,5 +250,4 @@ func GameRoomWS(c *gin.Context) {
 		str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v"}`, l.location, l.state)
 		p.toConn <- str
 	}
-	// p.toConn <- fmt.Sprintf("Active Players: %s", l.getActivePlayers())
 }

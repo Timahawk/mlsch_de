@@ -176,7 +176,7 @@ func SetupRouter() *gin.Engine {
 
 	// ************************** Polygon Games ******************************* //
 	err := errors.New("")
-	locator_v2.LoadedGames["country"], err = locator_v2.NewGame("country", "pg/lvl_0/polygon", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Polygon")
+	locator_v2.LoadedGames["country"], err = locator_v2.NewGame("country", "pg/lvl_0/country", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Polygon")
 	if err != nil {
 		log.Fatalln(err, "polygon failed.")
 	}

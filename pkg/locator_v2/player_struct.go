@@ -63,12 +63,12 @@ func NewPlayer(ctx context.Context, ctxcancel context.CancelFunc, lobby *Lobby, 
 }
 
 func (p *Player) WriteToConn() {
-	util.Sugar.Infow("WriteToConn started",
+	util.Sugar.Debugw("WriteToConn started",
 		"Lobby", p.lobby.LobbyID,
 		"player", p.Name,
 	)
 	defer func() {
-		util.Sugar.Infow("WriteToConn stopped",
+		util.Sugar.Debugw("WriteToConn stopped",
 			"Lobby", p.lobby.LobbyID,
 			"player", p.Name,
 		)
@@ -79,7 +79,7 @@ func (p *Player) WriteToConn() {
 			// This is stupid because it may be to short.
 			err := p.conn.SetWriteDeadline(time.Now().Add(time.Millisecond * 100))
 			if err != nil {
-				util.Sugar.Debugw("WriteDeadline failed",
+				util.Sugar.Warnw("WriteDeadline failed",
 					"Lobby", p.lobby.LobbyID,
 					"player", p.Name,
 					"error", err,
@@ -110,7 +110,7 @@ func (p *Player) WriteToConn() {
 
 // This does not terminate proberly when the connection is closed.
 func (p *Player) ReceiveFromConn() {
-	util.Sugar.Infow("ReceiveFromConn started",
+	util.Sugar.Debugw("ReceiveFromConn started",
 		"Lobby", p.lobby.LobbyID,
 		"player", p.Name,
 	)
@@ -126,7 +126,7 @@ func (p *Player) ReceiveFromConn() {
 		p.connected = false
 		p.ready = false
 
-		util.Sugar.Infow("ReceiveFromConn stopped",
+		util.Sugar.Debugw("ReceiveFromConn stopped",
 			"Lobby", p.lobby.LobbyID,
 			"player", p.Name,
 		)
@@ -145,7 +145,7 @@ func (p *Player) ReceiveFromConn() {
 	for {
 		// this should provided all the invalid memory address or nil pointer dereference errors
 		if p.conn == nil {
-			util.Sugar.Infow("Conn == nil in ReceiveFromClientLoop",
+			util.Sugar.Debugw("Conn == nil in ReceiveFromClientLoop",
 				"Lobby", p.lobby.LobbyID,
 				"Player", p.Name)
 			return
@@ -190,9 +190,13 @@ func (p *Player) ReceiveFromConn() {
 			p.lobby.submitted <- p
 			p.submitted = true
 		} else {
-			fmt.Println("Marshalling failed", err)
+			// Dont know what those are, but yeah fuck them.
+			util.Sugar.Debugw("Marshalling failed",
+				"error", err,
+				"Message", message,
+				"Player", p.Name,
+				"Lobby", p.lobby.LobbyID)
 		}
-
 	}
 }
 
@@ -203,7 +207,6 @@ type Submit_guess struct {
 
 func (p *Player) process_submit(submit Submit_guess) error {
 
-	// This is to much but yeah...
 	loc, StatusOK := p.lobby.game.Cities[p.lobby.location]
 	if !StatusOK {
 		return fmt.Errorf("Failed to get City.")

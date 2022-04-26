@@ -23,18 +23,10 @@ func init() {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	// defer conn.Close(context.Background())
 
-	// var x pg_locs
-	// err = conn.QueryRow(context.Background(), "select name_0, name_1, name_1_eng, sovereign, lng_center, lat_center from  world_borders WHERE name_0 = $1", "Germany").Scan(&x.name_0, &x.name_1, &x.name_1_eng, &x.sovereign, &x.lng_center, &x.lat_center)
-	// if err != nil {
-	// 	fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-	// 	os.Exit(1)
-	// }
-	// fmt.Println("X = ", x)
 }
 
-type pg_locs struct {
+type Country struct {
 	// country name
 	name_0 string
 	// name ob subdivision e.g Bundesland
@@ -67,7 +59,7 @@ func NewWorldBorders() (map[string]Locations, error) {
 		log.Fatalln("New World Border", err)
 	}
 	for rows.Next() {
-		x := &pg_locs{}
+		x := &Country{}
 		rows.Scan(&x.name_0, &x.name_1, &x.name_1_eng, &x.sovereign, &x.lng_center, &x.lat_center)
 		locs[x.name_0] = x
 	}
@@ -75,21 +67,21 @@ func NewWorldBorders() (map[string]Locations, error) {
 }
 
 // Gets the distance. if within its 0
-func (p *pg_locs) Distance(lat, lng float64) float64 {
+func (c *Country) Distance(lat, lng float64) float64 {
 	var distance float64
 
 	err := conn.QueryRow(context.Background(), `
 	SELECT ST_Distance(
 		ST_Transform((select geom from world_borders WHERE name_0 = $1), 3857),
 		ST_Transform(ST_SetSRID( ST_Point($2,$3), 4326), 3857))
-	`, p.name_0, lng, lat).Scan(&distance)
+	`, c.name_0, lng, lat).Scan(&distance)
 
 	if err != nil {
 		log.Fatalln("Distance", err)
 	}
 
-	util.Sugar.Warnw("Distance",
-		"p.name_0", p.GetName(),
+	util.Sugar.Debugw("Distance",
+		"p.name_0", c.GetName(),
 		"lat", lat,
 		"lng", lng,
 		"distance", distance)
@@ -97,7 +89,7 @@ func (p *pg_locs) Distance(lat, lng float64) float64 {
 	return distance
 }
 
-func (p *pg_locs) Geom() string {
+func (c *Country) Geom() string {
 	var geojson string
 	err := conn.QueryRow(context.Background(),
 		`SELECT json_build_object(
@@ -105,7 +97,7 @@ func (p *pg_locs) Geom() string {
 		'features', json_agg(ST_AsGeoJSON(t.*)::json)
 		)
 	FROM (SELECT name_0, ST_Transform(geom,3857) FROM world_borders) t WHERE name_0=$1`,
-		p.name_0).Scan(&geojson)
+		c.name_0).Scan(&geojson)
 	if err != nil {
 		log.Fatalln("Geom", err)
 	}
@@ -113,12 +105,12 @@ func (p *pg_locs) Geom() string {
 }
 
 // Center returns the coords in array Lat, Lng
-func (p *pg_locs) Center() [2]float64 {
+func (c *Country) Center() [2]float64 {
 	center := [2]float64{}
-	center[0], center[1] = p.lat_center, p.lng_center
+	center[0], center[1] = c.lat_center, c.lng_center
 	return center
 }
 
-func (p *pg_locs) GetName() string {
-	return p.name_0
+func (c *Country) GetName() string {
+	return c.name_0
 }

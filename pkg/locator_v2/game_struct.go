@@ -58,30 +58,22 @@ func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, ex
 	locs := make(map[string]Locations)
 	err := errors.New("")
 
-	if strings.HasPrefix(pfad, "data/cities") {
+	switch {
+	case strings.HasPrefix(pfad, "data/cities"):
 		locs, err = LoadCities(pfad)
-		// fmt.Println(locs)
 		if err != nil {
-			return &Game{}, err
+			log.Fatalln(pfad, err)
 		}
-
-	} else if strings.HasPrefix(pfad, "pg/lvl_0") {
-		log.Println("Reaching prefix selection")
+	case strings.HasPrefix(pfad, "pg/lvl_0/country"):
 		locs, err = NewWorldBorders()
 		if err != nil {
-			log.Fatalln(err)
+			log.Fatalln(pfad, err)
 		}
-	} else {
-		fmt.Println(locs)
-
+	default:
 		log.Fatalf("%s, pfad could not be laoded", pfad)
 	}
 
-	if len(locs) == 0 {
-		log.Fatalln("Locs is empty")
-	}
 	newGame := Game{name, center, zoom, maxZoom, minZoom, extent, geom, locs}
-	// Games[name] = &newGame
 
 	return &newGame, nil
 }

@@ -21,3 +21,4 @@ certs/*
 *.gpkg
 # Exclude tar backup files
 *.tar
+backup.sql

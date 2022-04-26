@@ -5,20 +5,17 @@
     <style>
         
     </style>
-    <title>{{ .LobbyID }}</title>
+    <title>{{ .title }}</title>
 </head>
 <body>
 
     {{ template "globals/style_head.html" }}
-
-    <h1>Waiting Room</h1>
+<div style="padding-left:1%">
+    <h1>{{ .lobby }}</h1>
     <button id="readybutton" type="button">Start Lobby!</button>
     <h2 id="players"></h2>
     <form id="formAddName"></form>
     <ol id="demo"></ol>
-
-        
-    
 
         <script>
             var list = document.getElementById('demo');   
@@ -62,5 +59,6 @@
                 console.log("Send ready message!")
             };
         </script>
+    </div>
 </body>
 {{ end }}

@@ -4,7 +4,7 @@
 {{ template "globals/style_head.html" }}
 {{ template "globals/style_body.html" }}
 
-<form method="post" action= "create">
+<form method="post" action= "create" style="padding-left:1%">
     <label for="roundTime">Choose the length of each guessing round (seconds)</label>
     <input type="number" required min=3 max=240 id="roundTime" name="roundTime" value="45"><br>
 
@@ -31,7 +31,7 @@
   <br>
   <br>
 
-  <form method="post" action="join">
+  <form method="post" action="join" style="padding-left:1%">
     <label for="LobbyID">Input your LobbyKey</label>
     <input type="string" required minlength=8 maxlength=8 id="LobbyID" name="LobbyID"><br>
     <label for="username">Choose your Name</label>

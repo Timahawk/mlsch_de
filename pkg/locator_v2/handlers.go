@@ -121,7 +121,10 @@ func WaitingRoom(c *gin.Context) {
 	p.ctxcancel = cancelCtx
 	l.add <- p
 
-	c.HTML(200, "locator_v2/WaitingRoom.html", gin.H{"title": lobbyID, "user": p.Name})
+	c.HTML(200, "locator_v2/WaitingRoom.html", gin.H{
+		"lobby": lobbyID,
+		"title": lobbyID,
+		"user":  p.Name})
 }
 
 func WaitingRoomWS(c *gin.Context) {
@@ -190,6 +193,7 @@ func GameRoom(c *gin.Context) {
 		"player", p.Name)
 
 	c.HTML(200, "locator_v2/GameRoom.html", gin.H{
+		"lobby":   lobbyID,
 		"title":   lobbyID,
 		"user":    p.Name,
 		"center":  l.game.Center,

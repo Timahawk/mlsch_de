@@ -21,7 +21,6 @@ func init() {
 	conn, err = pgxpool.Connect(context.Background(), url)
 	if err == nil {
 		return
-
 	}
 	url = "postgres://postgres:postgres@localhost:5555/mlsch_data"
 

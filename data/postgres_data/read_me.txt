@@ -1,7 +1,7 @@
 Data downloaded can be downlaoded here:
 https://gadm.org/download_world.html 
 
-sudo docker run --name mlsch-postgis -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=mlsch_data -d -v "/home/ubuntu/mlsch_de:/home/" -p 5555:5432 postgis/postgis
+sudo docker run --name mlsch-postgis -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=mlsch_data -d -v "/home/ubuntu/mlsch_de:/home/" -p 5432:5432 postgis/postgis
 
 
 # 1) Data transfer via

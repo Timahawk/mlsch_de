@@ -1,8 +1,8 @@
 # This ignores everything except Folders,
 # and files with an extension.
-*
-!*/
-!*.*
+# *
+# !*/
+# !*.*
 
 
 # Exclude everything in certs

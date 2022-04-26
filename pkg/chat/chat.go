@@ -22,7 +22,7 @@ var names_len int
 func init() {
 	// Set a random Seed.
 	rand.Seed(time.Now().UnixNano())
-	content, err := os.ReadFile("./pkg/chat/names.txt")
+	content, err := os.ReadFile("pkg/chat/names.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -16,6 +16,35 @@ const stroke = new ol.style.Stroke({
     width: 1.25,
     });
 
+const fill_submits = new ol.style.Fill({
+      color: 'rgba(100, 100, 100, 0.1)',
+      });
+const stroke_submits = new ol.style.Stroke({
+      color: "#00000",
+      width: 1.25,
+      });
+
+const submit_Style = new ol.style.Style({
+  image: new ol.style.Circle({
+    fill: fill,
+    stroke: stroke,
+    radius: 1,
+    }),
+  text: new ol.style.Text({
+    offsetY : 15,
+    font: 'bold 17px "Open Sans", "Arial Unicode MS", "sans-serif"',
+    // placement: 'line',
+    fill: new ol.style.Fill({
+      color: 'black',
+    }),
+    stroke : new ol.style.Stroke({
+      color: "#FFFFFF",
+      width: 1.25,
+      }),
+  }),
+})
+
+
 const styles = [
     new ol.style.Style({
         image: new ol.style.Circle({
@@ -44,6 +73,16 @@ var solution_layer = new ol.layer.Vector({
         }),
         style: styles[0]
     });
+
+var submit_Layer = new ol.layer.Vector({
+      source: new ol.source.Vector({
+          features: []
+      }),
+      style: function (feature) {
+        submit_Style.getText().setText(feature.get('name'));
+        return submit_Style;
+      },
+  });
 
 const select = new ol.interaction.Select({
     layers : [layer],
@@ -77,6 +116,7 @@ map.on('click', function(evt){
 
 map.addLayer(layer);
 map.addLayer(solution_layer);
+map.addLayer(submit_Layer);
 
 
 function flyTo(location, done) {

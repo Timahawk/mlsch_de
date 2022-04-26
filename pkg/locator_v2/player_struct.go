@@ -46,6 +46,9 @@ type Player struct {
 	points int
 	// Points awareded each round -> sum is total points.
 	score []int
+	// The location of your last guess.
+	last_lat float64
+	last_lng float64
 }
 
 func NewPlayer(ctx context.Context, ctxcancel context.CancelFunc, lobby *Lobby, name string) *Player {
@@ -211,7 +214,8 @@ func (p *Player) process_submit(submit Submit_guess) error {
 	if !StatusOK {
 		return fmt.Errorf("Failed to get City.")
 	}
-
+	p.last_lat = submit.Latitude
+	p.last_lng = submit.Longitude
 	// log.Println("Submit:", submit)
 	p.distance = loc.Distance(submit.Latitude, submit.Longitude)
 	return nil

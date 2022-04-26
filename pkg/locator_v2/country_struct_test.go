@@ -8,7 +8,7 @@ import (
 )
 
 func Test_Distance(t *testing.T) {
-	germany := pg_locs{
+	germany := Country{
 		name_0: "Germany",
 	}
 
@@ -19,7 +19,7 @@ func Test_Distance(t *testing.T) {
 }
 
 func Test_Geom(t *testing.T) {
-	marino := pg_locs{
+	marino := Country{
 		name_0: "San Marino",
 	}
 

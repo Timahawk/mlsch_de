@@ -250,6 +250,8 @@ func (l *Lobby) serveGame() {
 					if p.conn != nil && p.connected == true {
 						p.toConn <- str
 						p.submitted = false
+						p.last_lat = 0
+						p.last_lng = 0
 
 					}
 				}
@@ -281,8 +283,27 @@ func (l *Lobby) serveGame() {
 					}
 				}
 				coords := l.game.Cities[l.location].Center()
-				str := fmt.Sprintf(`{"status":"reviewing","Location":"%s", "state": "%v", "time":"%v", "geojson":%s, "lat":%v,"lng":%v, "points":%s, "geom":"%s"`,
-					l.location, l.state, l.ReviewTime, l.game.Cities[l.location].Geom(), coords[0], coords[1], string(l.getScore()), l.game.Geom)
+				str := fmt.Sprintf(`
+				{"status":"reviewing",
+				"Location":"%s", 
+				"state": "%v", 
+				"time":"%v", 
+				"geojson":%s, 
+				"lat":%v,
+				"lng":%v, 
+				"points":%s, 
+				"geom":"%s",
+				"submits":%s`,
+					l.location,
+					l.state,
+					l.ReviewTime,
+					l.game.Cities[l.location].Geom(),
+					coords[0],
+					coords[1],
+					string(l.getScore()),
+					l.game.Geom,
+					string(l.getLastLocations()),
+				)
 				for _, p := range l.player {
 					if p.conn != nil && p.connected == true {
 						p.toConn <- str
@@ -392,6 +413,21 @@ func (l *Lobby) getScore() []byte {
 	liste := make(map[string]int)
 	for _, p := range l.player {
 		liste[p.Name] = p.calcScore()
+
+	}
+	res, err := json.Marshal(liste)
+	if err != nil {
+		log.Println(liste, err)
+	}
+	return res
+}
+
+func (l *Lobby) getLastLocations() []byte {
+	liste := make(map[string][2]float64)
+
+	for _, p := range l.player {
+		coords := [2]float64{p.last_lat, p.last_lng}
+		liste[p.Name] = coords
 
 	}
 	res, err := json.Marshal(liste)

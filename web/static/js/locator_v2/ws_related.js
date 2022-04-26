@@ -42,6 +42,7 @@ conn.onmessage = function (evt) {
         document.getElementById("distance").innerHTML =""
         document.getElementById("awarded").innerHTML =""
         solution_layer.getSource().clear()
+        submit_Layer.getSource().clear()
         
     }
     if (message.status == "reviewing") {
@@ -50,6 +51,7 @@ conn.onmessage = function (evt) {
         document.getElementById("distance").innerHTML = (message.distance / 1000).toFixed(2) +  " km away. "
         document.getElementById("awarded").innerHTML = message.awarded + " Points"
         addSolution(message)
+        addCommit(message)
         }
     if (message.status == "finished"){
         clearInterval(timecounter)
@@ -93,4 +95,21 @@ function addSolution(message){
     solution = new ol.format.GeoJSON().readFeatures(message.geojson);
     solution_layer.getSource().addFeatures(solution)
     flyTo(ol.proj.fromLonLat([message.lng, message.lat]), function (){});
+}
+
+function addCommit(message){
+    for (const [key, value] of Object.entries(message.submits)) {
+        // console.log(`${key}: ${value}`);
+
+        if (value[0] == 0){
+            continue
+        }
+
+        solution = new ol.Feature({
+            name :key,
+            geometry: new ol.geom.Point(ol.proj.transform([value[1], value[0]], 'EPSG:4326', 'EPSG:3857'))
+            });
+        submit_Layer.getSource().addFeature(solution)
+      }
+      
 }

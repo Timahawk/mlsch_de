@@ -1,10 +1,9 @@
 package chat
 
 import (
+	_ "embed"
 	"errors"
 	"fmt"
-	"log"
-	"os"
 	"strings"
 
 	"math/rand"
@@ -19,14 +18,17 @@ var Hubs = map[string]*Hub{}
 var names = []string{}
 var names_len int
 
+//go:embed names.txt
+var namesF string
+
 func init() {
 	// Set a random Seed.
 	rand.Seed(time.Now().UnixNano())
-	content, err := os.ReadFile("pkg/chat/names.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	names = strings.Split((string(content)), "\n")
+	// content, err := os.ReadFile("pkg/chat/names.txt")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	names = strings.Split(namesF, "\n")
 	names_len = len(names)
 }
 

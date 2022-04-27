@@ -1,9 +1,12 @@
 package main
 
 import (
+	"embed"
 	"errors"
 	"flag"
 	"fmt"
+	"html/template"
+	"io/fs"
 	"log"
 	"net/http"
 	"time"
@@ -12,7 +15,6 @@ import (
 
 	"github.com/Timahawk/go_watcher"
 	"github.com/Timahawk/mlsch_de/pkg/chat"
-	"github.com/Timahawk/mlsch_de/pkg/locator"
 	"github.com/Timahawk/mlsch_de/pkg/locator_v2"
 	"github.com/Timahawk/mlsch_de/pkg/util"
 
@@ -22,6 +24,12 @@ import (
 )
 
 var development *bool
+
+//go:embed web/static/**/* web/static/*
+var staticFS embed.FS
+
+//go:embed web/templates/**/*
+var templatesFS embed.FS
 
 func main() {
 
@@ -57,6 +65,16 @@ func main() {
 	}
 }
 
+func mustFS() http.FileSystem {
+	sub, err := fs.Sub(staticFS, "web/static")
+
+	if err != nil {
+		panic(err)
+	}
+
+	return http.FS(sub)
+}
+
 // SetupRouter does all the Routes setting.
 // Extra function for easier testsetup.
 func SetupRouter() *gin.Engine {
@@ -74,9 +92,10 @@ func SetupRouter() *gin.Engine {
 	// 						Files & Templates 						   //
 	// *************************************************************** //
 
-	r.StaticFile("/favicon.ico", "web/static/favicon.ico")
-	r.Static("/static", "web/static")
-	r.LoadHTMLGlob("web/templates/**/*.html")
+	templ := template.Must(template.New("").ParseFS(templatesFS, "web/templates/**/*.html"))
+	r.SetHTMLTemplate(templ)
+
+	r.StaticFS("/static", mustFS())
 
 	// *************************************************************** //
 	// 							Frontpage 							   //
@@ -115,24 +134,24 @@ func SetupRouter() *gin.Engine {
 	// 							LOCATOR								   //
 	// *************************************************************** //
 
-	locators := r.Group("/locators")
+	// locators := r.Group("/locators")
 
-	// World wide games
-	locator.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator.NewGame("large", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator.NewGame("capitals", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	// // World wide games
+	// locator.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	// locator.NewGame("large", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
+	// locator.NewGame("capitals", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
 
-	// Country specific games
-	locator.NewGame("germany", "data/cities/german_cities.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86})
+	// // Country specific games
+	// locator.NewGame("germany", "data/cities/german_cities.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86})
 
-	{
-		locators.GET("/", func(c *gin.Context) {
-			c.HTML(200, "locators/start.html", gin.H{"title": "Locator"})
-		})
-		locators.GET("/:country", locator.HandleGame)
-		locators.POST("/:country/submit", locator.HandleGameSubmit)
-		locators.POST("/:country/newGuess", locator.HandleNewGuess)
-	}
+	// {
+	// 	locators.GET("/", func(c *gin.Context) {
+	// 		c.HTML(200, "locators/start.html", gin.H{"title": "Locator"})
+	// 	})
+	// 	locators.GET("/:country", locator.HandleGame)
+	// 	locators.POST("/:country/submit", locator.HandleGameSubmit)
+	// 	locators.POST("/:country/newGuess", locator.HandleNewGuess)
+	// }
 
 	// *************************************************************** //
 	// 							LOCATOR-IO							   //

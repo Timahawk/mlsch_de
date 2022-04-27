@@ -14,8 +14,4 @@ wget link
 sudo docker exec -it mlsch-postgis bash
 
 # 4) pg_restore 
-psql -U postgres -h localhost -d mlsch_data -f backup.sql
-
-Für Powershell crosscompile
- $env:GOARCH="amd64"
- $env:GOOS = "linux"
+psql -U postgres -h localhost -p 5555 -d mlsch_data -f backup.sql

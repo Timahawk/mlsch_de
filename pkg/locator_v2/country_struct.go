@@ -19,11 +19,16 @@ func init() {
 	err := errors.New("")
 
 	conn, err = pgxpool.Connect(context.Background(), url)
+	if err == nil {
+		return
+	}
+	url = "postgres://postgres:postgres@localhost:5555/mlsch_data"
+
+	conn, err = pgxpool.Connect(context.Background(), url)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-
 }
 
 type Country struct {

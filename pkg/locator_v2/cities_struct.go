@@ -1,13 +1,17 @@
 package locator_v2
 
 import (
+	"embed"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"strings"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
 )
+
+//go:embed cities/*.json
+var CitiesFS embed.FS
 
 // The City as per the file.
 type City struct {
@@ -37,7 +41,9 @@ func LoadCities(file string) (map[string]Locations, error) {
 
 	cities := make([]City, 0)
 
-	content, err := ioutil.ReadFile(file)
+	file = strings.Replace(file, "data/", "", 1)
+	content, err := CitiesFS.ReadFile(file)
+	// content, err := ioutil.ReadFile(file)
 	if err != nil {
 		return nil, fmt.Errorf("%s, %v ", file, err)
 	}

@@ -1,0 +1,50 @@
+---
+- name: deploy to Lightsail
+  hosts: aws_server
+  tasks:
+    - name: Copy the compiled file to the Servers.
+      ansible.builtin.copy:
+        src: /mnt/c/Users/miten/Documents/MillionDollarProject/golang_v1/mlsch_de/bin/mlsch_de
+        dest: /home/ubuntu/mlsch_de
+        owner: ubuntu
+        group: ubuntu
+        # 755 means read and execute access for everyone and also write access for the owner of the file. 
+        mode: '0755'
+    
+    # - name: Print sth for testing.
+    #   shell: |
+    #     echo "Works"
+    #   register: ps
+
+    - name: Execute the bin file.
+      shell: |
+        echo "Changing directory"
+        cd /home/ubuntu
+        ls
+
+        echo "LISTEN Ports when Starting"
+        sudo lsof -i -P -n | grep LISTEN
+
+        sudo pkill mlsch_de
+
+        echo "LISTEN Ports after pkill"
+        sudo lsof -i -P -n | grep LISTEN
+        
+        echo "Starting detached."
+        echo nohup sudo ./mlsch_de -dev=false >>log.txt &
+
+        echo "Sleep 2 Seconds"
+        sleep 2
+
+        echo "LISTEN Ports after  Restart"
+        sudo lsof -i -P -n | grep LISTEN
+
+        echo "Tail of Logfile"
+        tail ./log.txt
+
+        echo "-> Finished the Script."
+
+        exit 0
+      register: ps
+
+    - debug: var=ps

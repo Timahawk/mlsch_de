@@ -1,0 +1,10 @@
+- name: copyfile
+  hosts: aws_server
+  tasks:
+    - name: Copy the backup file to the Servers.
+      ansible.builtin.copy:
+        src: /mnt/c/Users/miten/Documents/MillionDollarProject/golang_v1/mlsch_de/data/postgres_data/backup.sql
+        dest: /home/ubuntu/backup.sql
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'

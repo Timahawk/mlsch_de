@@ -1,0 +1,35 @@
+- name: copyfile
+  hosts: all
+  tasks:
+    - name: Install Postgres & Postgis
+      become: true
+      apt:
+        pkg:
+        - postgresql
+        - postgis
+        - python3
+        - python3-pip
+        state: latest 
+
+    - name: Install psycopg2 python package
+      pip:
+        name: psycopg2-binary
+
+    - name: Copy the backup file to the Servers.
+      ansible.builtin.copy:
+        src: /mnt/c/Users/miten/Documents/MillionDollarProject/golang_v1/mlsch_de/data/postgres_data/backup.sql
+        dest: ~/backup.sql
+        # owner: ubuntu
+        # group: ubuntu
+        mode: '0644'
+
+    - name: Create a new database with name mlsch_data
+      postgresql_db:
+        name: mlsch_data
+        state: restore
+        login_password: postgres
+        login_user: postgres
+        login_host: localhost
+        target: ~/backup.sql
+
+    # - name: Update the Tables within Postgres.

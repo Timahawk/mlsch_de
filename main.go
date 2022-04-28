@@ -18,6 +18,7 @@ import (
 	"github.com/Timahawk/mlsch_de/pkg/locator_v2"
 	"github.com/Timahawk/mlsch_de/pkg/util"
 
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/acme/autocert"
@@ -79,10 +80,20 @@ func mustFS() http.FileSystem {
 // Extra function for easier testsetup.
 func SetupRouter() *gin.Engine {
 
-	util.InitLogger()
+	Logger := util.InitLogger()
 	util.Sugar.Infof("Started mlsch_de application")
 
-	r := gin.Default()
+	var r *gin.Engine
+
+	if *development {
+		r = gin.Default()
+	} else {
+		r = gin.New()
+		// Not using extra timestamp.
+		r.Use(ginzap.Ginzap(Logger, "", true))
+		r.Use(ginzap.RecoveryWithZap(Logger, true))
+	}
+
 	//r := gin.New()
 	// Not using extra timestamp.
 	// r.Use(ginzap.Ginzap(Logger, "", true))
@@ -134,7 +145,10 @@ func SetupRouter() *gin.Engine {
 	// 							LOCATOR								   //
 	// *************************************************************** //
 
-	// locators := r.Group("/locators")
+	locators := r.Group("/locators")
+	locators.GET("/", func(ctx *gin.Context) {
+		ctx.Redirect(303, "/locate")
+	})
 
 	// // World wide games
 	// locator.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})

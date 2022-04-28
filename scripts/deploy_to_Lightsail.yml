@@ -4,24 +4,15 @@
   tasks:
     - name: Copy the compiled file to the Servers.
       ansible.builtin.copy:
-        src: /mnt/c/Users/miten/Documents/MillionDollarProject/golang_v1/mlsch_de/bin/mlsch_de
+        src: /mnt/c/Users/miten/Documents/MillionDollarProject/golang_v1/mlsch_de/bin/mlsch_de-linux-amd64
         dest: /home/ubuntu/mlsch_de
         owner: ubuntu
         group: ubuntu
         # 755 means read and execute access for everyone and also write access for the owner of the file. 
         mode: '0755'
-    
-    # - name: Print sth for testing.
-    #   shell: |
-    #     echo "Works"
-    #   register: ps
 
-    - name: Execute the bin file.
+    - name: Kill already running server.
       shell: |
-        echo "Changing directory"
-        cd /home/ubuntu
-        ls
-
         echo "LISTEN Ports when Starting"
         sudo lsof -i -P -n | grep LISTEN
 
@@ -29,22 +20,34 @@
 
         echo "LISTEN Ports after pkill"
         sudo lsof -i -P -n | grep LISTEN
-        
-        echo "Starting detached."
-        echo nohup sudo ./mlsch_de -dev=false >>log.txt &
+        exit 0
+      register: ps
 
-        echo "Sleep 2 Seconds"
-        sleep 2
+    - name: Start the mlsch_de Server
+      shell: "( ( nohup sudo /home/ubuntu/mlsch_de -dev=false 1>/dev/null 2>&1 ) & )"
+      async: 5
+      poll: 0
+
+    - name: Check for sucess.
+      shell: |
+        echo "Sleep 5 Seconds"
+        sleep 5
 
         echo "LISTEN Ports after  Restart"
         sudo lsof -i -P -n | grep LISTEN
 
         echo "Tail of Logfile"
-        tail ./log.txt
+        tail ./Logs.log
 
         echo "-> Finished the Script."
 
         exit 0
       register: ps
 
-    - debug: var=ps
+    - name: Check that you can connect (GET) to a page and it returns a status 200
+      uri:
+        url: https://mlsch.de
+
+    # - debug: var=ps
+
+    

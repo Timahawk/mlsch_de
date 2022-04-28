@@ -28,14 +28,15 @@ conn.onmessage = function (evt) {
     console.log(message)
 
     // document.getElementById("state").innerHTML = message.state
-    document.getElementById("time").innerHTML = message.time
+    document.getElementById("countdown").innerHTML = message.time
     //timecounter = doTimestuff(message.time)
 
     clearInterval(timecounter)
-    timecounter = setInterval(function () {document.getElementById("time").innerHTML -= 1}, 1000); 
+    timecounter = setInterval(function () {document.getElementById("countdown").innerHTML -= 1}, 1000); 
 
     if (message.status == "location") {
-        document.getElementById("city").innerHTML = message.Location
+        // document.getElementById("city").innerHTML = message.Location
+        document.getElementById("locationteller").innerHTML = message.Location
         document.getElementById("status").innerHTML = message.status
         document.getElementById("rounds").innerHTML = message.rounds - 1
         // document.getElementById("points").innerHTML = ""
@@ -59,8 +60,8 @@ conn.onmessage = function (evt) {
         document.getElementById("points").innerHTML = JSON.stringify(message.points)
         document.getElementById("distance").innerHTML =""
         document.getElementById("awarded").innerHTML =""
-        document.getElementById("time").innerHTML =""
-        document.getElementById("city").innerHTML =""
+        document.getElementById("countdown").innerHTML =""
+        document.getElementById("locationteller").innerHTML ="Finished"
         solution_layer.getSource().clear()
         conn.close()
     }

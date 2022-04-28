@@ -61,6 +61,7 @@ func main() {
 	// Check if development (default) or Prod.
 	if *development {
 		log.Fatalln(r.Run())
+		// log.Fatalln(r.Run("192.168.0.90:8080"))
 		go func() {
 			log.Println(http.ListenAndServe("localhost:6060", nil))
 		}()
@@ -144,54 +145,6 @@ func SetupRouter() *gin.Engine {
 		chats.GET(":room/ws", chat.GetRoomWebsocket)
 		chats.POST("/", chat.PostCreateNewHub)
 	}
-
-	// *************************************************************** //
-	// 							LOCATOR								   //
-	// *************************************************************** //
-
-	locators := r.Group("/locators")
-	locators.Any("/", func(ctx *gin.Context) {
-		ctx.Redirect(303, "/locate")
-	})
-
-	// // World wide games
-	// locator.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	// locator.NewGame("large", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	// locator.NewGame("capitals", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-
-	// // Country specific games
-	// locator.NewGame("germany", "data/cities/german_cities.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86})
-
-	// {
-	// 	locators.GET("/", func(c *gin.Context) {
-	// 		c.HTML(200, "locators/start.html", gin.H{"title": "Locator"})
-	// 	})
-	// 	locators.GET("/:country", locator.HandleGame)
-	// 	locators.POST("/:country/submit", locator.HandleGameSubmit)
-	// 	locators.POST("/:country/newGuess", locator.HandleNewGuess)
-	// }
-
-	// *************************************************************** //
-	// 							LOCATOR-IO							   //
-	// *************************************************************** //
-
-	// locator_io.LoadedGames["world"], _ = locator_io.NewGame("world", "data/cities/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	// locator_io.LoadedGames["large"], _ = locator_io.NewGame("large", "data/cities/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	// locator_io.LoadedGames["capitals"], _ = locator_io.NewGame("capitals", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-
-	// // util.Sugar.Infow("Loaded Games",
-	// //	"Games", locator_io.LoadedGames)
-
-	// locator_ioGroup := r.Group("/l")
-
-	// {
-	// 	locator_ioGroup.GET("/", locator_io.CreateLobbyGET)
-	// 	locator_ioGroup.POST("/", locator_io.CreateLobbyPOST)
-	// 	locator_ioGroup.GET("/:lobby", locator_io.GetWaitingroom)
-	// 	locator_ioGroup.GET("/:lobby/ws", locator_io.Waitingroom_WS)
-	// 	locator_ioGroup.GET("/:lobby/game", locator_io.PlayGame)
-	// 	locator_ioGroup.GET("/:lobby/game/ws", locator_io.ServeLobby)
-	// }
 
 	// *************************************************************** //
 	// 							LOCATOR-V2							   //

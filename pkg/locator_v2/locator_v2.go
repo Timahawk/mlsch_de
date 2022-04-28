@@ -20,9 +20,8 @@ var contextbg = context.Background()
 
 func SetupTest() {
 
-	log.Println("SetupTEST enabled.")
+	// log.Println("SetupTEST enabled.")
 
-	// TODO if production dont do that.
 	ctx, cancelCtx := context.WithCancel(contextbg)
 	testplayer1 := NewPlayer(ctx, cancelCtx, &Lobby{}, "test1")
 	ctx, cancelCtx = context.WithCancel(contextbg)
@@ -34,8 +33,8 @@ func SetupTest() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	b := NewLobby(10, 10, 10, g)
-	Lobbies[b.LobbyID] = b
+	// b := NewLobby(10, 10, 10, g)
+	// Lobbies[b.LobbyID] = b
 	Lobbies["AAAAAAAA"] = &Lobby{
 		LobbyID: "AAAAAAAA",
 		// owner:      testplayer1,

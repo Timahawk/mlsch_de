@@ -45,7 +45,7 @@ type Country struct {
 
 func NewWorldBorders() (map[string]Locations, error) {
 
-	fmt.Println("New World Border called!")
+	// fmt.Println("New World Border called!")
 
 	locs := make(map[string]Locations)
 

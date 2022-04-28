@@ -35,6 +35,7 @@ func CreateLobbyPOST(c *gin.Context) {
 	username := c.PostForm("username")
 
 	if roundTime == 0 || reviewTime == 0 || rounds == 0 || gameset == "" || username == "" {
+		// log.Println("Inputs:", roundTime, reviewTime, rounds, gameset, username)
 		c.JSON(200, gin.H{"status": "CreateLobbyPost failed, due to faulty Form Input."})
 		return
 	}

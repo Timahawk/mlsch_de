@@ -89,9 +89,8 @@ func NewLobby(roundt, reviewt, rounds int, game *Game) *Lobby {
 		"roundtime", roundt,
 		"reviewtime", reviewt,
 		"rounds", rounds,
-		"state", 3,
-		"nextState", 0,
-		"roundCounter", 0,
+		"state", "starting",
+		"nextState", "guessing",
 		"game", game.Name,
 	)
 	return &lobby

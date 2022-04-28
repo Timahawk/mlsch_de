@@ -32,9 +32,13 @@ var staticFS embed.FS
 //go:embed web/templates/**/*
 var templatesFS embed.FS
 
+func init() {
+	development = flag.Bool("dev", true, "Run local")
+
+}
+
 func main() {
 
-	development = flag.Bool("dev", true, "Run local")
 	flag.Parse()
 
 	// This must be set before router is created.
@@ -146,7 +150,7 @@ func SetupRouter() *gin.Engine {
 	// *************************************************************** //
 
 	locators := r.Group("/locators")
-	locators.GET("/", func(ctx *gin.Context) {
+	locators.Any("/", func(ctx *gin.Context) {
 		ctx.Redirect(303, "/locate")
 	})
 
@@ -216,7 +220,7 @@ func SetupRouter() *gin.Engine {
 	// *************************************************************** //
 
 	if *development == true {
-		util.Sugar.Infow("Staring Testing Lobby AAAAAAAA",
+		util.Sugar.Infow("Creating Testing Lobby AAAAAAAA",
 			"development", *development)
 		locator_v2.SetupTest()
 	}

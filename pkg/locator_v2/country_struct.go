@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
@@ -56,12 +55,19 @@ func NewWorldBorders() (map[string]Locations, error) {
 	defer rows.Close()
 
 	if err != nil {
-		log.Fatalln("New World Border", err)
+		util.Sugar.Fatal("New World Border", err)
 	}
+
+	i := 0
 	for rows.Next() {
 		x := &Country{}
 		rows.Scan(&x.name_0, &x.name_1, &x.name_1_eng, &x.sovereign, &x.lng_center, &x.lat_center)
 		locs[x.name_0] = x
+
+		if i >= 262 {
+			util.Sugar.Fatal("New World Border", err)
+		}
+		i++
 	}
 	return locs, nil
 }
@@ -77,7 +83,8 @@ func (c *Country) Distance(lat, lng float64) float64 {
 	`, c.name_0, lng, lat).Scan(&distance)
 
 	if err != nil {
-		log.Fatalln("Distance", err)
+		util.Sugar.Errorw("Distance:", distance, "Error:", err, "Country:", c.name_0, "lat, lng", lat, lng)
+		return 9999
 	}
 
 	util.Sugar.Debugw("Distance",
@@ -99,7 +106,9 @@ func (c *Country) Geom() string {
 	FROM (SELECT name_0, ST_Transform(geom,3857) FROM world_borders) t WHERE name_0=$1`,
 		c.name_0).Scan(&geojson)
 	if err != nil {
-		log.Fatalln("Geom", err)
+		util.Sugar.Errorw("Distance",
+			"p.name_0", c.GetName(),
+			"error", err)
 	}
 	return geojson
 }

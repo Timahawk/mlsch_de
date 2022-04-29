@@ -30,8 +30,8 @@
 
     - name: Check for sucess.
       shell: |
-        echo "Sleep 5 Seconds"
-        sleep 5
+        echo "Sleep 1 Seconds"
+        sleep 1
 
         echo "LISTEN Ports after  Restart"
         sudo lsof -i -P -n | grep LISTEN

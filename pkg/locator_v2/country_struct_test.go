@@ -1,6 +1,7 @@
 package locator_v2
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -28,12 +29,13 @@ func Test_Geom(t *testing.T) {
 }
 
 func Test_NewWorldBorder(t *testing.T) {
-	// x, err := NewWorldBorders()
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// fmt.Println("X", x, len(x))
+	x, err := NewWorldBorders()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("X", x, len(x))
 	// for key, value := range x {
 	// 	fmt.Println(key, value.GetName())
 	// }
+	assert.Equal(t, len(x), 262)
 }

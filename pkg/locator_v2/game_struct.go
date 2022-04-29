@@ -3,7 +3,6 @@ package locator_v2
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -62,15 +61,15 @@ func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, ex
 	case strings.HasPrefix(pfad, "data/cities"):
 		locs, err = LoadCities(pfad)
 		if err != nil {
-			log.Fatalln(pfad, err)
+			util.Sugar.Fatal(pfad, err)
 		}
 	case strings.HasPrefix(pfad, "pg/lvl_0/country"):
 		locs, err = NewWorldBorders()
 		if err != nil {
-			log.Fatalln(pfad, err)
+			util.Sugar.Fatal(pfad, err)
 		}
 	default:
-		log.Fatalf("%s, pfad could not be laoded", pfad)
+		util.Sugar.Fatalf("%s, pfad could not be laoded", pfad)
 	}
 
 	newGame := Game{name, center, zoom, maxZoom, minZoom, extent, geom, locs}

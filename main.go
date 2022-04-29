@@ -4,10 +4,8 @@ import (
 	"embed"
 	"errors"
 	"flag"
-	"fmt"
 	"html/template"
 	"io/fs"
-	"log"
 	"net/http"
 	"time"
 
@@ -17,6 +15,7 @@ import (
 	"github.com/Timahawk/mlsch_de/pkg/chat"
 	"github.com/Timahawk/mlsch_de/pkg/locator_v2"
 	"github.com/Timahawk/mlsch_de/pkg/util"
+	"go.uber.org/zap"
 
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/autotls"
@@ -32,9 +31,12 @@ var staticFS embed.FS
 //go:embed web/templates/**/*
 var templatesFS embed.FS
 
+// the Loggger used throughout
+var Logger *zap.Logger
+
 func init() {
 	development = flag.Bool("dev", true, "Run local")
-
+	Logger = util.InitLogger()
 }
 
 func main() {
@@ -60,14 +62,13 @@ func main() {
 
 	// Check if development (default) or Prod.
 	if *development {
-		log.Fatalln(r.Run())
-		// log.Fatalln(r.Run("192.168.0.90:8080"))
+		util.Sugar.Fatal(r.Run(":8080"))
 		go func() {
-			log.Println(http.ListenAndServe("localhost:6060", nil))
+			util.Sugar.Info(http.ListenAndServe("localhost:6060", nil))
 		}()
 	} else {
-		fmt.Println("Starting in Release Mode!")
-		log.Fatalln(autotls.RunWithManager(r, &certManager))
+		util.Sugar.Infof("Starting in Release Mode!")
+		util.Sugar.Fatal(autotls.RunWithManager(r, &certManager))
 	}
 }
 
@@ -85,8 +86,7 @@ func mustFS() http.FileSystem {
 // Extra function for easier testsetup.
 func SetupRouter() *gin.Engine {
 
-	Logger := util.InitLogger()
-	util.Sugar.Infof("Started mlsch_de application")
+	util.Sugar.Infow("Started mlsch_de application")
 
 	var r *gin.Engine
 
@@ -168,7 +168,7 @@ func SetupRouter() *gin.Engine {
 	err := errors.New("")
 	locator_v2.LoadedGames["country"], err = locator_v2.NewGame("country", "pg/lvl_0/country", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Polygon")
 	if err != nil {
-		log.Fatalln(err, "polygon failed.")
+		util.Sugar.Fatal(err, "polygon failed.")
 	}
 	// *************************************************************** //
 

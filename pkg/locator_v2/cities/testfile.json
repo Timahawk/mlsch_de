@@ -1,0 +1,30 @@
+[
+    {
+        "json_featuretype" : "CSV",
+        "city" : "Yaoundé",
+        "city_ascii" : "Yaounde",
+        "lat" : 3.857800006866455,
+        "lng" : 11.5181,
+        "country" : "Cameroon",
+        "iso2" : "CM",
+        "iso3" : "CMR",
+        "admin_name" : "Centre",
+        "capital" : "primary",
+        "population" : 2440462,
+        "id" : 1120298240
+    },
+    {
+        "json_featuretype" : "CSV",
+        "city" : "Reykjavík",
+        "city_ascii" : "Reykjavik",
+        "lat" : 64.14749908447266,
+        "lng" : -21.935,
+        "country" : "Iceland",
+        "iso2" : "IS",
+        "iso3" : "ISL",
+        "admin_name" : null,
+        "capital" : "primary",
+        "population" : 128793,
+        "id" : 1352327190
+    }
+]

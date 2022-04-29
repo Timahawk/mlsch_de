@@ -3,7 +3,6 @@ package locator_v2
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
@@ -416,7 +415,7 @@ func (l *Lobby) getScore() []byte {
 	}
 	res, err := json.Marshal(liste)
 	if err != nil {
-		log.Println(liste, err)
+		util.Sugar.Warn(liste, err)
 	}
 	return res
 }
@@ -431,7 +430,7 @@ func (l *Lobby) getLastLocations() []byte {
 	}
 	res, err := json.Marshal(liste)
 	if err != nil {
-		log.Println(liste, err)
+		util.Sugar.Warn(liste, err)
 	}
 	return res
 }

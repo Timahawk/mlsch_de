@@ -1,5 +1,7 @@
 BINARY_NAME=mlsch_de
 
+# export PATH=$PATH:/usr/local/go/bin
+
 hello:
 	echo "Hello"
 

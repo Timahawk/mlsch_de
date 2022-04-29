@@ -80,7 +80,7 @@ func (p *Player) WriteToConn() {
 		select {
 		case str := <-p.toConn:
 			// This is stupid because it may be to short.
-			err := p.conn.SetWriteDeadline(time.Now().Add(time.Millisecond * 100))
+			err := p.conn.SetWriteDeadline(time.Now().Add(time.Second * 3))
 			if err != nil {
 				util.Sugar.Warnw("WriteDeadline failed",
 					"Lobby", p.lobby.LobbyID,

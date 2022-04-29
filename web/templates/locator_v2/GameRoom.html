@@ -38,17 +38,23 @@
         <td id="status"></td>
       </tr>
     </table>
-    
-    <div style="padding-left:1% ;paddding-right:1%">
-     <div id="map" class="map"></div>
-    </div>
 
     <div class="d-flex p-2 d-flex justify-content-between">
       <h1 id="locationteller" style="padding-left:1%">{{ .lobby }} - {{ .user }}</h1>
       <button class="btn btn-primary" style="padding-left:1%" id="submitButton" type="button">Submit Guess</button>
       <h1 id="countdown"></h1>
     </div>
-
+    
+    <div style="padding-left:1% ;paddding-right:1%">
+     <div id="map" class="map"></div>
+    </div>
+    <!--
+    <div class="d-flex p-2 d-flex justify-content-between">
+      <h1 id="locationteller" style="padding-left:1%">{{ .lobby }} - {{ .user }}</h1>
+      <button class="btn btn-primary" style="padding-left:1%" id="submitButton" type="button">Submit Guess</button>
+      <h1 id="countdown"></h1>
+    </div>
+    -->
     <script>
         var user = {{ .user }}
         var center =  {{ .center }}

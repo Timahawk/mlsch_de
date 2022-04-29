@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 
+	"github.com/Timahawk/mlsch_de/pkg/util"
 	"github.com/gorilla/websocket"
 )
 
@@ -31,7 +31,7 @@ func SetupTest() {
 
 	g, err := getGame("capitals")
 	if err != nil {
-		log.Fatal(err)
+		util.Sugar.Fatal(err)
 	}
 	// b := NewLobby(10, 10, 10, g)
 	// Lobbies[b.LobbyID] = b

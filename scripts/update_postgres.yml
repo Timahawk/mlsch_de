@@ -23,7 +23,23 @@
         # group: ubuntu
         mode: '0644'
 
-    - name: Create a new database with name mlsch_data
+    - name: Delete the database with name mlsch_data
+      postgresql_db:
+        name: mlsch_data
+        state: absent
+        login_password: postgres
+        login_user: postgres
+        login_host: localhost
+
+    - name: Create the database with name mlsch_data
+      postgresql_db:
+        name: mlsch_data
+        state: present
+        login_password: postgres
+        login_user: postgres
+        login_host: localhost
+
+    - name: Restore the database with the backup.sql file
       postgresql_db:
         name: mlsch_data
         state: restore

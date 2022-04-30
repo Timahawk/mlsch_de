@@ -58,7 +58,7 @@ func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, ex
 	err := errors.New("")
 
 	switch {
-	case strings.HasPrefix(pfad, "data/cities"):
+	case strings.HasPrefix(pfad, "assets/cities"):
 		locs, err = LoadCities(pfad)
 		if err != nil {
 			util.Sugar.Fatal(pfad, err)

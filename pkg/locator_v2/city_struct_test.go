@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Timahawk/mlsch_de/assets"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,16 +19,16 @@ func Test_LoadCities(t *testing.T) {
 	// }
 	//CitiesFS.ReadFile("cities/allci")
 
-	_, err := LoadCities("cities/allcities.json")
+	_, err := LoadCities("assets/cities/allcities.json")
 
 	assert.Nil(t, err)
-	//a, b := data.CitiesFS.ReadDir("cities/allcities.json")
-	// fmt.Println(a, b)
+	// a, b := assets.Cities.ReadDir("cities")
+	// fmt.Println(a[0].Name(), b)
 	// assert.Equal(t, 1, 2)
 }
 
 func Test_komischeUmlaute(t *testing.T) {
-	content, err := CitiesFS.ReadFile("cities/testfile.json")
+	content, err := assets.Cities.ReadFile("cities/testfile.json")
 	assert.Nil(t, err)
 
 	cities := make([]City, 0)

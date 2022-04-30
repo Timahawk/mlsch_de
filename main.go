@@ -152,17 +152,17 @@ func SetupRouter() *gin.Engine {
 
 	// https://boundingbox.klokantech.com/
 
-	locator_v2.LoadedGames["world"], _ = locator_v2.NewGame("world", "data/cities/allcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Point")
-	locator_v2.LoadedGames["cities_larger_250000"], _ = locator_v2.NewGame("cities_larger_250000", "data/cities/cities_larger_250000.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Point")
-	locator_v2.LoadedGames["capitals"], _ = locator_v2.NewGame("capitals", "data/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Point")
+	locator_v2.LoadedGames["world"], _ = locator_v2.NewGame("world", "assets/cities/allcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Point")
+	locator_v2.LoadedGames["cities_larger_250000"], _ = locator_v2.NewGame("cities_larger_250000", "assets/cities/cities_larger_250000.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Point")
+	locator_v2.LoadedGames["capitals"], _ = locator_v2.NewGame("capitals", "assets/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Point")
 	// Germany
-	locator_v2.LoadedGames["germany"], _ = locator_v2.NewGame("germany", "data/cities/german_cities.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86}, "Point")
-	locator_v2.LoadedGames["germany_larger25000"], _ = locator_v2.NewGame("germany_larger25000", "data/cities/german_cities_larger25000.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86}, "Point")
+	locator_v2.LoadedGames["germany"], _ = locator_v2.NewGame("germany", "assets/cities/german_cities.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86}, "Point")
+	locator_v2.LoadedGames["germany_larger25000"], _ = locator_v2.NewGame("germany_larger25000", "assets/cities/german_cities_larger25000.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86}, "Point")
 	// Japan
-	locator_v2.LoadedGames["japan_larger25000"], _ = locator_v2.NewGame("japan_larger25000", "data/cities/japan_cities_larger25000.json", []float64{138.3, 34.76}, 1, 14, 1, []float64{118.44, 20.8, 155.53, 52.0}, "Point")
+	locator_v2.LoadedGames["japan_larger25000"], _ = locator_v2.NewGame("japan_larger25000", "assets/cities/japan_cities_larger25000.json", []float64{138.3, 34.76}, 1, 14, 1, []float64{118.44, 20.8, 155.53, 52.0}, "Point")
 	// Region specific games
-	locator_v2.LoadedGames["european_cities_larger_100000"], _ = locator_v2.NewGame("european_cities_larger_100000", "data/cities/european_cities_larger_100000.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-41.8, 27.0, 69.6, 73.7}, "Point")
-	locator_v2.LoadedGames["north_american_cities_larger_100000"], _ = locator_v2.NewGame("north_american_cities_larger_100000", "data/cities/north_american_cities_larger_100000.json", []float64{-100, 40}, 1, 14, 1, []float64{-180, -15, 40, 85}, "Point")
+	locator_v2.LoadedGames["european_cities_larger_100000"], _ = locator_v2.NewGame("european_cities_larger_100000", "assets/cities/european_cities_larger_100000.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-41.8, 27.0, 69.6, 73.7}, "Point")
+	locator_v2.LoadedGames["north_american_cities_larger_100000"], _ = locator_v2.NewGame("north_american_cities_larger_100000", "assets/cities/north_american_cities_larger_100000.json", []float64{-100, 40}, 1, 14, 1, []float64{-180, -15, 40, 85}, "Point")
 
 	// ************************** Polygon Games ******************************* //
 	err := errors.New("")

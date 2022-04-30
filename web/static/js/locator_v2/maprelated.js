@@ -2,8 +2,8 @@ var token = 'pk.eyJ1IjoidGltd2VuZGVsIiwiYSI6ImNraDBoeG9ubTFkd20zMXJydDA5YjR0OXEi
 
 const mb = new ol.layer.Tile({
     source: new ol.source.XYZ({
-        url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=' +
-        token
+        // url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=' + token
+        url: 'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=' + token
     }),
 });
 
@@ -19,6 +19,7 @@ const stroke = new ol.style.Stroke({
 const fill_submits = new ol.style.Fill({
       color: 'rgba(100, 100, 100, 0.1)',
       });
+
 const stroke_submits = new ol.style.Stroke({
       color: "#00000",
       width: 1.25,
@@ -43,7 +44,6 @@ const submit_Style = new ol.style.Style({
       }),
   }),
 })
-
 
 const styles = [
     new ol.style.Style({

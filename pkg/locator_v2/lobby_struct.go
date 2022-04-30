@@ -337,17 +337,17 @@ func (l *Lobby) serveGame() {
 			}
 
 			// This simply checks if the serveLobby goroutine should be exited.
-			i := 0
-			for _, p := range l.player {
-				if p.conn == nil {
-					i += 1
-				}
-				if i == len(l.player) {
-					util.Sugar.Debug("serveLobby will be stopped because all players are disconnected.",
-						"Lobby", l.LobbyID)
-					return
-				}
-			}
+			// i := 0
+			// for _, p := range l.player {
+			// 	if p.conn == nil {
+			// 		i += 1
+			// 	}
+			// 	if i == len(l.player) {
+			// 		util.Sugar.Debug("serveLobby will be stopped because all players are disconnected.",
+			// 			"Lobby", l.LobbyID)
+			// 		return
+			// 	}
+			// }
 		}
 	}
 }

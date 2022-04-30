@@ -39,6 +39,7 @@ conn.onmessage = function (evt) {
         document.getElementById("locationteller").innerHTML = message.Location
         document.getElementById("status").innerHTML = message.status
         document.getElementById("rounds").innerHTML = message.rounds - 1
+        document.getElementById("submitButton").disabled = false; 
         // document.getElementById("points").innerHTML = ""
         document.getElementById("distance").innerHTML =""
         document.getElementById("awarded").innerHTML =""
@@ -51,6 +52,7 @@ conn.onmessage = function (evt) {
         document.getElementById("points").innerHTML = JSON.stringify(message.points)
         document.getElementById("distance").innerHTML = (message.distance / 1000).toFixed(2) +  " km away. "
         document.getElementById("awarded").innerHTML = message.awarded + " Points"
+        document.getElementById("submitButton").disabled = true; 
         addSolution(message)
         addCommit(message)
         }

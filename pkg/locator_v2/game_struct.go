@@ -32,13 +32,16 @@ type Game struct {
 	Extent  []float64
 	Geom    string
 	Cities  map[string]Locations
+	// Scorevalue represents sth like the biggest difference possible between all Locations
+	// Therefor as points are awarded they stay relativ to this max distance.
+	Scorevalue float64
 }
 
 // func (g *Game) String() string {
 // 	return fmt.Sprintf(" with %v Locations", len(g.Cities))
 // }
 
-func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, extent []float64, geom string) (*Game, error) {
+func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, extent []float64, geom string, Scorevalue float64) (*Game, error) {
 	start := time.Now()
 	defer func() {
 		util.Sugar.Debugw("New Game created",
@@ -72,7 +75,7 @@ func NewGame(name, pfad string, center []float64, zoom, maxZoom, minZoom int, ex
 		util.Sugar.Fatalf("%s, pfad could not be laoded", pfad)
 	}
 
-	newGame := Game{name, center, zoom, maxZoom, minZoom, extent, geom, locs}
+	newGame := Game{name, center, zoom, maxZoom, minZoom, extent, geom, locs, Scorevalue}
 
 	return &newGame, nil
 }

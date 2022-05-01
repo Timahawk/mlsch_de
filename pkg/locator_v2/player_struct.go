@@ -222,19 +222,19 @@ func (p *Player) process_submit(submit Submit_guess) error {
 }
 
 func (p *Player) getPoints() int {
-	dist := p.distance
+	dist := p.distance / 1000
+	scorevalue := p.lobby.game.Scorevalue
+
 	switch {
-	case dist < 10.0:
-		return 7
-	case dist < 50.0:
+	case scorevalue*0.025 > dist:
 		return 5
-	case dist < 100.0:
+	case scorevalue*0.05 > dist:
 		return 4
-	case dist < 250.0:
+	case scorevalue*0.1 > dist:
 		return 3
-	case dist < 500.0:
+	case scorevalue*0.25 > dist:
 		return 2
-	case dist < 1000.0:
+	case scorevalue*0.5 > dist:
 		return 1
 	default:
 		return 0

@@ -108,8 +108,15 @@ func SetupRouter() *gin.Engine {
 	// 						Files & Templates 						   //
 	// *************************************************************** //
 
-	templ := template.Must(template.New("").ParseFS(templatesFS, "web/templates/**/*.html"))
-	r.SetHTMLTemplate(templ)
+	// This is so that in dev Mode you can reload templates for better dev experience.
+	if *development == true {
+		util.Sugar.Infow("Loading templates from external FileSystem")
+		r.LoadHTMLGlob("web/templates/**/*.html")
+	} else {
+		util.Sugar.Infow("Loading templates from internal (embedded) FileSystem")
+		templ := template.Must(template.New("").ParseFS(templatesFS, "web/templates/**/*.html"))
+		r.SetHTMLTemplate(templ)
+	}
 
 	r.StaticFS("/static", mustFS())
 

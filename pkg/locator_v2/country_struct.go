@@ -2,9 +2,6 @@ package locator_v2
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"os"
 
 	"github.com/Timahawk/mlsch_de/pkg/util"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -12,18 +9,18 @@ import (
 
 var conn *pgxpool.Pool
 
-func init() {
-	// TODO fix that shit.
-	url := "postgres://postgres:postgres@localhost:5432/mlsch_data"
-	err := errors.New("")
+// func init() {
+// 	// TODO fix that shit.
+// 	url := "postgres://postgres:postgres@localhost:5432/mlsch_data"
+// 	err := errors.New("")
 
-	conn, err = pgxpool.Connect(context.Background(), url)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
-	}
+// 	conn, err = pgxpool.Connect(context.Background(), url)
+// 	if err != nil {
+// 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+// 		os.Exit(1)
+// 	}
 
-}
+// }
 
 type Country struct {
 	// country name

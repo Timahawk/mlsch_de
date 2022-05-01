@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"errors"
 	"flag"
 	"html/template"
 	"io/fs"
@@ -165,11 +164,11 @@ func SetupRouter() *gin.Engine {
 	locator_v2.LoadedGames["north_american_cities_larger_100000"], _ = locator_v2.NewGame("north_american_cities_larger_100000", "assets/cities/north_american_cities_larger_100000.json", []float64{-100, 40}, 1, 14, 1, []float64{-180, -15, 40, 85}, "Point")
 
 	// ************************** Polygon Games ******************************* //
-	err := errors.New("")
-	locator_v2.LoadedGames["country"], err = locator_v2.NewGame("country", "pg/lvl_0/country", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Polygon")
-	if err != nil {
-		util.Sugar.Fatal(err, "polygon failed.")
-	}
+	// err := errors.New("")
+	// locator_v2.LoadedGames["country"], err = locator_v2.NewGame("country", "pg/lvl_0/country", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Polygon")
+	// if err != nil {
+	// 	util.Sugar.Fatal(err, "polygon failed.")
+	// }
 	// *************************************************************** //
 
 	if *development == true {

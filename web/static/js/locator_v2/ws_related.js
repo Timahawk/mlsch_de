@@ -27,12 +27,13 @@ conn.onmessage = function (evt) {
     message = JSON.parse(evt.data)
     console.log(message)
 
-    // document.getElementById("state").innerHTML = message.state
-    document.getElementById("countdown").innerHTML = message.time
-    //timecounter = doTimestuff(message.time)
-
-    clearInterval(timecounter)
-    timecounter = setInterval(function () {document.getElementById("countdown").innerHTML -= 1}, 1000); 
+    
+    if (message.status != "psub"){
+        // document.getElementById("state").innerHTML = message.state
+        document.getElementById("countdown").innerHTML = message.time
+        clearInterval(timecounter)
+        timecounter = setInterval(function () {document.getElementById("countdown").innerHTML -= 1}, 1000); 
+    }
 
     if (message.status == "location") {
         // document.getElementById("city").innerHTML = message.Location
@@ -46,6 +47,13 @@ conn.onmessage = function (evt) {
         solution_layer.getSource().clear()
         submit_Layer.getSource().clear()
         
+    }
+    if (message.status == "psub"){
+        document.getElementById("psub").innerHTML = message.Player + " submitted"
+
+        x = setTimeout(function () {
+            document.getElementById("psub").innerHTML = ""
+        }, 1000)
     }
     if (message.status == "reviewing") {
         document.getElementById("status").innerHTML = message.status

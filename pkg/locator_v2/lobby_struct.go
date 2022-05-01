@@ -192,10 +192,10 @@ func (l *Lobby) serveGame() {
 		select {
 
 		// A Player submitted his guess.
-		case p := <-l.submitted:
+		case ps := <-l.submitted:
 			util.Sugar.Debugw("A Player submitted sth.",
 				"lobby", l.LobbyID,
-				"player", p.Name,
+				"player", ps.Name,
 				"state", l.state,
 				"nextState", l.nextState,
 			)
@@ -219,6 +219,15 @@ func (l *Lobby) serveGame() {
 				)
 
 				sendUpdate = time.NewTimer(0)
+				break
+			}
+
+			//  This is to send players a message that others submitted.
+			for _, p := range l.player {
+				if p.connected != false && p.submitted == false {
+					str := fmt.Sprintf(`{"status":"psub","Player":"%s"}`, ps.Name)
+					p.toConn <- str
+				}
 			}
 
 		// Something needs to be send!

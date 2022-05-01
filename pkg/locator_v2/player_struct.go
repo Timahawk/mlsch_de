@@ -222,7 +222,7 @@ func (p *Player) process_submit(submit Submit_guess) error {
 }
 
 func (p *Player) getPoints() int {
-	dist := p.distance / 1000
+	dist := p.distance
 	switch {
 	case dist < 10.0:
 		return 7

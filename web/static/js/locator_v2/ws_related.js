@@ -46,13 +46,25 @@ conn.onmessage = function (evt) {
         document.getElementById("awarded").innerHTML =""
         solution_layer.getSource().clear()
         submit_Layer.getSource().clear()
+        removeSolutionPopup()
         
     }
     if (message.status == "psub"){
-        document.getElementById("psub").innerHTML = message.Player + " submitted"
+        // document.getElementById("psub").innerHTML = message.Player + " submitted"
 
+        // Appraoch is good but position does not work like this...
+        // var x = map.getView().calculateExtent()
+        // minx = x[0]
+        // miny = x[1]
+        // maxx = x[2]
+        // maxy = x[3]
+        
+        // notifierOL.setPosition([maxx - maxx*0.5, maxy - maxy * 0.2])
+        notifierOL.setPosition(map.getView().getCenter())
+        notifierContent.innerHTML = message.Player + " submitted"
         x = setTimeout(function () {
-            document.getElementById("psub").innerHTML = ""
+            // document.getElementById("psub").innerHTML = ""
+            notifierOL.setPosition(undefined)
         }, 1000)
     }
     if (message.status == "reviewing") {
@@ -63,6 +75,9 @@ conn.onmessage = function (evt) {
         document.getElementById("submitButton").disabled = true; 
         addSolution(message)
         addCommit(message)
+        displaySolutionPopup(message)
+
+
         }
     if (message.status == "finished"){
         clearInterval(timecounter)
@@ -73,6 +88,7 @@ conn.onmessage = function (evt) {
         document.getElementById("countdown").innerHTML =""
         document.getElementById("locationteller").innerHTML ="Finished"
         solution_layer.getSource().clear()
+        removeSolutionPopup()
         conn.close()
     }
 };
@@ -123,4 +139,16 @@ function addCommit(message){
         submit_Layer.getSource().addFeature(solution)
       }
       
+}
+
+function displaySolutionPopup(message){
+    const coordinate = ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857')
+    
+    popup.setPosition(coordinate);
+}
+
+function removeSolutionPopup(){
+    popup.setPosition(undefined);
+    closer.blur();
+    return false;
 }

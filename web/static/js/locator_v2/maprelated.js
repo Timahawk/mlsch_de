@@ -7,6 +7,8 @@ const mb = new ol.layer.Tile({
     }),
 });
 
+
+
 const fill = new ol.style.Fill({
     color: 'rgba(255, 255, 0, 0.1)',
     });
@@ -109,15 +111,65 @@ const map = new ol.Map({
   }),
 });
 
-map.on('click', function(evt){
-    // console.log(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
-    point.setGeometry(new ol.geom.Point(evt.coordinate))
-});
+
 
 map.addLayer(layer);
 map.addLayer(solution_layer);
 map.addLayer(submit_Layer);
 
+/**
+ * Elements that make up the popup.
+ */
+ const popupDIV = document.getElementById('popup');
+ const content = document.getElementById('popup-content');
+ const closer = document.getElementById('popup-closer');
+ const addInfos = document.getElementById('addInfos');
+ /**
+  * Create an overlay to anchor the popup to the map.
+  */
+ const popup = new ol.Overlay({
+   element: popupDIV,
+   positioning: 'top-left',
+  //  autoPan: {
+  //    animation: {
+  //      duration: 250,
+  //    },
+  //  },
+ });
+
+closer.onclick = function () {
+  popup.setPosition(undefined);
+  closer.blur();
+  return false;
+};
+map.addOverlay(popup);
+
+map.on('click', function(evt){
+    //console.log(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
+    point.setGeometry(new ol.geom.Point(evt.coordinate))
+});
+
+map.on("click", function(){
+  popup.setPosition(undefined);
+  closer.blur();
+})
+
+addInfos.onclick = function(){
+  if (message.status=="reviewing"){
+    popup.setPosition(ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857'))
+    return
+  }
+  popup.setPosition(map.getView().getCenter())
+}
+
+const notifierDIV = document.getElementById('notifier');
+const notifierContent = document.getElementById('notifiercontent');
+const notifierOL = new ol.Overlay({
+  element: notifierDIV,
+  positioning: 'center-center'
+});
+
+map.addOverlay(notifierOL);
 
 function flyTo(location, done) {
     const duration = 2000;

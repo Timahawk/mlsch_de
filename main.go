@@ -116,13 +116,13 @@ func SetupRouter() *gin.Engine {
 	if *development == true {
 		util.Sugar.Infow("Loading templates from external FileSystem")
 		r.LoadHTMLGlob("web/templates/**/*.html")
+		r.Static("/static", "web/static")
 	} else {
 		util.Sugar.Infow("Loading templates from internal (embedded) FileSystem")
 		templ := template.Must(template.New("").ParseFS(templatesFS, "web/templates/**/*.html"))
 		r.SetHTMLTemplate(templ)
+		r.StaticFS("/static", mustFS())
 	}
-
-	r.StaticFS("/static", mustFS())
 
 	// *************************************************************** //
 	// 							Frontpage 							   //

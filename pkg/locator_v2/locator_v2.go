@@ -12,9 +12,6 @@ import (
 // All currently active Lobbies
 var Lobbies = map[string]*Lobby{}
 
-// All currently loaded games
-var LoadedGames = map[string]*Game{}
-
 var upgrader = websocket.Upgrader{}
 var contextbg = context.Background()
 

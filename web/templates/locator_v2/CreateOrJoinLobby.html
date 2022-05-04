@@ -6,15 +6,17 @@
 
 
     <div class="min-vw-100 justify-content-center d-flex">
-        <form method="post" action= "create" style="margin:10px">
+        <form method="post" action="create" style="margin:10px">
             <div class="form-group row">
                 <label for="roundTime">Choose the length of each guessing round (seconds)</label>
-                <input class="form-control" type="number" required min=3 max=240 id="roundTime" name="roundTime" value="45">
+                <input class="form-control" type="number" required min=3 max=240 id="roundTime" name="roundTime"
+                       value="45">
             </div>
 
             <div class="form-group row">
                 <label for="reviewTime">Choose the length of each review round (seconds)</label>
-                <input class="form-control" type="number" required min=3 max=240 id="reviewTime" name="reviewTime" value="10">
+                <input class="form-control" type="number" required min=3 max=240 id="reviewTime" name="reviewTime"
+                       value="10">
             </div>
 
             <div class="form-group row">
@@ -43,12 +45,13 @@
     <div class="min-vw-100 d-flex justify-content-center">
         <form method="post" action="join" style="margin:10px">
             <div class=" w-100 form-group row">
-                <label for="LobbyID">Input a valid LobbyKey             </label>
+                <label for="LobbyID">Input a valid LobbyKey </label>
                 <input class="form-control" type="string" required minlength=8 maxlength=8 id="LobbyID" name="LobbyID">
             </div>
             <div class=" w-100 form-group row">
                 <label for="username">Choose your Name</label>
-                <input class="form-control" type="string" required minlength=3 maxlength=10 id="username" name="username">
+                <input class="form-control" type="string" required minlength=3 maxlength=10 id="username"
+                       name="username">
             </div>
             <input type="submit" class="btn btn-primary text-center" style="margin:10px" value="Submit">
         </form>

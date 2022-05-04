@@ -27,19 +27,19 @@ func init() {
 
 type Country struct {
 	// country name
-	name_0 string
+	name0 string
 	// name ob subdivision e.g Bundesland
-	name_1 string
+	name1 string
 	// English name
-	name_1_eng string
+	name1Eng string
 	// Type of subdivision
-	type_c string
+	typeC string
 	// Engliish type of subdivision
-	type_c_eng string
-	sovereign  string
+	typeCEng  string
+	sovereign string
 	// Center of Polygon
-	lng_center float64
-	lat_center float64
+	lngCenter float64
+	latCenter float64
 }
 
 func NewWorldBorders() (map[string]Locations, error) {
@@ -61,8 +61,8 @@ func NewWorldBorders() (map[string]Locations, error) {
 	i := 0
 	for rows.Next() {
 		x := &Country{}
-		rows.Scan(&x.name_0, &x.name_1, &x.name_1_eng, &x.sovereign, &x.lng_center, &x.lat_center)
-		locs[x.name_0] = x
+		rows.Scan(&x.name0, &x.name1, &x.name1Eng, &x.sovereign, &x.lngCenter, &x.latCenter)
+		locs[x.name0] = x
 
 		if i >= 262 {
 			util.Sugar.Fatal("New World Border", err)
@@ -72,7 +72,7 @@ func NewWorldBorders() (map[string]Locations, error) {
 	return locs, nil
 }
 
-// Gets the distance. if within its 0
+// Distance Gets the distance. if within its 0
 func (c *Country) Distance(lat, lng float64) float64 {
 	var distance float64
 
@@ -80,10 +80,10 @@ func (c *Country) Distance(lat, lng float64) float64 {
 	SELECT ST_Distance(
 		ST_Transform((select geom from world_borders WHERE name_0 = $1), 3857),
 		ST_Transform(ST_SetSRID( ST_Point($2,$3), 4326), 3857))
-	`, c.name_0, lng, lat).Scan(&distance)
+	`, c.name0, lng, lat).Scan(&distance)
 
 	if err != nil {
-		util.Sugar.Errorw("Distance:", distance, "Error:", err, "Country:", c.name_0, "lat, lng", lat, lng)
+		util.Sugar.Errorw("Distance:", distance, "Error:", err, "Country:", c.name0, "lat, lng", lat, lng)
 		return 9999
 	}
 
@@ -104,7 +104,7 @@ func (c *Country) Geom() string {
 		'features', json_agg(ST_AsGeoJSON(t.*)::json)
 		)
 	FROM (SELECT name_0, ST_Transform(geom,3857) FROM world_borders) t WHERE name_0=$1`,
-		c.name_0).Scan(&geojson)
+		c.name0).Scan(&geojson)
 	if err != nil {
 		util.Sugar.Errorw("Distance",
 			"p.name_0", c.GetName(),
@@ -116,10 +116,10 @@ func (c *Country) Geom() string {
 // Center returns the coords in array Lat, Lng
 func (c *Country) Center() [2]float64 {
 	center := [2]float64{}
-	center[0], center[1] = c.lat_center, c.lng_center
+	center[0], center[1] = c.latCenter, c.lngCenter
 	return center
 }
 
 func (c *Country) GetName() string {
-	return c.name_0
+	return c.name0
 }

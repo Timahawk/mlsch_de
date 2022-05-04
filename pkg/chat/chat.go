@@ -15,8 +15,8 @@ import (
 var Hubs = map[string]*Hub{}
 
 // This is used for the template Names
-var names = []string{}
-var names_len int
+var names []string
+var namesLen int
 
 //go:embed names.txt
 var namesF string
@@ -29,7 +29,7 @@ func init() {
 	// 	log.Fatal(err)
 	// }
 	names = strings.Split(namesF, "\n")
-	names_len = len(names)
+	namesLen = len(names)
 }
 
 // PostCreateNewHub is used to create and start a new Hub.
@@ -51,7 +51,7 @@ func GetChatRoom(c *gin.Context) {
 		c.String(404, "Room not found")
 		return
 	}
-	name := rand.Intn(names_len)
+	name := rand.Intn(namesLen)
 	c.HTML(200, "chats/chat.html", gin.H{"name": names[name]})
 }
 

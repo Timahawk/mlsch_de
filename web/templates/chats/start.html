@@ -1,13 +1,14 @@
 {{ define "chats/start.html" }}
 
-<title>{{ .title }}</title>
+    <title>{{ .title }}</title>
 
-{{ template "globals/style_head.html" }}
-{{ template "globals/style_body.html" }}
+    {{ template "globals/style_head.html" }}
+    {{ template "globals/style_body.html" }}
 
 
-<form action="" method="post">
-    <input type="submit" class="btn btn-primary mx-auto" style="width: 200px; margin:10px;" name="Create new Room" value="Create new Room" />
-</form>
+    <form action="" method="post">
+        <input type="submit" class="btn btn-primary mx-auto" style="width: 200px; margin:10px;" name="Create new Room"
+               value="Create new Room"/>
+    </form>
 
 {{ end }}

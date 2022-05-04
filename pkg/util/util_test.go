@@ -13,8 +13,8 @@ func Test_RandString(t *testing.T) {
 		t.Errorf("Res Lenght should be equal to lenght")
 	}
 	// Check if in Possible Letters
-	for _, rune := range res {
-		if !strings.ContainsRune(letterBytes, rune) {
+	for _, myrune := range res {
+		if !strings.ContainsRune(letterBytes, myrune) {
 			t.Errorf("A Letter of the final result is not in LetterBytes.")
 		}
 	}

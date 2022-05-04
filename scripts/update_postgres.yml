@@ -5,11 +5,11 @@
       become: true
       apt:
         pkg:
-        - postgresql
-        - postgis
-        - python3
-        - python3-pip
-        state: latest 
+          - postgresql
+          - postgis
+          - python3
+          - python3-pip
+        state: latest
 
     - name: Install psycopg2 python package
       pip:

@@ -47,8 +47,8 @@ type Player struct {
 	// Points awareded each round -> sum is total points.
 	score []int
 	// The location of your last guess.
-	last_lat float64
-	last_lng float64
+	lastLat float64
+	lastLng float64
 }
 
 func NewPlayer(ctx context.Context, ctxcancel context.CancelFunc, lobby *Lobby, name string) *Player {
@@ -111,7 +111,7 @@ func (p *Player) WriteToConn() {
 	}
 }
 
-// This does not terminate proberly when the connection is closed.
+// ReceiveFromConn This does not terminate proberly when the connection is closed.
 func (p *Player) ReceiveFromConn() {
 	util.Sugar.Debugw("ReceiveFromConn started",
 		"Lobby", p.lobby.LobbyID,
@@ -171,11 +171,11 @@ func (p *Player) ReceiveFromConn() {
 			p.lobby.ready <- p
 		}
 
-		var submit Submit_guess
+		var submit SubmitGuess
 		err = json.Unmarshal(message, &submit)
 		if err == nil {
 
-			p.process_submit(submit)
+			p.processSubmit(submit)
 			p.points = p.getPoints()
 
 			util.Sugar.Debugw("Points calculated and awarded",
@@ -203,19 +203,19 @@ func (p *Player) ReceiveFromConn() {
 	}
 }
 
-type Submit_guess struct {
+type SubmitGuess struct {
 	Latitude  float64 `json:"lat"`
 	Longitude float64 `json:"long"`
 }
 
-func (p *Player) process_submit(submit Submit_guess) error {
+func (p *Player) processSubmit(submit SubmitGuess) error {
 
 	loc, StatusOK := p.lobby.game.Cities[p.lobby.location]
 	if !StatusOK {
-		return fmt.Errorf("Failed to get City.")
+		return fmt.Errorf("failed to get City")
 	}
-	p.last_lat = submit.Latitude
-	p.last_lng = submit.Longitude
+	p.lastLat = submit.Latitude
+	p.lastLng = submit.Longitude
 	// log.Println("Submit:", submit)
 	p.distance = loc.Distance(submit.Latitude, submit.Longitude)
 	return nil

@@ -70,7 +70,7 @@ func (h *Hub) run() {
 	}
 }
 
-// CloseClientless checks at closeTime each hub, if it has any clients.
+// CloseClientlessHubs CloseClientless checks at closeTime each hub, if it has any clients.
 // If not the hub is closed.
 func CloseClientlessHubs(closeTime time.Duration) {
 	ticker := time.NewTicker(closeTime)

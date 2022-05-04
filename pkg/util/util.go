@@ -17,7 +17,7 @@ const (
 
 var Sugar *zap.SugaredLogger
 
-// Generates Random String with Lenght n from Letters specified in letterBytes
+// RandString Generates Random String with Lenght n from Letters specified in letterBytes
 //
 // Stolen from Stack Overflow.
 // https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go

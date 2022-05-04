@@ -9,7 +9,7 @@ import (
 
 func Test_Distance(t *testing.T) {
 	germany := Country{
-		name_0: "Germany",
+		name0: "Germany",
 	}
 
 	// Point in Germany
@@ -20,7 +20,7 @@ func Test_Distance(t *testing.T) {
 
 func Test_Geom(t *testing.T) {
 	marino := Country{
-		name_0: "San Marino",
+		name0: "San Marino",
 	}
 
 	assert.Equal(t,

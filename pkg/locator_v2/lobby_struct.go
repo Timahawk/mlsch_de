@@ -257,8 +257,8 @@ func (l *Lobby) serveGame() {
 					if p.conn != nil && p.connected == true {
 						p.toConn <- str
 						p.submitted = false
-						p.last_lat = 0
-						p.last_lng = 0
+						p.lastLat = 0
+						p.lastLng = 0
 
 					}
 				}
@@ -433,7 +433,7 @@ func (l *Lobby) getLastLocations() []byte {
 	liste := make(map[string][2]float64)
 
 	for _, p := range l.player {
-		coords := [2]float64{p.last_lat, p.last_lng}
+		coords := [2]float64{p.lastLat, p.lastLng}
 		liste[p.Name] = coords
 
 	}

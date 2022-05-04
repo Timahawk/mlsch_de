@@ -130,7 +130,13 @@ func WaitingRoom(c *gin.Context) {
 	c.HTML(200, "locator_v2/WaitingRoom.html", gin.H{
 		"lobby": lobbyID,
 		"title": lobbyID,
-		"user":  p.Name})
+		"user":  p.Name,
+		"game": fmt.Sprintln(
+			l.game.Name,
+			"Rounds:", l.Rounds,
+			"Time to Guess:", l.RoundTime,
+			"Time to Review:", l.ReviewTime),
+	})
 }
 
 func WaitingRoomWS(c *gin.Context) {

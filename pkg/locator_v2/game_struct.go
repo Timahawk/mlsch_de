@@ -65,7 +65,7 @@ func LoadGames() error {
 	if err != nil {
 		return fmt.Errorf("Loading Games faile, %v ", err)
 	}
-	//Japan
+	// Japan
 	LoadedGames["japan_larger25000"], err = NewGame("japan_larger25000", "assets/cities/japan_cities_larger25000.json", []float64{138.3, 34.76}, 1, 14, 1, []float64{118.44, 20.8, 155.53, 52.0}, "Point", 1250)
 	if err != nil {
 		return fmt.Errorf("Loading Games faile, %v ", err)

@@ -8,7 +8,6 @@ const mb = new ol.layer.Tile({
 });
 
 
-
 const fill = new ol.style.Fill({
     color: 'rgba(255, 255, 0, 0.1)',
 });
@@ -34,13 +33,13 @@ const submit_Style = new ol.style.Style({
         radius: 1,
     }),
     text: new ol.style.Text({
-        offsetY : 15,
+        offsetY: 15,
         font: 'bold 17px "Open Sans", "Arial Unicode MS", "sans-serif"',
         // placement: 'line',
         fill: new ol.style.Fill({
             color: 'black',
         }),
-        stroke : new ol.style.Stroke({
+        stroke: new ol.style.Stroke({
             color: "#FFFFFF",
             width: 1.25,
         }),
@@ -60,7 +59,7 @@ const styles = [
 ];
 
 point = new ol.Feature({
-    geometry: new ol.geom.Point(ol.proj.transform([0,0], 'EPSG:4326', 'EPSG:3857'))
+    geometry: new ol.geom.Point(ol.proj.transform([0, 0], 'EPSG:4326', 'EPSG:3857'))
 });
 
 var layer = new ol.layer.Vector({
@@ -87,7 +86,7 @@ var submit_Layer = new ol.layer.Vector({
 });
 
 const select = new ol.interaction.Select({
-    layers : [layer],
+    layers: [layer],
 });
 
 const translate = new ol.interaction.Translate({
@@ -110,7 +109,6 @@ const map = new ol.Map({
         extent: ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857'),
     }),
 });
-
 
 
 map.addLayer(layer);
@@ -144,18 +142,18 @@ closer.onclick = function () {
 };
 map.addOverlay(popup);
 
-map.on('click', function(evt){
+map.on('click', function (evt) {
     //console.log(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
     point.setGeometry(new ol.geom.Point(evt.coordinate))
 });
 
-map.on("click", function(){
+map.on("click", function () {
     popup.setPosition(undefined);
     closer.blur();
 })
 
-addInfos.onclick = function(){
-    if (message.status=="reviewing"){
+addInfos.onclick = function () {
+    if (message.status === "reviewing") {
         popup.setPosition(ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857'))
         return
     }
@@ -176,6 +174,7 @@ function flyTo(location, done) {
     const zoom = map.getView().getZoom();
     let parts = 2;
     let called = false;
+
     function callback(complete) {
         --parts;
         if (called) {
@@ -186,6 +185,7 @@ function flyTo(location, done) {
             done(complete);
         }
     }
+
     map.getView().animate(
         {
             center: location,

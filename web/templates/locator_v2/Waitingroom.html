@@ -11,6 +11,8 @@
     {{ template "globals/style_head.html" }}
     <div style="margin:10px">
         <h1>{{ .lobby }}</h1>
+        <h2>Your Name: {{ .user }}</h2>
+        <h2>The Game: {{ .game }}</h2>
         <button class="btn btn-primary text-center" id="readybutton" type="button">Start Lobby!</button>
         <h2 id="players"></h2>
         <form id="formAddName"></form>
@@ -23,7 +25,7 @@
 
             // Das hier weils wichtig ist ob https oder nicht.
             // Browser erlauben KEIN downgrad also https zu ws!
-            if (location.protocol === 'https:'){
+            if (location.protocol === 'https:') {
                 conn = new WebSocket("wss://" + document.location.host + path + "/ws?user=" + {{ .user }})
             } else {
                 conn = new WebSocket("ws://" + document.location.host + path + "/ws?user=" + {{ .user }})
@@ -43,9 +45,9 @@
             };
             conn.onmessage = function (evt) {
                 // console.log("Message", evt.data)
-                if (evt.data == "Consider yourself redirected."){
+                if (evt.data === "Consider yourself redirected.") {
                     // console.log(window.location.protocol + document.location.host + path + "/game", "worked.")
-                    window.location.href =path + "/game?user=" + {{ .user }};
+                    window.location.href = path + "/game?user=" + {{ .user }};
 
                 }
                 var entry = document.createElement('li');

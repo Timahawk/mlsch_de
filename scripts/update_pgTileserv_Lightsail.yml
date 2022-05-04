@@ -1,0 +1,38 @@
+---
+- name: Download and Start pg_tileserv.
+  hosts: aws_server
+  tasks:
+    - name: Create the pg_tileserv Folder
+      ansible.builtin.file:
+        path: /home/ubuntu/pg_tileserv
+        state: directory
+        mode: '0755'
+
+    - name: Unarchive a file that needs to be downloaded (added in 2.0)
+      ansible.builtin.unarchive:
+        src: https://postgisftw.s3.amazonaws.com/pg_tileserv_latest_linux.zip
+        dest: /home/ubuntu/pg_tileserv
+        remote_src: yes
+
+    - name: Copy the setting file to the Server.
+      ansible.builtin.copy:
+        src: /mnt/c/Users/miten/Documents/MillionDollarProject/golang_v1/mlsch_de/scripts/pg_tileserv.toml
+        dest: /home/ubuntu/pg_tileserv/config/pg_tileserv.toml
+        owner: ubuntu
+        group: ubuntu
+        # 755 means read and execute access for everyone and also write access for the owner of the file.
+        mode: '0755'
+
+    - name: Kill already running server.
+      shell: |
+        sudo pkill pg_tileserv
+        exit 0
+
+    - name: Start the pg_tileserv Server
+      shell: "( ( nohup /home/ubuntu/pg_tileserv/pg_tileserv 1>/dev/null 2>&1 ) & )"
+      async: 5
+      poll: 0
+
+    - name: Check that you can connect (GET) to a page and it returns a status 200
+      uri:
+        url: https://mlsch.de/tiles/index.json

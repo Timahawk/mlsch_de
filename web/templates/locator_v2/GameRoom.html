@@ -4,77 +4,7 @@
         <title>{{ .title }}</title>
         {{ template "globals/style_head.html" }}
 
-        <style>
-            .map {
-                width: 98%;
-                height: 75%;
-            }
-
-            .map {
-                background: #f8f4f0;
-            }
-
-            .ol-popup {
-                position: absolute;
-                background-color: white;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-                padding: 15px;
-                border-radius: 10px;
-                border: 1px solid #cccccc;
-                bottom: 12px;
-                left: -50px;
-                min-width: 300px;
-            }
-
-            .ol-popup:after, .ol-popup:before {
-                top: 100%;
-                border: solid transparent;
-                content: " ";
-                height: 0;
-                width: 0;
-                position: absolute;
-                pointer-events: none;
-            }
-
-            .ol-popup:after {
-                border-top-color: white;
-                border-width: 10px;
-                left: 48px;
-                margin-left: -10px;
-            }
-
-            .ol-popup:before {
-                border-top-color: #cccccc;
-                border-width: 11px;
-                left: 48px;
-                margin-left: -11px;
-            }
-
-            .ol-popup-closer {
-                text-decoration: none;
-                position: absolute;
-                top: 2px;
-                right: 8px;
-            }
-
-            /*
-            .ol-popup-closer:after {
-               content: "X";
-              }
-             */
-            .notifier {
-                position: absolute;
-                right: 0;
-                bottom: 90%;
-                background-color: white;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-                padding: 15px;
-                border-radius: 10px;
-                border: 1px solid #cccccc;
-            }
-        </style>
-
-
+        <link rel="stylesheet" type="text/css" href="../../static/css/locator_v2/gameroom.css"/>
         <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js"></script>
         <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css">
@@ -108,7 +38,7 @@
         <a href="#" id="popup-closer" class="ol-popup-closer">X</a>
         <div id="popup-content">
 
-            <table class="table table-striped table-bordered" style="padding-left:1%">
+            <table id="popuptable" class="table table-striped table-bordered" style="padding-left:1%">
                 <!--
                 <tr>
                   <th scope="col">#</th>

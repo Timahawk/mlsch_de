@@ -395,7 +395,7 @@ func (l *Lobby) areAllActivePlayersReady() bool {
 func (l *Lobby) getNewLocation() string {
 	for key := range l.game.Cities {
 		if slices.Contains(l.locations, key) {
-			fmt.Println(l.locations, key)
+			// fmt.Println(l.locations, key)
 			continue
 		}
 		l.locations = append(l.locations, key)

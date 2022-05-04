@@ -117,15 +117,15 @@ function addSolution(message) {
             geometry: new ol.geom.Point(ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857'))
         });
         solution_layer.getSource().addFeature(solution)
-        flyTo(ol.proj.fromLonLat([message.lng, message.lat]), function () {
-        });
+        // flyTo(ol.proj.fromLonLat([message.lng, message.lat]), function () {
+        // });
         console.log(solution)
         return
     }
     solution = new ol.format.GeoJSON().readFeatures(message.geojson);
     solution_layer.getSource().addFeatures(solution)
-    flyTo(ol.proj.fromLonLat([message.lng, message.lat]), function () {
-    });
+    // flyTo(ol.proj.fromLonLat([message.lng, message.lat]), function () {
+    // });
 }
 
 function addCommit(message) {

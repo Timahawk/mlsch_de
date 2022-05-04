@@ -7,6 +7,21 @@ const mb = new ol.layer.Tile({
     }),
 });
 
+const vt = new ol.layer.VectorTile({
+    source: new ol.source.VectorTile({
+        format: new ol.format.MVT(),
+        url: 'https://mlsch.de/tiles/public.world_borders/{z}/{x}/{y}.pbf'
+    }),
+    style: new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 255, 0, 0)',
+        }),
+        stroke : new ol.style.Stroke({
+            color: "rgba(3,3,3,0.5)",
+            width: 1,
+        })
+    })
+})
 
 const fill = new ol.style.Fill({
     color: 'rgba(255, 255, 0, 0.1)',
@@ -95,7 +110,7 @@ const translate = new ol.interaction.Translate({
 
 const map = new ol.Map({
     interactions: ol.interaction.defaults().extend([select, translate]),
-    layers: [mb],
+    layers: [mb, vt],
     target: 'map',
     // view: new ol.View({
     //     center: [0, 0],
@@ -128,11 +143,12 @@ const addInfos = document.getElementById('addInfos');
 const popup = new ol.Overlay({
     element: popupDIV,
     positioning: 'top-left',
-    //  autoPan: {
-    //    animation: {
-    //      duration: 250,
-    //    },
-    //  },
+    autoPan: {
+       animation: {
+         duration: 250,
+       },
+        margin: 50,
+     },
 });
 
 closer.onclick = function () {

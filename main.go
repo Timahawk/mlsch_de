@@ -6,6 +6,8 @@ import (
 	"html/template"
 	"io/fs"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"time"
 
 	_ "net/http/pprof"
@@ -82,6 +84,13 @@ func mustFS() http.FileSystem {
 	return http.FS(sub)
 }
 
+// Reverse Proxy addapted from https://le-gall.bzh/post/go/a-reverse-proxy-in-go-using-gin/
+func ReverseProxy(c *gin.Context) {
+	ts, _ := url.Parse("http://localhost:7800")
+	proxy := httputil.NewSingleHostReverseProxy(ts)
+	proxy.ServeHTTP(c.Writer, c.Request)
+}
+
 // SetupRouter does all the Routes setting.
 // Extra function for easier testsetup.
 func SetupRouter() *gin.Engine {
@@ -99,6 +108,7 @@ func SetupRouter() *gin.Engine {
 		r.Use(ginzap.RecoveryWithZap(Logger, true))
 	}
 
+	r.Any("/tiles/*sth", ReverseProxy)
 	//r := gin.New()
 	// Not using extra timestamp.
 	// r.Use(ginzap.Ginzap(Logger, "", true))

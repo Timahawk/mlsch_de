@@ -10,23 +10,19 @@ import (
 	"github.com/Timahawk/mlsch_de/pkg/util"
 )
 
-// //go:embed cities/*.json
-// var CitiesFS embed.FS
-
 // The City as per the file.
 type City struct {
-	// json_featuretype string
-	Name string `json:"city"`
-	// Name_ascii string  `json:"city_ascii"`
-	Lat float64 `json:"lat"`
-	Lng float64 `json:"lng"`
-	// Country    string
-	// Iso2       string
-	// Iso3       string
-	// // admin_name       string
-	// Capital    string
-	// Population int
-	// Id         int
+	Name       string  `json:"city"`
+	Name_ascii string  `json:"city_ascii"`
+	Lat        float64 `json:"lat"`
+	Lng        float64 `json:"lng"`
+	Country    string  `json:"country"`
+	Iso2       string  `json:"iso2"`
+	Iso3       string  `json:"iso3"`
+	AdminName  string  `json:"admin_name"`
+	Capital    string  `json:"capital"`
+	Population int     `json:"population"`
+	Id         int     `json:"id"`
 }
 
 func LoadCities(file string) (map[string]Locations, error) {

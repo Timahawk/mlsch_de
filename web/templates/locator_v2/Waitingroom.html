@@ -10,9 +10,9 @@
 
     {{ template "globals/style_head.html" }}
     <div style="margin:10px">
-        <h1>{{ .lobby }}</h1>
-        <h2>Your Name: {{ .user }}</h2>
-        <h2>The Game: {{ .game }}</h2>
+        <h1>LobbyID: <b>{{ .lobby }}</b></h1>
+        <p>You are: {{ .user }}</p>
+        <p><b>Game info: </b>{{ .game }}</p>
         <button class="btn btn-primary text-center" id="readybutton" type="button">Start Lobby!</button>
         <h2 id="players"></h2>
         <form id="formAddName"></form>

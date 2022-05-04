@@ -111,7 +111,7 @@ func (p *Player) WriteToConn() {
 	}
 }
 
-// ReceiveFromConn This does not terminate proberly when the connection is closed.
+// ReceiveFromConn does not terminate proberly when the connection is closed.
 func (p *Player) ReceiveFromConn() {
 	util.Sugar.Debugw("ReceiveFromConn started",
 		"Lobby", p.lobby.LobbyID,
@@ -226,13 +226,19 @@ func (p *Player) getPoints() int {
 	scorevalue := p.lobby.game.Scorevalue
 
 	switch {
+	case dist < 5:
+		return 10
 	case scorevalue*0.025 > dist:
-		return 5
+		return 7
 	case scorevalue*0.05 > dist:
-		return 4
+		return 6
 	case scorevalue*0.1 > dist:
+		return 5
+	case scorevalue*0.2 > dist:
+		return 4
+	case scorevalue*0.3 > dist:
 		return 3
-	case scorevalue*0.25 > dist:
+	case scorevalue*0.4 > dist:
 		return 2
 	case scorevalue*0.5 > dist:
 		return 1

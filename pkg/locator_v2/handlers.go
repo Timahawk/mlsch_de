@@ -132,7 +132,7 @@ func WaitingRoom(c *gin.Context) {
 		"title": lobbyID,
 		"user":  p.Name,
 		"game": fmt.Sprintln(
-			l.game.Name,
+			"Game:", l.game.Name,
 			"Rounds:", l.Rounds,
 			"Time to Guess:", l.RoundTime,
 			"Time to Review:", l.ReviewTime),

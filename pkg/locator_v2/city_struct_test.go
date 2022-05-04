@@ -1,6 +1,8 @@
 package locator_v2
 
 import (
+	"encoding/json"
+	"github.com/Timahawk/mlsch_de/assets"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -22,6 +24,23 @@ func Test_LoadCities(t *testing.T) {
 	// a, b := assets.Cities.ReadDir("cities")
 	// fmt.Println(a[0].Name(), b)
 	// assert.Equal(t, 1, 2)
+}
+
+func TestUmlaute(t *testing.T) {
+	content, err := assets.Cities.ReadFile("cities/capital_cities.json")
+	assert.Nil(t, err)
+	cities := make([]City, len(content))
+	err = json.Unmarshal(content, &cities)
+	if err != nil {
+		assert.Nil(t, err)
+	}
+
+	citiesMap := make(map[string]Locations)
+
+	for i := 0; i < len(cities); i++ {
+		citiesMap[cities[i].Name] = &cities[i]
+	}
+	assert.Equal(t, "Bogotá", citiesMap["Bogotá"].GetName())
 }
 
 //

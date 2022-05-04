@@ -4,6 +4,8 @@
 !*/
 !*.*
 
+# Exclude everything in ideas folder
+.idea/*
 
 # Exclude everything in certs
 certs/*

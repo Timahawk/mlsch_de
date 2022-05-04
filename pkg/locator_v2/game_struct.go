@@ -9,11 +9,12 @@ import (
 	"github.com/Timahawk/mlsch_de/pkg/util"
 )
 
-// All currently loaded games
+// LoadedGames are all currently loaded games
 var LoadedGames = map[string]*Game{}
 
+// Locations supersedes the formal City struct
 // Using an interface now instead of Cities.
-// This should allow me to easily introduce Other types of Geometrys
+// This should allow me to easily introduce Other types of Geometry
 // like a Polygons by using Postgres.
 type Locations interface {
 	Distance(lat, lng float64) float64
@@ -49,7 +50,7 @@ func LoadGames() error {
 	}
 	LoadedGames["cities_larger_250000"], err = NewGame("cities_larger_250000", "assets/cities/cities_larger_250000.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Point", 10000)
 	if err != nil {
-		return fmt.Errorf("Loading Games faile, %v ", err)
+		return fmt.Errorf("Loading Games failed, %v ", err)
 	}
 	LoadedGames["capitals"], err = NewGame("capitals", "assets/cities/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90}, "Point", 10000)
 	if err != nil {
@@ -64,7 +65,7 @@ func LoadGames() error {
 	if err != nil {
 		return fmt.Errorf("Loading Games faile, %v ", err)
 	}
-	// Japan
+	//Japan
 	LoadedGames["japan_larger25000"], err = NewGame("japan_larger25000", "assets/cities/japan_cities_larger25000.json", []float64{138.3, 34.76}, 1, 14, 1, []float64{118.44, 20.8, 155.53, 52.0}, "Point", 1250)
 	if err != nil {
 		return fmt.Errorf("Loading Games faile, %v ", err)

@@ -9,7 +9,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// All currently active Lobbies
+// Lobbies are all created Lobbies
 var Lobbies = map[string]*Lobby{}
 
 var upgrader = websocket.Upgrader{}

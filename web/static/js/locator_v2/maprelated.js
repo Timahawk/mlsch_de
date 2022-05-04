@@ -11,48 +11,48 @@ const mb = new ol.layer.Tile({
 
 const fill = new ol.style.Fill({
     color: 'rgba(255, 255, 0, 0.1)',
-    });
+});
 
 const stroke = new ol.style.Stroke({
     color: "#FF0000",
     width: 1.25,
-    });
+});
 
 const fill_submits = new ol.style.Fill({
-      color: 'rgba(100, 100, 100, 0.1)',
-      });
+    color: 'rgba(100, 100, 100, 0.1)',
+});
 
 const stroke_submits = new ol.style.Stroke({
-      color: "#00000",
-      width: 1.25,
-      });
+    color: "#08ff00",
+    width: 1.25,
+});
 
 const submit_Style = new ol.style.Style({
-  image: new ol.style.Circle({
-    fill: fill,
-    stroke: stroke,
-    radius: 1,
+    image: new ol.style.Circle({
+        fill: fill_submits,
+        stroke: stroke_submits,
+        radius: 1,
     }),
-  text: new ol.style.Text({
-    offsetY : 15,
-    font: 'bold 17px "Open Sans", "Arial Unicode MS", "sans-serif"',
-    // placement: 'line',
-    fill: new ol.style.Fill({
-      color: 'black',
+    text: new ol.style.Text({
+        offsetY : 15,
+        font: 'bold 17px "Open Sans", "Arial Unicode MS", "sans-serif"',
+        // placement: 'line',
+        fill: new ol.style.Fill({
+            color: 'black',
+        }),
+        stroke : new ol.style.Stroke({
+            color: "#FFFFFF",
+            width: 1.25,
+        }),
     }),
-    stroke : new ol.style.Stroke({
-      color: "#FFFFFF",
-      width: 1.25,
-      }),
-  }),
 })
 
 const styles = [
     new ol.style.Style({
         image: new ol.style.Circle({
-        fill: fill,
-        stroke: stroke,
-        radius: 5,
+            fill: fill,
+            stroke: stroke,
+            radius: 5,
         }),
         fill: fill,
         stroke: stroke,
@@ -70,21 +70,21 @@ var layer = new ol.layer.Vector({
 });
 
 var solution_layer = new ol.layer.Vector({
-        source: new ol.source.Vector({
-            features: []
-        }),
-        style: styles[0]
-    });
+    source: new ol.source.Vector({
+        features: []
+    }),
+    style: styles[0]
+});
 
 var submit_Layer = new ol.layer.Vector({
-      source: new ol.source.Vector({
-          features: []
-      }),
-      style: function (feature) {
+    source: new ol.source.Vector({
+        features: []
+    }),
+    style: function (feature) {
         submit_Style.getText().setText(feature.get('name'));
         return submit_Style;
-      },
-  });
+    },
+});
 
 const select = new ol.interaction.Select({
     layers : [layer],
@@ -103,12 +103,12 @@ const map = new ol.Map({
     //     zoom: 1,
     //     }),
     view: new ol.View({
-      center: ol.proj.transform(center, 'EPSG:4326', 'EPSG:3857'),
-      zoom: zoom,
-      maxZoom: maxZoom,
-      minZoom: minZoom,
-      extent: ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857'),
-  }),
+        center: ol.proj.transform(center, 'EPSG:4326', 'EPSG:3857'),
+        zoom: zoom,
+        maxZoom: maxZoom,
+        minZoom: minZoom,
+        extent: ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857'),
+    }),
 });
 
 
@@ -120,27 +120,27 @@ map.addLayer(submit_Layer);
 /**
  * Elements that make up the popup.
  */
- const popupDIV = document.getElementById('popup');
- const content = document.getElementById('popup-content');
- const closer = document.getElementById('popup-closer');
- const addInfos = document.getElementById('addInfos');
- /**
-  * Create an overlay to anchor the popup to the map.
-  */
- const popup = new ol.Overlay({
-   element: popupDIV,
-   positioning: 'top-left',
-  //  autoPan: {
-  //    animation: {
-  //      duration: 250,
-  //    },
-  //  },
- });
+const popupDIV = document.getElementById('popup');
+const content = document.getElementById('popup-content');
+const closer = document.getElementById('popup-closer');
+const addInfos = document.getElementById('addInfos');
+/**
+ * Create an overlay to anchor the popup to the map.
+ */
+const popup = new ol.Overlay({
+    element: popupDIV,
+    positioning: 'top-left',
+    //  autoPan: {
+    //    animation: {
+    //      duration: 250,
+    //    },
+    //  },
+});
 
 closer.onclick = function () {
-  popup.setPosition(undefined);
-  closer.blur();
-  return false;
+    popup.setPosition(undefined);
+    closer.blur();
+    return false;
 };
 map.addOverlay(popup);
 
@@ -150,23 +150,23 @@ map.on('click', function(evt){
 });
 
 map.on("click", function(){
-  popup.setPosition(undefined);
-  closer.blur();
+    popup.setPosition(undefined);
+    closer.blur();
 })
 
 addInfos.onclick = function(){
-  if (message.status=="reviewing"){
-    popup.setPosition(ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857'))
-    return
-  }
-  popup.setPosition(map.getView().getCenter())
+    if (message.status=="reviewing"){
+        popup.setPosition(ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857'))
+        return
+    }
+    popup.setPosition(map.getView().getCenter())
 }
 
 const notifierDIV = document.getElementById('notifier');
 const notifierContent = document.getElementById('notifiercontent');
 const notifierOL = new ol.Overlay({
-  element: notifierDIV,
-  positioning: 'center-center'
+    element: notifierDIV,
+    positioning: 'center-center'
 });
 
 map.addOverlay(notifierOL);
@@ -177,33 +177,33 @@ function flyTo(location, done) {
     let parts = 2;
     let called = false;
     function callback(complete) {
-      --parts;
-      if (called) {
-        return;
-      }
-      if (parts === 0 || !complete) {
-        called = true;
-        done(complete);
-      }
+        --parts;
+        if (called) {
+            return;
+        }
+        if (parts === 0 || !complete) {
+            called = true;
+            done(complete);
+        }
     }
     map.getView().animate(
-      {
-        center: location,
-        duration: duration,
-      },
-      callback
+        {
+            center: location,
+            duration: duration,
+        },
+        callback
     );
     map.getView().animate(
-      {
-        zoom: zoom - 1,
-        duration: duration / 2,
-      },
-      {
-        zoom: zoom,
-        duration: duration / 2,
-      },
-      callback
+        {
+            zoom: zoom - 1,
+            duration: duration / 2,
+        },
+        {
+            zoom: zoom,
+            duration: duration / 2,
+        },
+        callback
     );
-  };
+};
 
 console.log("maprelated loaded successfully")

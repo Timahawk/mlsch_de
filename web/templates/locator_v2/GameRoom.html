@@ -1,130 +1,131 @@
 {{ define "locator_v2/GameRoom.html" }}
 
-<head>
-    <title>{{ .title }}</title>
-    {{ template "globals/style_head.html" }}
-    
-    <style>
-        .map {
-          width: 98%;
-          height: 75%;
-        }
-        .map {
-          background: #f8f4f0 ;
-        }
-        .ol-popup {
-          position: absolute;
-          background-color: white;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-          padding: 15px;
-          border-radius: 10px;
-          border: 1px solid #cccccc;
-          bottom: 12px;
-          left: -50px;
-          min-width: 300px;
-        }
-        .ol-popup:after, .ol-popup:before {
-          top: 100%;
-          border: solid transparent;
-          content: " ";
-          height: 0;
-          width: 0;
-          position: absolute;
-          pointer-events: none;
-        }
-        .ol-popup:after {
-          border-top-color: white;
-          border-width: 10px;
-          left: 48px;
-          margin-left: -10px;
-        }
-        .ol-popup:before {
-          border-top-color: #cccccc;
-          border-width: 11px;
-          left: 48px;
-          margin-left: -11px;
-        }
-        .ol-popup-closer {
-          text-decoration: none;
-          position: absolute;
-          top: 2px;
-          right: 8px;
-        }
-        //.ol-popup-closer:after {
-        //  content: "X";
-        // }
-        .notifier {
-          position: absolute;
-          right:0%;
-          bottom:90%;
-          background-color: white;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-          padding: 15px;
-          border-radius: 10px;
-          border: 1px solid #cccccc;
-          bottom: 12px;
-        }
-      </style>
-      
-      
-      <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js"></script>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css">
-</head>
-<body>
-  {{ template "globals/style_body.html" }}
+    <head>
+        <title>{{ .title }}</title>
+        {{ template "globals/style_head.html" }}
+
+        <style>
+            .map {
+                width: 98%;
+                height: 75%;
+            }
+            .map {
+                background: #f8f4f0 ;
+            }
+            .ol-popup {
+                position: absolute;
+                background-color: white;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+                padding: 15px;
+                border-radius: 10px;
+                border: 1px solid #cccccc;
+                bottom: 12px;
+                left: -50px;
+                min-width: 300px;
+            }
+            .ol-popup:after, .ol-popup:before {
+                top: 100%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+            }
+            .ol-popup:after {
+                border-top-color: white;
+                border-width: 10px;
+                left: 48px;
+                margin-left: -10px;
+            }
+            .ol-popup:before {
+                border-top-color: #cccccc;
+                border-width: 11px;
+                left: 48px;
+                margin-left: -11px;
+            }
+            .ol-popup-closer {
+                text-decoration: none;
+                position: absolute;
+                top: 2px;
+                right: 8px;
+            }
+            /*
+            .ol-popup-closer:after {
+               content: "X";
+              }
+             */
+            .notifier {
+                position: absolute;
+                right:0;
+                bottom:90%;
+                background-color: white;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+                padding: 15px;
+                border-radius: 10px;
+                border: 1px solid #cccccc;
+            }
+        </style>
+
+
+        <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css">
+    </head>
+    <body>
+    {{ template "globals/style_body.html" }}
 
     <div class="d-flex flex-wrap justify-content-between">
-      <h1 id="locationteller" style="min-width:100px"> {{ .lobby }} - {{ .user }} </h1>
-      <button style="min-width:100px" class="btn btn-success" id="submitButton" type="button" disabled>Submit Guess</button>
-      <button  style="min-width:100px" id="addInfos" class="btn btn-primary" type="button" >Additional Infos</button>
-      <!-- <p id="psub"></p> -->
-      <h1  style="min-width:100px" id="countdown"></h1>
+        <h1 id="locationteller" style="min-width:100px"> {{ .lobby }} - {{ .user }} </h1>
+        <button style="min-width:100px" class="btn btn-success" id="submitButton" type="button" disabled>Submit Guess</button>
+        <button  style="min-width:100px" id="addInfos" class="btn btn-primary" type="button" >Additional Infos</button>
+        <!-- <p id="psub"></p> -->
+        <h1  style="min-width:100px" id="countdown"></h1>
     </div>
-    
+
     <div id="test">
         <a href="#" id="test-closer" class="ol-popup-closer"></a>
     </div>
 
-    <div style="padding-left:1% ;paddding-right:1%">
+    <div>
         <div id="map" class="map"></div>
         <div id="test-content"></div>
     </div>
-    
+
     <div id="notifier" class="notifier">
-      <div id="notifiercontent"></div>
+        <div id="notifiercontent"></div>
     </div>
 
     <div id="popup" class="ol-popup">
         <a href="#" id="popup-closer" class="ol-popup-closer">X</a>
         <div id="popup-content">
 
-          <table class="table table-striped table-bordered" style="padding-left:1%">
-            <!--
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Value</th>
-            </tr>
-            -->
-            <tr>
-              <th scope="row">Distance to Location</th>
-              <td id="distance"></td>
-            </tr>
-            <tr>
-              <th scope="row">awarded Points</th>
-              <td id="awarded"></td>
-            </tr>
-            <tr>
-              <th scope="row">Points total</th>
-              <td id="points"></td>
-            </tr>
-            <tr>
-              <th scope="row">Rounds left</th>
-              <td id="rounds"></td>
-            </tr>
-            <tr>
-              <th scope="row">Gamestate</th>
-              <td id="status"></td>
-            </tr>
+            <table class="table table-striped table-bordered" style="padding-left:1%">
+                <!--
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Value</th>
+                </tr>
+                -->
+                <tr>
+                    <th scope="row">Distance to Location</th>
+                    <td id="distance"></td>
+                </tr>
+                <tr>
+                    <th scope="row">awarded Points</th>
+                    <td id="awarded"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Points total</th>
+                    <td id="points"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Rounds left</th>
+                    <td id="rounds"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Gamestate</th>
+                    <td id="status"></td>
+                </tr>
             </table>
         </div>
     </div>
@@ -140,12 +141,12 @@
 
     <script src="../../static/js/locator_v2/maprelated.js"></script>
     <script src="../../static/js/locator_v2/ws_related.js"></script>
-    
+
     <script>
         console.log("Entering new Script Blog")
         // console.log(map)
         // console.log(conn)
     </script>
 
-</body>
+    </body>
 {{ end }}

@@ -52,12 +52,12 @@ func LoadCities(file string) (map[string]Locations, error) {
 		return nil, fmt.Errorf("%s, %v ", file, err)
 	}
 
-	cities_map := make(map[string]Locations)
+	citiesMap := make(map[string]Locations)
 
 	//  what the fuck is the difference between those two?
 	// TODO figure this out.
 	for i := 0; i < len(cities); i++ {
-		cities_map[cities[i].Name] = &cities[i]
+		citiesMap[cities[i].Name] = &cities[i]
 	}
 
 	// This assigns each value the same pointer!
@@ -65,11 +65,11 @@ func LoadCities(file string) (map[string]Locations, error) {
 	//	cities_map[city.Name_ascii] = &city
 	//}
 
-	if len(cities_map) == 0 {
+	if len(citiesMap) == 0 {
 		return nil, fmt.Errorf("%s Load Cites loaded 0 Locations", file)
 	}
 
-	return cities_map, nil
+	return citiesMap, nil
 }
 
 func (c *City) Distance(lat, lng float64) float64 {

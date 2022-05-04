@@ -14,7 +14,7 @@ func CreateOrJoinLobby(c *gin.Context) {
 	c.HTML(200, "locator_v2/CreateOrJoinLobby.html", gin.H{"Games": LoadedGames})
 }
 
-// CreateLobbyPost checks form, creates User, creates Lobby, adds User as Owner,
+// CreateLobbyPOST checks form, creates User, creates Lobby, adds User as Owner,
 // starts the Lobbies sendWaitRoom goroutine, sends user to add channel,
 // Adds the Lobby to Global Lobbies.
 func CreateLobbyPOST(c *gin.Context) {
@@ -63,7 +63,7 @@ func CreateLobbyPOST(c *gin.Context) {
 	c.Redirect(303, fmt.Sprintf("%s/%s?user=%s", path, l.LobbyID, username))
 }
 
-// JoinLobbyPost checks form, creates User, sends user to add channel.
+// JoinLobbyPOST checks form, creates User, sends user to add channel.
 func JoinLobbyPOST(c *gin.Context) {
 	lobbyID := c.PostForm("LobbyID")
 	username := c.PostForm("username")
@@ -81,6 +81,11 @@ func JoinLobbyPOST(c *gin.Context) {
 
 	if l.started == true {
 		c.JSON(213, gin.H{"status": "You cannot join already started lobby."})
+		return
+	}
+
+	if _, err := l.getPlayer(username); err == nil {
+		c.JSON(213, gin.H{"status": "Your username was already taken."})
 		return
 	}
 
@@ -246,7 +251,7 @@ func GameRoomWS(c *gin.Context) {
 		"Lobby", p.lobby.LobbyID,
 		"player", p.Name)
 
-	// This is for the when reconnection during match.
+	// This is for when reconnection during match.
 	if l.state == "guessing" {
 		str := fmt.Sprintf(`{"status":"location","Location":"%s", "state": "%v"}`, l.location, l.state)
 		p.toConn <- str

@@ -1,4 +1,3 @@
-var list = document.getElementById('demo');   
 var host = document.location.host;
 var path = document.location.pathname;
 var timecounter =setInterval(function(){},1000000)
@@ -11,7 +10,7 @@ if (location.protocol === 'https:'){
     conn = new WebSocket("wss://" + document.location.host + path + "/ws?user=" + user)
 } else {
     conn = new WebSocket("ws://" + document.location.host + path + "/ws?user=" + user)
-};
+}
 
 // console.log(conn)
 
@@ -27,12 +26,12 @@ conn.onmessage = function (evt) {
     message = JSON.parse(evt.data)
     console.log(message)
 
-    
+
     if (message.status != "psub"){
         // document.getElementById("state").innerHTML = message.state
         document.getElementById("countdown").innerHTML = message.time
         clearInterval(timecounter)
-        timecounter = setInterval(function () {document.getElementById("countdown").innerHTML -= 1}, 1000); 
+        timecounter = setInterval(function () {document.getElementById("countdown").innerHTML -= 1}, 1000);
     }
 
     if (message.status == "location") {
@@ -40,14 +39,14 @@ conn.onmessage = function (evt) {
         document.getElementById("locationteller").innerHTML = message.Location
         document.getElementById("status").innerHTML = message.status
         document.getElementById("rounds").innerHTML = message.rounds - 1
-        document.getElementById("submitButton").disabled = false; 
+        document.getElementById("submitButton").disabled = false;
         // document.getElementById("points").innerHTML = ""
         document.getElementById("distance").innerHTML =""
         document.getElementById("awarded").innerHTML =""
         solution_layer.getSource().clear()
         submit_Layer.getSource().clear()
         removeSolutionPopup()
-        
+
     }
     if (message.status == "psub"){
         // document.getElementById("psub").innerHTML = message.Player + " submitted"
@@ -58,7 +57,7 @@ conn.onmessage = function (evt) {
         // miny = x[1]
         // maxx = x[2]
         // maxy = x[3]
-        
+
         // notifierOL.setPosition([maxx - maxx*0.5, maxy - maxy * 0.2])
         notifierOL.setPosition(map.getView().getCenter())
         notifierContent.innerHTML = message.Player + " submitted"
@@ -72,13 +71,13 @@ conn.onmessage = function (evt) {
         document.getElementById("points").innerHTML = JSON.stringify(message.points)
         document.getElementById("distance").innerHTML = (message.distance / 1000).toFixed(2) +  " km away. "
         document.getElementById("awarded").innerHTML = message.awarded + " Points"
-        document.getElementById("submitButton").disabled = true; 
+        document.getElementById("submitButton").disabled = true;
         addSolution(message)
         addCommit(message)
         displaySolutionPopup(message)
 
 
-        }
+    }
     if (message.status == "finished"){
         clearInterval(timecounter)
         document.getElementById("status").innerHTML = message.status
@@ -100,7 +99,7 @@ function submitGuess(){
 
     x = {"lat":coords4326[1], "long": coords4326[0]}
     conn.send(JSON.stringify(x));
-};
+}
 
 document.getElementById("submitButton").onclick = function () {
     submitGuess();
@@ -113,7 +112,7 @@ function addSolution(message){
     if (message.geom == "Point"){
         solution = new ol.Feature({
             geometry: new ol.geom.Point(ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857'))
-            });
+        });
         solution_layer.getSource().addFeature(solution)
         flyTo(ol.proj.fromLonLat([message.lng, message.lat]), function (){});
         console.log(solution)
@@ -135,15 +134,15 @@ function addCommit(message){
         solution = new ol.Feature({
             name :key,
             geometry: new ol.geom.Point(ol.proj.transform([value[1], value[0]], 'EPSG:4326', 'EPSG:3857'))
-            });
+        });
         submit_Layer.getSource().addFeature(solution)
-      }
-      
+    }
+
 }
 
 function displaySolutionPopup(message){
     const coordinate = ol.proj.transform([message.lng, message.lat], 'EPSG:4326', 'EPSG:3857')
-    
+
     popup.setPosition(coordinate);
 }
 

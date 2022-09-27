@@ -84,7 +84,7 @@ func mustFS() http.FileSystem {
 	return http.FS(sub)
 }
 
-// Reverse Proxy addapted from https://le-gall.bzh/post/go/a-reverse-proxy-in-go-using-gin/
+// ReverseProxy addapted from https://le-gall.bzh/post/go/a-reverse-proxy-in-go-using-gin/
 func ReverseProxy(c *gin.Context) {
 	ts, _ := url.Parse("http://localhost:7800")
 	proxy := httputil.NewSingleHostReverseProxy(ts)

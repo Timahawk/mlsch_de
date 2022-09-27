@@ -1,36 +1,30 @@
-# Bug List
+# mlsch.de 
+This is the repository for my personal website.
+Also the main repository for the game locator.io. 
+This can be found under pkg/locator_v2. 
+Naming structure is a mess. 
 
-- [x] If a new Game starts and all Player submit during the inital 5 Second wait, then the round starts as all Player
-  submitted -> Resultphase.
-- [x] If the timer is not 30 Sec the game is stuck in Review Phase.
-- [ ] Multiple submits during a round all get added. Fix imeadiattly!!!
+## Locator.io 
+Locator.io is a websocket based multiplayer game.
+Task is to locate cities, in different regions using only satellite imagery as basemap.
+Points are awarded for the distance to the actual location. Highest points wins after 10 Rounds.
 
-# User Flow
+### Pros
 
-1) [ ] Create Lobby
-2) [ ] Lobby Waiting Room
-3) [ ] Play
+- typical game flow generally works.
+- actually fun (for some people)
+- Somewhat configurable
 
-# ToDo List
+### Cons
+- Visuals look bad
+- Very unintuitive design
+- Not optimized for phones (should be main target)
+- Performance 
 
-## Need to be done
+## Watcher 
+Monitors system Memory, CPU load and number of Goroutines. Platform independent. 
+Can be found under [go-watcher](https://github.com/Timahawk/go_watcher)
 
-- [x] Update Gamescore visualization system (chart.js?)
-- [x] Add User Names
-- [ ] Write more Tests
-- [ ] Add Game Counter functionallity.
-- [ ] Implement a better scoring system.
-- [ ] Make it that not submitted, also Gets Points.
+## Chat
+First test project for websockets, little chat app with Rooms. Can be found under pgk/chat
 
-## Nice to have
-
-- [x] Update Logger to Logrus or sth. -> Switchted to Zap. Its okay.
-- [ ] Footer Template
-- [ ] More gamesets.
-- [ ] Make Review Time lobby individual
-
-## If I am bored
-
-- [ ] Check that no two Lobbies with same ID exists
-- [ ] Add Cookie to allow people to rejoin, when connection lost.
-- [ ] Check that no two player with same Name exists.

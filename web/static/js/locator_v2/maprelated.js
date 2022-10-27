@@ -10,7 +10,7 @@ const mb = new ol.layer.Tile({
 const vt = new ol.layer.VectorTile({
     source: new ol.source.VectorTile({
         format: new ol.format.MVT(),
-        url: 'https://mlsch.de/tiles/public.world_borders/{z}/{x}/{y}.pbf'
+        url: '/mvt/{z}/{x}/{y}/pbf'
     }),
     style: new ol.style.Style({
         fill: new ol.style.Fill({

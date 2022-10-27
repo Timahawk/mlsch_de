@@ -79,7 +79,7 @@ func JoinLobbyPOST(c *gin.Context) {
 		return
 	}
 
-	if l.started == true {
+	if l.started {
 		c.JSON(213, gin.H{"status": "You cannot join already started lobby."})
 		return
 	}
@@ -188,7 +188,7 @@ func GameRoom(c *gin.Context) {
 		c.JSON(213, gin.H{"status": "PlayGame failed, due to Lobby not Exists."})
 		return
 	}
-	if l.started == false {
+	if !l.started {
 		c.JSON(213, gin.H{"status": "PlayGame failed, due to Lobby not started or already finished"})
 		return
 	}
@@ -223,7 +223,7 @@ func GameRoomWS(c *gin.Context) {
 		c.JSON(213, gin.H{"status": "WaitingRoomWS failed, due to Lobby not Exists."})
 		return
 	}
-	if l.started == false {
+	if !l.started {
 		c.JSON(213, gin.H{"status": "PlayGameWS failed, due to Lobby Ready"})
 		return
 	}

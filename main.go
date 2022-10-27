@@ -13,8 +13,10 @@ import (
 	_ "net/http/pprof"
 
 	"github.com/Timahawk/go_watcher"
+	"github.com/Timahawk/mlsch_de/assets"
 	"github.com/Timahawk/mlsch_de/pkg/chat"
 	"github.com/Timahawk/mlsch_de/pkg/locator_v2"
+	"github.com/Timahawk/mlsch_de/pkg/orbserver"
 	"github.com/Timahawk/mlsch_de/pkg/util"
 	"go.uber.org/zap"
 
@@ -45,7 +47,7 @@ func main() {
 	flag.Parse()
 
 	// This must be set before router is created.
-	if *development == false {
+	if !*development {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
@@ -66,7 +68,7 @@ func main() {
 		go func() {
 			util.Sugar.Info(http.ListenAndServe("localhost:6060", nil))
 		}()
-		util.Sugar.Fatal(r.Run(":8080"))
+		util.Sugar.Fatal(r.Run("0.0.0.0:8080"))
 
 	} else {
 		util.Sugar.Infof("Starting in Release Mode!")
@@ -108,7 +110,11 @@ func SetupRouter() *gin.Engine {
 		r.Use(ginzap.RecoveryWithZap(Logger, true))
 	}
 
-	r.Any("/tiles/*sth", ReverseProxy)
+	// r.Any("/tiles/*sth", ReverseProxy)
+
+	collections := orbserver.LoadEmbeddedFC(assets.Mvt)
+	r.GET("/mvt/:z/:x/:y/pbf", orbserver.MVT_Gin(collections))
+
 	//r := gin.New()
 	// Not using extra timestamp.
 	// r.Use(ginzap.Ginzap(Logger, "", true))
@@ -119,7 +125,7 @@ func SetupRouter() *gin.Engine {
 	// *************************************************************** //
 
 	// This is so that in dev Mode you can reload templates for better dev experience.
-	if *development == true {
+	if *development {
 		util.Sugar.Infow("Loading templates from external FileSystem")
 		r.LoadHTMLGlob("web/templates/**/*.html")
 		r.Static("/static", "web/static")
@@ -174,7 +180,7 @@ func SetupRouter() *gin.Engine {
 		util.Sugar.Fatalf("Fatal loading games %v", err)
 	}
 
-	if *development == true {
+	if *development {
 		util.Sugar.Infow("Creating Testing Lobby AAAAAAAA",
 			"development", *development)
 		locator_v2.SetupTest()

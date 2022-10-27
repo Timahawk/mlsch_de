@@ -45,8 +45,8 @@
             };
             conn.onmessage = function (evt) {
                 // console.log("Message", evt.data)
-                if (evt.data === "Consider yourself redirected.") {
-                    // console.log(window.location.protocol + document.location.host + path + "/game", "worked.")
+                if (evt.data === "consider yourself redirected.") {
+                    console.log("Received message:", evt.data)
                     window.location.href = path + "/game?user=" + {{ .user }};
 
                 }

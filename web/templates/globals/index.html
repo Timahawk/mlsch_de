@@ -6,32 +6,45 @@
     <!-- Transported to html via https://markdowntohtml.com/ -->
     <div style="padding-left:2%">
 
-        <h1 id="hello-friends-">Hello Visitor!</h1>
-        <p>My name is Tim and this my little demo website. The main purpose is to be able to play "Locator-IO" with others.
-        The code for all these projects can be found at GitHub. </p>
+        <h2 id="hello-friends-">Hello Visitor!</h2>
+        <p>
+            My name is Tim and website host some of my side projects. <br>
+            The main purpose is to be able to play "Locator-IO" with others.<br>
+            This is used as an excuse to play around with with AWS, ansible, docker and the likes...<br>
+            The code for all these projects can be found at <a href="https://github.com/Timahawk/mlsch_de">Github</a>
+        </p>
         <!--
         <h5 id="things-to-do-">What you can do here:</h5>
         <p>This page has a few subpages, each dedicated to a different somewhat useful application.</p>
         -->
         <h3 id="locator-io">Locator.io</h3>
-        <p>Play alone or against friends. Purpose of the game is to locate a city with only satellite imagery as a base.
-        Get points based on distance to actual location. Most points win. Uses Websockets for realtime communication.
-        Visually very basic. Not optimized for Phones, yet. </p>
+        <p>Play alone or against friends. Purpose of the game is to locate a city with only satellite imagery as a base.<br>
+        Get points based on distance to actual location. Most points win.<br>
+        Visually very basic. Not optimized for Phones, yet.</p>
+
+        <p>Cool because:</p>
+        <ul>
+            <li>Fun to play!</li>
+            <li>Written in Go</li>
+            <li>Uses Websockets</li>
+            <li>Generates MapboxVectorTiles on the fly thanks to <a href="https://pkg.go.dev/github.com/paulmach/orb@v0.7.1#Polygon">Orb</a></li>
+            <li>Generates knowledge</li>
+        </ul>
 
         <h3 id="watcher">Watcher</h3>
-        <p>Here, you can monitor the CPU and Memory Load and number of Goroutines (this page is build using GO) that are
-            used by this Page/Server.</p>
+        <p>Shows CPU, Memory Load and number of Goroutines used by the EC2 instance.</p>
 
 
         <h3 id="chat">Chat</h3>
-        <p>Here, you can create or join a Chatroom, and then chat in real time. Pretty basic, but no government tracking! I swear.</p>
-
+        <p><a href="https://github.com/gorilla/websocket/tree/master/examples/chat">Websocket</a> sample project tweaked to add chat rooms.</p>
+        
 
         <h3 id="contact">Contact</h3>
         <p>Feedback welcome at <em>mlsch@mailbox.org</em></p> or GitHub.
-
+        <!--
         <h2 id="impressum">Contact</h2>
         <p>Tim Wendel</p>
-        <p>mlsch@mailbox.org</p>
+        <p>mlsch@mailbox.org</p> 
+        -->
     </div>
 {{ end }}

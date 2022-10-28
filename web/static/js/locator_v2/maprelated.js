@@ -220,6 +220,6 @@ function flyTo(location, done) {
         },
         callback
     );
-};
+}
 
 console.log("maprelated loaded successfully")

@@ -13,7 +13,7 @@ import (
 // The City as per the file.
 type City struct {
 	Name       string  `json:"city"`
-	Name_ascii string  `json:"city_ascii"`
+	NameAscii  string  `json:"city_ascii"`
 	Lat        float64 `json:"lat"`
 	Lng        float64 `json:"lng"`
 	Country    string  `json:"country"`

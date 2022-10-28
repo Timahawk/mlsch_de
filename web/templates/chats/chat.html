@@ -14,7 +14,7 @@
 
                 var user;
 
-                user = prompt("Please enter your name:", {{ .name }});
+                user = prompt("Please enter your name:", {{ .name }})
 
                 function appendLog(item) {
                     var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
@@ -48,7 +48,7 @@
                     } else {
                         conn = new WebSocket("ws://" + document.location.host + path + "/ws" + "?user=" + user)
                     }
-                    ;
+
 
                     conn.onclose = function (evt) {
                         var item = document.createElement("div");

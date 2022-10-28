@@ -24,47 +24,47 @@ import (
 // Properties are only shallow copies. Still VERY Memory intensive.
 // Needed because [mvt.Layers] projects all underlying geoms.
 func deepCopy(fc *geojson.FeatureCollection) *geojson.FeatureCollection {
-	fc_cp := new(geojson.FeatureCollection)
+	fcCp := new(geojson.FeatureCollection)
 
-	fc_cp.Type = fc.Type
-	fc_cp.BBox = fc.BBox
-	fc_cp.ExtraMembers = fc.ExtraMembers.Clone()
+	fcCp.Type = fc.Type
+	fcCp.BBox = fc.BBox
+	fcCp.ExtraMembers = fc.ExtraMembers.Clone()
 
 	for _, feature := range fc.Features {
 
-		new_fc := &geojson.Feature{}
+		newFc := &geojson.Feature{}
 
 		xtype := reflect.TypeOf(feature.Geometry)
 		la := fmt.Sprintf("%v", xtype)
 		switch la {
 		case "orb.MultiPolygon":
 			xvalue := reflect.ValueOf(feature.Geometry).Interface().(orb.MultiPolygon)
-			new_fc = geojson.NewFeature(xvalue.Clone())
+			newFc = geojson.NewFeature(xvalue.Clone())
 		case "orb.Polygon":
 			xvalue := reflect.ValueOf(feature.Geometry).Interface().(orb.Polygon)
-			new_fc = geojson.NewFeature(xvalue.Clone())
+			newFc = geojson.NewFeature(xvalue.Clone())
 		case "orb.Point":
 			xvalue := reflect.ValueOf(feature.Geometry).Interface().(orb.Point)
-			new_fc.Geometry = xvalue
+			newFc.Geometry = xvalue
 		case "orb.LineString":
 			xvalue := reflect.ValueOf(feature.Geometry).Interface().(orb.LineString)
-			new_fc = geojson.NewFeature(xvalue.Clone())
+			newFc = geojson.NewFeature(xvalue.Clone())
 		case "orb.MultiLineString":
 			xvalue := reflect.ValueOf(feature.Geometry).Interface().(orb.MultiLineString)
-			new_fc = geojson.NewFeature(xvalue.Clone())
+			newFc = geojson.NewFeature(xvalue.Clone())
 		default:
 			log.Warn().Str("la", la).Msg("This should not have been called!")
 		}
 
-		new_fc.BBox = feature.BBox
-		new_fc.Type = feature.Type
-		new_fc.Properties = feature.Properties.Clone()
-		new_fc.ID = feature.ID
-		fc_cp.Features = append(fc_cp.Features, new_fc)
+		newFc.BBox = feature.BBox
+		newFc.Type = feature.Type
+		newFc.Properties = feature.Properties.Clone()
+		newFc.ID = feature.ID
+		fcCp.Features = append(fcCp.Features, newFc)
 
 	}
 
-	return fc_cp
+	return fcCp
 }
 
 func LoadEmbeddedFC(f embed.FS) map[string]*geojson.FeatureCollection {
@@ -94,7 +94,7 @@ func LoadEmbeddedFC(f embed.FS) map[string]*geojson.FeatureCollection {
 		}
 		bound := collection.Bound()
 		fc.BBox = geojson.NewBBox(bound)
-		log.Info().Str("geojson", entry.Name()).Dur("Duration(ms)", time.Duration(time.Since(start))).Msg("Loading successfull")
+		log.Info().Str("geojson", entry.Name()).Dur("Duration(ms)", time.Since(start)).Msg("Loading successful")
 		collections[entry.Name()] = fc
 
 	}
@@ -117,14 +117,14 @@ func LoadFeatureClasses(pattern string) map[string]*geojson.FeatureCollection {
 	}
 	log.Info().Int("Number", len(files)).Msg("Searching Files")
 
-	for _, file_path := range files {
+	for _, filePath := range files {
 
 		start := time.Now()
 		// Get only the name of the file without extension
-		file := filepath.Base(file_path)
+		file := filepath.Base(filePath)
 		file = file[:len(file)-len(filepath.Ext(file))]
 
-		str, err := os.ReadFile(file_path)
+		str, err := os.ReadFile(filePath)
 		if err != nil {
 			log.Fatal().Stack().Err(err).Msg("")
 		}
@@ -144,12 +144,12 @@ func LoadFeatureClasses(pattern string) map[string]*geojson.FeatureCollection {
 
 		collections[file] = fc
 
-		log.Info().Str("geojson", file).Dur("Duration(ms)", time.Duration(time.Since(start))).Msg("Loading successfull")
+		log.Info().Str("geojson", file).Dur("Duration(ms)", time.Since(start)).Msg("Loading successfull")
 	}
 	return collections
 }
 
-// num2deg caluclates the North-West Lat Long Point for tile x,y at zoom z.
+// num2deg calculates the North-West Lat Long Point for tile x,y at zoom z.
 func num2deg(x, y, z int) (lat float64, long float64) {
 	n := math.Pi - 2.0*math.Pi*float64(y)/math.Exp2(float64(z))
 	lat = 180.0 / math.Pi * math.Atan(0.5*(math.Exp(n)-math.Exp(-n)))
@@ -157,7 +157,7 @@ func num2deg(x, y, z int) (lat float64, long float64) {
 	return lat, long
 }
 
-// MVT_Gin takes a map of geojson collections and returns a gin.HandlerFunc.
+// MvtGin takes a map of geojson collections and returns a gin.HandlerFunc.
 // The func takes the input parameters for the tile x,y,z and
 // returns the fitting pbf tile. Only FeatureCollections where the bounds
 // overlap with the bounds of the tile are included in the response.
@@ -166,7 +166,7 @@ func num2deg(x, y, z int) (lat float64, long float64) {
 //
 //	r := gin.Default()
 //	r.GET("/mvt/:z/:x/:y/pbf", jsonorb.Handler(collections))
-func MVT_Gin(collections map[string]*geojson.FeatureCollection) gin.HandlerFunc {
+func MvtGin(collections map[string]*geojson.FeatureCollection) gin.HandlerFunc {
 
 	fn := func(c *gin.Context) {
 
@@ -186,12 +186,12 @@ func MVT_Gin(collections map[string]*geojson.FeatureCollection) gin.HandlerFunc 
 		layers := mvt.Layers{}
 
 		lat, lng := num2deg(x, y, z)
-		north_west := orb.Point{lng, lat} // North west due to 0,0 is -180;90 in WGS84
+		northWest := orb.Point{lng, lat} // NorthWest due to 0,0 is -180;90 in WGS84
 
 		lat, lng = num2deg(x+1, y+1, z) // +1 for south_east.
-		south_east := orb.Point{lng, lat}
+		southEast := orb.Point{lng, lat}
 
-		bound := orb.Collection{north_west, south_east}.Bound()
+		bound := orb.Collection{northWest, southEast}.Bound()
 
 		for key, value := range collections {
 
@@ -228,7 +228,7 @@ func MVT_Gin(collections map[string]*geojson.FeatureCollection) gin.HandlerFunc 
 		c.Data(http.StatusOK, "application/x-protobuf", data)
 	}
 
-	return gin.HandlerFunc(fn)
+	return fn
 }
 
 // type MVT struct {

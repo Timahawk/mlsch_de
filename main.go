@@ -6,8 +6,6 @@ import (
 	"html/template"
 	"io/fs"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
 	"time"
 
 	_ "net/http/pprof"
@@ -87,11 +85,11 @@ func mustFS() http.FileSystem {
 }
 
 // ReverseProxy addapted from https://le-gall.bzh/post/go/a-reverse-proxy-in-go-using-gin/
-func ReverseProxy(c *gin.Context) {
-	ts, _ := url.Parse("http://localhost:7800")
-	proxy := httputil.NewSingleHostReverseProxy(ts)
-	proxy.ServeHTTP(c.Writer, c.Request)
-}
+//func ReverseProxy(c *gin.Context) {
+//	ts, _ := url.Parse("http://localhost:7800")
+//	proxy := httputil.NewSingleHostReverseProxy(ts)
+//	proxy.ServeHTTP(c.Writer, c.Request)
+//}
 
 // SetupRouter does all the Routes setting.
 // Extra function for easier testsetup.
@@ -113,7 +111,7 @@ func SetupRouter() *gin.Engine {
 	// r.Any("/tiles/*sth", ReverseProxy)
 
 	collections := orbserver.LoadEmbeddedFC(assets.Mvt)
-	r.GET("/mvt/:z/:x/:y/pbf", orbserver.MVT_Gin(collections))
+	r.GET("/mvt/:z/:x/:y/pbf", orbserver.MvtGin(collections))
 
 	//r := gin.New()
 	// Not using extra timestamp.

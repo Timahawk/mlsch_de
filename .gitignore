@@ -3,3 +3,7 @@ certs/*
 
 # Exclude .exe files
 *.exe
+
+mlsch_de
+
+*.log

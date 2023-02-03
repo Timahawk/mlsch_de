@@ -1,22 +1,47 @@
 package main
 
 import (
+	"embed"
 	"flag"
-	"fmt"
-	"log"
+	"html/template"
+	"io/fs"
 	"net/http"
 	"time"
 
+	_ "net/http/pprof"
+
 	"github.com/Timahawk/go_watcher"
+	"github.com/Timahawk/mlsch_de/assets"
 	"github.com/Timahawk/mlsch_de/pkg/chat"
-	"github.com/Timahawk/mlsch_de/pkg/locator"
+	"github.com/Timahawk/mlsch_de/pkg/locator_v2"
+	"github.com/Timahawk/mlsch_de/pkg/orbserver"
+	"github.com/Timahawk/mlsch_de/pkg/util"
+	"go.uber.org/zap"
+
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/acme/autocert"
 )
 
+var development *bool
+
+//go:embed web/static/**/* web/static/*
+var staticFS embed.FS
+
+//go:embed web/templates/**/*
+var templatesFS embed.FS
+
+// Logger used throughout
+var Logger *zap.Logger
+
+func init() {
+	development = flag.Bool("dev", true, "Run local")
+	Logger = util.InitLogger()
+}
+
 func main() {
-	development := flag.Bool("dev", true, "Run local")
+
 	flag.Parse()
 
 	// This must be set before router is created.
@@ -38,26 +63,76 @@ func main() {
 
 	// Check if development (default) or Prod.
 	if *development {
-		log.Fatalln(r.Run())
+		go func() {
+			util.Sugar.Info(http.ListenAndServe("localhost:6060", nil))
+		}()
+		util.Sugar.Fatal(r.Run("0.0.0.0:8080"))
+
 	} else {
-		fmt.Println("Starting in Release Mode!")
-		log.Fatalln(autotls.RunWithManager(r, &certManager))
+		util.Sugar.Infof("Starting in Release Mode!")
+		util.Sugar.Fatal(autotls.RunWithManager(r, &certManager))
 	}
 }
+
+func mustFS() http.FileSystem {
+	sub, err := fs.Sub(staticFS, "web/static")
+
+	if err != nil {
+		panic(err)
+	}
+
+	return http.FS(sub)
+}
+
+// ReverseProxy addapted from https://le-gall.bzh/post/go/a-reverse-proxy-in-go-using-gin/
+//func ReverseProxy(c *gin.Context) {
+//	ts, _ := url.Parse("http://localhost:7800")
+//	proxy := httputil.NewSingleHostReverseProxy(ts)
+//	proxy.ServeHTTP(c.Writer, c.Request)
+//}
 
 // SetupRouter does all the Routes setting.
 // Extra function for easier testsetup.
 func SetupRouter() *gin.Engine {
 
-	r := gin.Default()
+	util.Sugar.Infow("Started mlsch_de application")
+
+	var r *gin.Engine
+
+	if *development {
+		r = gin.Default()
+	} else {
+		r = gin.New()
+		// Not using extra timestamp.
+		r.Use(ginzap.Ginzap(Logger, "", true))
+		r.Use(ginzap.RecoveryWithZap(Logger, true))
+	}
+
+	// r.Any("/tiles/*sth", ReverseProxy)
+
+	collections := orbserver.LoadEmbeddedFC(assets.Mvt)
+	r.GET("/mvt/:z/:x/:y/pbf", orbserver.MvtGin(collections))
+
+	//r := gin.New()
+	// Not using extra timestamp.
+	// r.Use(ginzap.Ginzap(Logger, "", true))
+	// r.Use(ginzap.RecoveryWithZap(Logger, true))
 
 	// *************************************************************** //
 	// 						Files & Templates 						   //
 	// *************************************************************** //
 
-	r.StaticFile("/favicon.ico", "web/static/favicon.ico")
-	r.Static("/static", "web/static")
-	r.LoadHTMLGlob("web/templates/**/*.html")
+	// This is so that in dev Mode you can reload templates for better dev experience.
+	if *development {
+		util.Sugar.Infow("Loading templates from external FileSystem")
+		r.LoadHTMLGlob("web/templates/**/*.html")
+		r.Static("/static", "web/static")
+	} else {
+		util.Sugar.Infow("Loading templates from internal (embedded) FileSystem")
+		templ := template.Must(template.New("").ParseFS(templatesFS, "web/templates/**/*.html"))
+		r.SetHTMLTemplate(templ)
+		r.StaticFS("/static", mustFS())
+	}
 
 	// *************************************************************** //
 	// 							Frontpage 							   //
@@ -72,7 +147,10 @@ func SetupRouter() *gin.Engine {
 	// *************************************************************** //
 
 	watcher := r.Group("/watcher")
-	go_watcher.Start(time.Second)
+	err := go_watcher.Start(time.Second)
+	if err != nil {
+		util.Sugar.Fatal("Watcher could not be started.")
+	}
 	{
 		watcher.GET("/echo", gin.WrapF(go_watcher.SendUpdates))
 		watcher.GET("/", gin.WrapF(go_watcher.SendTemplate))
@@ -93,26 +171,28 @@ func SetupRouter() *gin.Engine {
 	}
 
 	// *************************************************************** //
-	// 							LOCATOR								   //
+	// 							LOCATOR-V2							   //
 	// *************************************************************** //
 
-	locators := r.Group("/locators")
-
-	// World wide games
-	locator.NewGame("world", "pkg/locator/worldcities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator.NewGame("large", "pkg/locator/capital_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-	locator.NewGame("capitals", "pkg/locator/large_cities.json", []float64{0, 0}, 1, 14, 1, []float64{180.0, -90, -180, 90})
-
-	// Country specific games
-	locator.NewGame("germany", "pkg/locator/german_cities.json", []float64{10.019531, 50.792047}, 1, 14, 1, []float64{-2.55, 42.18, 22.58, 58.86})
-
-	{
-		locators.GET("/", func(c *gin.Context) {
-			c.HTML(200, "locators/start.html", gin.H{"title": "Locator"})
-		})
-		locators.GET("/:country", locator.HandleGame)
-		locators.POST("/:country/submit", locator.HandleGameSubmit)
-		locators.POST("/:country/newGuess", locator.HandleNewGuess)
+	if err := locator_v2.LoadGames(); err != nil {
+		util.Sugar.Fatalf("Fatal loading games %v", err)
 	}
+
+	if *development {
+		util.Sugar.Infow("Creating Testing Lobby AAAAAAAA",
+			"development", *development)
+		locator_v2.SetupTest()
+	}
+	locatorV2group := r.Group("/locate")
+	{
+		locatorV2group.GET("/", locator_v2.CreateOrJoinLobby)
+		locatorV2group.POST("/create", locator_v2.CreateLobbyPOST)
+		locatorV2group.POST("/join", locator_v2.JoinLobbyPOST)
+		locatorV2group.GET("/:lobby", locator_v2.WaitingRoom)
+		locatorV2group.GET("/:lobby/ws", locator_v2.WaitingRoomWS)
+		locatorV2group.GET("/:lobby/game", locator_v2.GameRoom)
+		locatorV2group.GET("/:lobby/game/ws", locator_v2.GameRoomWS)
+	}
+
 	return r
 }

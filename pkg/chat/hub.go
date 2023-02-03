@@ -2,18 +2,14 @@ package chat
 
 import (
 	"log"
-	"math/rand"
 	"time"
+
+	"github.com/Timahawk/mlsch_de/pkg/util"
 )
 
 const (
 	// Period to loop through all Hubs and Close those without Clients.
 	closeTime = 5 * time.Minute
-	// This are all the letters RandString can draw from.
-	letterBytes   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	letterIdxBits = 6                    // 6 bits to represent a letter index
-	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
-	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
 // Hub maintains the set of active clients and broadcasts messages to the
@@ -38,7 +34,7 @@ type Hub struct {
 // newHub creates and runs a new Hub.
 func newHub() *Hub {
 	hub := &Hub{
-		HubID:      RandString(6), // TODO muss was bessers her.
+		HubID:      util.RandString(6), // TODO muss was bessers her.
 		broadcast:  make(chan []byte),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
@@ -74,7 +70,7 @@ func (h *Hub) run() {
 	}
 }
 
-// CloseClientless checks at closeTime each hub, if it has any clients.
+// CloseClientlessHubs CloseClientless checks at closeTime each hub, if it has any clients.
 // If not the hub is closed.
 func CloseClientlessHubs(closeTime time.Duration) {
 	ticker := time.NewTicker(closeTime)
@@ -97,26 +93,4 @@ func CloseClientlessHubs(closeTime time.Duration) {
 			log.Panic("This should NEVER be run")
 		}
 	}
-}
-
-// Generates Random String with Lenght n from Letters specified in letterBytes
-//
-// Stolen from Stack Overflow.
-// https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
-func RandString(n int) string {
-	b := make([]byte, n)
-	// A rand.Int63() generates 63 random bits, enough for letterIdxMax letters!
-	for i, cache, remain := n-1, rand.Int63(), letterIdxMax; i >= 0; {
-		if remain == 0 {
-			cache, remain = rand.Int63(), letterIdxMax
-		}
-		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
-			b[i] = letterBytes[idx]
-			i--
-		}
-		cache >>= letterIdxBits
-		remain--
-	}
-
-	return string(b)
 }

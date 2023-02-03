@@ -1,0 +1,53 @@
+---
+- name: deploy to Lightsail
+  hosts: aws_server
+  tasks:
+    - name: Copy the compiled file to the Servers.
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../bin/mlsch_de-linux-amd64"
+        dest: /home/ubuntu/mlsch_de
+        owner: ubuntu
+        group: ubuntu
+        # 755 means read and execute access for everyone and also write access for the owner of the file. 
+        mode: '0755'
+
+    - name: Kill already running server.
+      shell: |
+        echo "LISTEN Ports when Starting"
+        sudo lsof -i -P -n | grep LISTEN
+
+        sudo pkill mlsch_de
+
+        echo "LISTEN Ports after pkill"
+        sudo lsof -i -P -n | grep LISTEN
+        exit 0
+      register: ps
+
+    - name: Start the mlsch_de Server
+      shell: "( ( nohup sudo /home/ubuntu/mlsch_de -dev=false 1>/dev/null 2>&1 ) & )"
+      async: 5
+      poll: 0
+
+    - name: Check for sucess.
+      shell: |
+        echo "Sleep 1 Seconds"
+        sleep 1
+
+        echo "LISTEN Ports after  Restart"
+        sudo lsof -i -P -n | grep LISTEN
+
+        echo "Tail of Logfile"
+        tail ./Logs.log
+
+        echo "-> Finished the Script."
+
+        exit 0
+      register: ps
+
+    - name: Check that you can connect (GET) to a page and it returns a status 200
+      uri:
+        url: https://mlsch.de
+
+    # - debug: var=ps
+
+    

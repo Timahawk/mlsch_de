@@ -1,9 +1,26 @@
+# This ignores everything except Folders,
+# and files with an extension.
+*
+!*/
+!*.*
+
+# Exclude everything in ideas folder
+.idea/*
+
 # Exclude everything in certs
 certs/*
 
 # Exclude .exe files
 *.exe
 
-mlsch_de
-
+# Exclude log files 
 *.log
+
+# Exclude fme recover files
+*.fmw.recover
+
+# Exclude gpgk because way to big.
+*.gpkg
+# Exclude tar backup files
+*.tar
+backup.sql

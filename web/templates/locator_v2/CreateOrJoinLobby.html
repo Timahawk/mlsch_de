@@ -1,0 +1,87 @@
+{{ define "locator_v2/CreateOrJoinLobby.html" }}
+
+    <title>{{ .title }}</title>
+    {{ template "globals/style_head.html" }}
+    {{ template "globals/style_body.html" }}
+
+    <div id="accordion">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0 text-center">
+                    <button class="btn btn-warning" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        Join a Lobby
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="d-flex justify-content-around align-self-baseline">
+                    <form method="post" action="join" style="margin:10px">
+                        <div class=" form-group row">
+                            <label for="LobbyID">Input a valid LobbyKey </label>
+                            <input class="form-control" type="text" required minlength=8 maxlength=8 id="LobbyID" name="LobbyID">
+                        </div>
+                        <div class=" form-group row">
+                            <label for="username">Choose your Name</label>
+                            <input class="form-control" type="text" required minlength=3 maxlength=10 id="username"
+                                   name="username">
+                        </div>
+                        <input type="submit" class="btn btn-primary text-center" style="margin:10px" value="Submit">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0  text-center">
+                    <button class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        Create a new Lobby
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="d-flex justify-content-around align-self-baseline">
+                        <form method="post" action="create" style="margin:10px">
+                            <div class="form-group row">
+                                <label for="roundTime">Choose the length of each guessing round (seconds)</label>
+                                <input class="form-control" type="number" required min=3 max=240 id="roundTime" name="roundTime"
+                                       value="45">
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="reviewTime">Choose the length of each review round (seconds)</label>
+                                <input class="form-control" type="number" required min=3 max=240 id="reviewTime" name="reviewTime"
+                                       value="10">
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="rounds">Choose the numbers of gamerounds</label>
+                                <input class="form-control" type="number" required min=1 max=20 id="rounds" name="rounds" value="10">
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="mr-sm-2" for="gameset">Choose a Gameset:</label>
+                                <select class="custom-select mr-sm-2" name="gameset" required id="gameset">
+                                    {{ range .Games }}
+                                        <option value="{{ .Name }}">{{ .Name }}</option>
+                                    {{ end }}
+                                </select>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="username">Choose your Name</label>
+                                <input class="form-control" id="username" maxlength=10 minlength=3 name="username" required
+                                       type="text">
+                            </div>
+                            <input class="btn btn-primary text-center" style="margin:10px" type="submit" value="Submit">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{ end }}

@@ -11,22 +11,25 @@
         # 755 means read and execute access for everyone and also write access for the owner of the file. 
         mode: '0755'
 
-    - name: Kill already running server.
-      shell: |
-        echo "LISTEN Ports when Starting"
-        sudo lsof -i -P -n | grep LISTEN
+    - name: Restart systemctl service
+      shell: sudo systemctl restart mlsch_de
 
-        sudo pkill mlsch_de
+    # - name: Kill already running server.
+    #   shell: |
+    #     echo "LISTEN Ports when Starting"
+    #     sudo lsof -i -P -n | grep LISTEN
 
-        echo "LISTEN Ports after pkill"
-        sudo lsof -i -P -n | grep LISTEN
-        exit 0
-      register: ps
+    #     sudo pkill mlsch_de
 
-    - name: Start the mlsch_de Server
-      shell: "( ( nohup sudo /home/ubuntu/mlsch_de -dev=false 1>/dev/null 2>&1 ) & )"
-      async: 5
-      poll: 0
+    #     echo "LISTEN Ports after pkill"
+    #     sudo lsof -i -P -n | grep LISTEN
+    #     exit 0
+    #   register: ps
+
+    # - name: Start the mlsch_de Server
+    #   shell: "( ( nohup sudo /home/ubuntu/mlsch_de -dev=false 1>/dev/null 2>&1 ) & )"
+    #   async: 5
+    #   poll: 0
 
     - name: Check for sucess.
       shell: |

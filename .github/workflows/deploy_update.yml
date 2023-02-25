@@ -33,6 +33,7 @@ jobs:
         target: "/home/ubuntu"
         
     - name: restart Service
+      uses: appleboy/ssh-action@v0.1.7
       with:
         host: ${{ secrets.UBUNTU_1_IP }}
         username: ${{ secrets.UBUNTU_1_USER }}

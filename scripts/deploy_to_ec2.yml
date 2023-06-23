@@ -1,10 +1,10 @@
 ---
 - name: deploy to Lightsail
-  hosts: lightsail
+  hosts: ec2
   tasks:
     - name: Copy the compiled file to the Servers.
       ansible.builtin.copy:
-        src: "{{ playbook_dir }}/../bin/mlsch_de-linux-amd64"
+        src: "{{ playbook_dir }}/../bin/mlsch_de_arm64_linux"
         dest: /home/ubuntu/mlsch_de
         owner: ubuntu
         group: ubuntu

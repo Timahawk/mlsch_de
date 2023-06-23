@@ -1,0 +1,15 @@
+[Unit]
+Description=mlsch_de
+Documentation=mlschde application
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/home/ubuntu/mlsch_de -dev=false
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
